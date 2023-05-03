@@ -17,6 +17,10 @@ loginForm.addEventListener("submit", async (e) => {
 
         let responseData = await postFormFieldsAsParameters({url, formData});
         console.log(responseData);
+        /* Quan s'inicia sessió correctament, espera 1 segon i canvia a la pàgina de jugadors */
+        setTimeout(() => {
+            window.location.replace("./players.html");
+        }, 1000);
     } catch (error) {
         /* Si es produeix un error, mostra'l a la consola (per depurar-lo). */
         console.error(error);
