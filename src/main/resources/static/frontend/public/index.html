@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="http://localhost:8080/api/v1/user/register" method="post">
+    <div class="form-example">
+        <label for="username">Name: </label>
+        <input type="text" name="username" id="username" required>
+    </div>
+    <div class="form-example">
+        <label for="email">Email: </label>
+        <input type="email" name="email" id="email" required>
+    </div>
+    <div class="form-example">
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="password" required>
+    </div>
+    <div class="form-example">
+        <input type="submit" value="Enviar">
+    </div>
+</form>
+<script src="./javascripts/forms.js"></script>
+</body>
+</html>
