@@ -1,6 +1,10 @@
-const forms = document.querySelector("form");
+const registerForm = document.getElementById("register-form");
+const usernameField = document.getElementById("username");
+const emailField = document.getElementById("email");
+const passwordField = document.getElementById("password");
+const validationMessage = document.getElementById("form-validation-message");
 
-forms.addEventListener("submit", async (e) => {
+registerForm.addEventListener("submit", async (e) => {
     /* Prevé el comportament predeterminat del navegador d'enviar el formulari perquè es puga gestionar de forma alternativa. */
     e.preventDefault();
 
@@ -40,9 +44,27 @@ async function postFormFieldsAsJson({url, formData}) {
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {
-        let error = await response.text();
+        usernameField.classList.add("is-valid");
+        emailField.classList.add("is-invalid");
+        passwordField.classList.add("is-valid");
+
+        validationMessage.classList.remove("d-none");
+        validationMessage.classList.remove("bg-primary");
+        validationMessage.classList.add("bg-danger");
+        let error = await response.json();
+        validationMessage.innerText = error.message;
         throw new Error(error);
     }
+
+    usernameField.classList.add("is-valid");
+    emailField.classList.remove("is-invalid");
+    emailField.classList.add("is-valid");
+    passwordField.classList.add("is-valid");
+
+    validationMessage.classList.remove("d-none");
+    validationMessage.classList.remove("bg-danger");
+    validationMessage.classList.add("bg-primary");
+    validationMessage.innerText = "Usuari registrat!";
     /* Si la resposta és correcta, retorna el cos de la resposta. */
     return response.json();
 }
