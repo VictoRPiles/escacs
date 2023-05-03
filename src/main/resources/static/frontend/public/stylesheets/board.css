@@ -1,0 +1,33 @@
+.board {
+    display: -ms-grid;
+    -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    -ms-grid-rows: auto;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: auto;
+}
+
+.square::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: #212121;
+}
+
+body .board {
+    max-width: 45%;
+    box-sizing: border-box;
+}
+
+body .square {
+    background-color: #eeedd3;
+}
+
+body .square:nth-of-type(-2n+8), body .square:nth-of-type(8) ~ *:nth-of-type(-2n+15), body .square:nth-of-type(16) ~ *:nth-of-type(-2n+24), body .square:nth-of-type(24) ~ *:nth-of-type(-2n+31), body .square:nth-of-type(32) ~ *:nth-of-type(-2n+40), body .square:nth-of-type(40) ~ *:nth-of-type(-2n+47), body .square:nth-of-type(48) ~ *:nth-of-type(-2n+56), body .square:nth-of-type(56) ~ *:nth-of-type(-2n+63) {
+    background-color: var(--primary);
+}
