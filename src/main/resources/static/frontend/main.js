@@ -9,7 +9,7 @@ const createWindow = () => {
             preload: path.join(__dirname, "preload.js")
         },
     });
-    mainWindow.loadFile("public/index.html").then(() => {
+    mainWindow.loadFile("public/login.html").then(() => {
         mainWindow.show();
     });
 

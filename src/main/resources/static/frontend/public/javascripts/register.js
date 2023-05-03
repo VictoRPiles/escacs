@@ -20,7 +20,7 @@ registerForm.addEventListener("submit", async (e) => {
         console.log(responseData);
         /* Quan es registra correctament, espera 1 segon i canvia a la pàgina d'inici de sessió */
         setTimeout(() => {
-            window.location.replace("./index.html");
+            window.location.replace("./login.html");
         }, 1000);
     } catch (error) {
         /* Si es produeix un error, mostra'l a la consola (per depurar-lo). */
