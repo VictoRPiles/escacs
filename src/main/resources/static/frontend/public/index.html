@@ -20,7 +20,7 @@
 
 <body>
 <div class="container mt-5">
-    <form id="register-form" class="form-signin shadow rounded" action="http://localhost:8080/api/v1/user/login"
+    <form id="login-form" class="form-signin shadow rounded" action="http://localhost:8080/api/v1/user/login"
           method="post">
         <h2 class="form-signin-heading fw-bolder mb-4">Iniciar sessió</h2>
         <!-- Email -->
@@ -45,6 +45,7 @@
             </button>
             <span class="mx-2 fw-bolder float-end">No tens un compte? <a href="./register.html">Registra't</a></span>
         </div>
+        <div id="form-validation-message" class="d-none fw-bold text-light text-center rounded mt-2 px-4 py-2"></div>
     </form>
 </div>
 

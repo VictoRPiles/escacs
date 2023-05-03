@@ -21,3 +21,7 @@
 .btn-primary:hover {
     background-color: var(--primary-hover) !important;
 }
+
+.bg-primary {
+    background-color: var(--primary) !important;
+}

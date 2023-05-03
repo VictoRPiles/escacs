@@ -1,6 +1,9 @@
-const form = document.querySelector("form");
+const loginForm = document.getElementById("login-form");
+const emailField = document.getElementById("email");
+const passwordField = document.getElementById("password");
+const validationMessage = document.getElementById("form-validation-message");
 
-form.addEventListener("submit", async (e) => {
+loginForm.addEventListener("submit", async (e) => {
     /* Prevé el comportament predeterminat del navegador d'enviar el formulari perquè es puga gestionar de forma alternativa. */
     e.preventDefault();
 
@@ -37,9 +40,26 @@ async function postFormFieldsAsParameters({url, formData}) {
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {
-        let error = await response.text();
+        emailField.classList.add("is-invalid");
+        passwordField.classList.add("is-invalid");
+
+        validationMessage.classList.remove("d-none");
+        validationMessage.classList.remove("bg-primary");
+        validationMessage.classList.add("bg-danger");
+        let error = await response.json();
+        validationMessage.innerText = error.message;
         throw new Error(error);
     }
+
+    emailField.classList.remove("is-invalid");
+    emailField.classList.add("is-valid");
+    passwordField.classList.remove("is-invalid");
+    passwordField.classList.add("is-valid");
+
+    validationMessage.classList.remove("d-none");
+    validationMessage.classList.remove("bg-danger");
+    validationMessage.classList.add("bg-primary");
+    validationMessage.innerText = "Benvingut de nou!";
     /* Si la resposta és correcta, retorna el cos de la resposta. */
     return response.json();
 }
