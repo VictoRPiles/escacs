@@ -1,0 +1,23 @@
+:root {
+    --primary: #779556;
+    --primary-hover: rgba(119, 149, 86, 0.68);
+}
+
+/* ********** Sobreescriu boostrap ********** */
+.active {
+    color: var(--primary) !important;
+}
+
+.nav-link {
+    font-size: 1.5rem;
+    font-weight: bold !important;
+}
+
+.btn-primary {
+    border: none;
+    background-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover) !important;
+}

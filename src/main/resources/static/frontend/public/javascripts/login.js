@@ -1,6 +1,6 @@
-const forms = document.querySelector("form");
+const form = document.querySelector("form");
 
-forms.addEventListener("submit", async (e) => {
+form.addEventListener("submit", async (e) => {
     /* Prevé el comportament predeterminat del navegador d'enviar el formulari perquè es puga gestionar de forma alternativa. */
     e.preventDefault();
 
@@ -12,7 +12,7 @@ forms.addEventListener("submit", async (e) => {
         /* Agafa tots els camps del formulari i posa els valors dels camps a disposició a través d'una instància de FormData. */
         let formData = new FormData(form);
 
-        let responseData = await postFormFieldsAsJson({url, formData});
+        let responseData = await postFormFieldsAsParameters({url, formData});
         console.log(responseData);
     } catch (error) {
         /* Si es produeix un error, mostra'l a la consola (per depurar-lo). */
@@ -21,22 +21,19 @@ forms.addEventListener("submit", async (e) => {
 });
 
 /**
- * Funció auxiliar per fer una sol·licitud POST amb dades en format JSON utilitzant Fetch.
+ * Funció auxiliar per fer una sol·licitud POST amb dades com a paràmetres utilitzant Fetch.
  */
-async function postFormFieldsAsJson({url, formData}) {
+async function postFormFieldsAsParameters({url, formData}) {
     let formDataObject = Object.fromEntries(formData.entries());
-    let formDataJsonString = JSON.stringify(formDataObject);
 
     let fetchOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        },
-        body: formDataJsonString,
+        method: "POST"
     };
 
-    let response = await fetch(url, fetchOptions);
+    let response = await fetch(url + "?" + new URLSearchParams({
+        email: formDataObject.email,
+        password: formDataObject.password
+    }), fetchOptions);
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {
