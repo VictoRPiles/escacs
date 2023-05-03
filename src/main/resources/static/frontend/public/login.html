@@ -19,6 +19,30 @@
 </head>
 
 <body>
+<nav id="navbar" class="navbar navbar-expand-sm navbar-dark sticky-top bg-dark">
+    <!-- Logotype -->
+    <a class="navbar-brand" href="./index.html">
+        <img class="ms-3 ms-lg-5" src="./images/knight-green.svg" width="50" alt="">
+    </a>
+    <!-- Button toggler -->
+    <button class="me-3 navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-collapse"
+            aria-controls="navbar-collapse"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Links -->
+    <div id="navbar-collapse" class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0 mx-5">
+            <li class="nav-item">
+                <a class="nav-link active" href="./login.html">Iniciar sessió</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./register.html">Registrar-se</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 <div class="container mt-5">
     <form id="login-form" class="form-signin shadow rounded" action="http://localhost:8080/api/v1/user/login"
           method="post">
