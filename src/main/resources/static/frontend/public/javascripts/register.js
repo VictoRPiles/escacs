@@ -48,19 +48,27 @@ async function postFormFieldsAsJson({url, formData}) {
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {
-        usernameField.classList.add("is-valid");
-        emailField.classList.add("is-invalid");
+        let error = await response.json();
+
+        if (error.message.includes("username")) {
+            usernameField.classList.add("is-invalid");
+        }
+        if (error.message.includes("email")) {
+            usernameField.classList.remove("is-invalid");
+            usernameField.classList.add("is-valid");
+            emailField.classList.add("is-invalid");
+        }
         passwordField.classList.add("is-valid");
 
         validationMessage.classList.remove("d-none");
         validationMessage.classList.remove("bg-primary");
         validationMessage.classList.add("bg-danger");
-        let error = await response.json();
         validationMessage.innerText = error.message;
         throw new Error(error);
     }
 
     usernameField.classList.add("is-valid");
+    usernameField.classList.remove("is-invalid");
     emailField.classList.remove("is-invalid");
     emailField.classList.add("is-valid");
     passwordField.classList.add("is-valid");
