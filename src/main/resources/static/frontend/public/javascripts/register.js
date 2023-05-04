@@ -17,7 +17,6 @@ registerForm.addEventListener("submit", async (e) => {
         let formData = new FormData(form);
 
         let responseData = await postFormFieldsAsJson({url, formData});
-        console.log(responseData);
         /* Quan es registra correctament, espera 1 segon i canvia a la pàgina d'inici de sessió */
         setTimeout(() => {
             window.location.replace("./login.html");
@@ -45,6 +44,7 @@ async function postFormFieldsAsJson({url, formData}) {
     };
 
     let response = await fetch(url, fetchOptions);
+    console.log("POST " + url + ": " + JSON.stringify(response));
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {
