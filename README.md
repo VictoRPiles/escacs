@@ -6,3 +6,7 @@
 # Escacs
 
 Joc d'escacs multijugador.
+
+<p align="center" width="100%">
+    <img src=".github/readme/index.png" alt="index page"/>
+</p>

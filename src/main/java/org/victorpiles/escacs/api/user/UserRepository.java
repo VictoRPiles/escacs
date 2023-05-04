@@ -22,4 +22,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return L'{@link User usuari} amb l'{@link User#getEmail() email} passat com a paràmetre, si aquest existeix.
      */
     Optional<User> findByEmail(String email);
+
+    /**
+     * Busca en la base de dades l'{@link User usuari} amb el {@link User#getUsername() nom} passat com a paràmetre.
+     *
+     * @param username L'usuari a buscar.
+     *
+     * @return L'{@link User usuari} amb el {@link User#getUsername() nom} passat com a paràmetre, si aquest existeix.
+     */
+    Optional<User> findByUsername(String username);
 }

@@ -16,7 +16,6 @@ loginForm.addEventListener("submit", async (e) => {
         let formData = new FormData(form);
 
         let responseData = await postFormFieldsAsParameters({url, formData});
-        console.log(responseData);
         /* Quan s'inicia sessió correctament, espera 1 segon i canvia a la pàgina de jugadors */
         setTimeout(() => {
             window.location.replace("./index.html");
@@ -37,10 +36,13 @@ async function postFormFieldsAsParameters({url, formData}) {
         method: "POST"
     };
 
-    let response = await fetch(url + "?" + new URLSearchParams({
+    let loginEndpoint = url + "?" + new URLSearchParams({
         email: formDataObject.email,
         password: formDataObject.password
-    }), fetchOptions);
+    });
+
+    let response = await fetch(loginEndpoint, fetchOptions);
+    console.log("POST " + loginEndpoint + ": " + JSON.stringify(response));
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {

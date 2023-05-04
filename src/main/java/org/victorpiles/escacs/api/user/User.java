@@ -41,8 +41,11 @@ public class User {
     private Long id;
     /**
      * Nom o "nickname" corresponent a usuari.
+     * <p>
+     * Ha de ser un valor {@link Column#unique() únic}.
      */
     @NotBlank(message = "Username cannot be empty")
+    @Column(unique = true)
     private String username;
     /**
      * Email corresponent a l'usuari.
@@ -70,6 +73,12 @@ public class User {
      * @see User#initializeScore() Conté el valor 0 quan es registra l'usuari.
      */
     private Integer score;
+
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     /**
      * Inicialitza la {@link User#score puntuació} a 0 quan es registra l'usuari.

@@ -5,13 +5,12 @@ const createWindow = () => {
     let icon = path.join(__dirname, "public/images/icon-green.png");
     console.log(icon);
     const mainWindow = new BrowserWindow({
-        width: 1200,
-        height: 800,
         icon: icon,
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
         },
     });
+    mainWindow.maximize();
     mainWindow.loadFile("public/login.html").then(() => {
         mainWindow.show();
     });

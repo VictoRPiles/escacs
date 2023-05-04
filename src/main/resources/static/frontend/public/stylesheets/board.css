@@ -1,0 +1,97 @@
+:root {
+    --square-light: var(--bs-light);
+    --square-light-hover: color-mix(in hsl, var(--square-light) 70%, var(--square-dark));
+    --square-dark: var(--primary);
+    --square-dark-hover: color-mix(in hsl, var(--square-dark) 70%, var(--square-light));
+}
+
+.board {
+    margin: 0;
+    padding: 0;
+
+    display: -ms-grid;
+    -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    -ms-grid-rows: auto;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: auto;
+
+    max-width: 45%;
+    box-sizing: border-box;
+}
+
+.square {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.square::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
+.square-light {
+    background-color: var(--square-light);
+}
+
+.square-light:hover {
+    background-color: var(--square-light-hover);
+}
+
+.square-dark {
+    background-color: var(--square-dark);
+}
+
+.square-dark:hover {
+    background-color: var(--square-dark-hover);
+}
+
+.rook-light {
+    background-image: url("../images/piece-rl.svg");
+}
+
+.rook-dark {
+    background-image: url("../images/piece-rd.svg");
+}
+
+.knight-light {
+    background-image: url("../images/piece-nl.svg");
+}
+
+.knight-dark {
+    background-image: url("../images/piece-nd.svg");
+}
+
+.bishop-light {
+    background-image: url("../images/piece-bl.svg");
+}
+
+.bishop-dark {
+    background-image: url("../images/piece-bd.svg");
+}
+
+.queen-light {
+    background-image: url("../images/piece-ql.svg");
+}
+
+.queen-dark {
+    background-image: url("../images/piece-qd.svg");
+}
+
+.king-light {
+    background-image: url("../images/piece-kl.svg");
+}
+
+.king-dark {
+    background-image: url("../images/piece-kd.svg");
+}
+
+.pawn-light {
+    background-image: url("../images/piece-pl.svg");
+}
+
+.pawn-dark {
+    background-image: url("../images/piece-pd.svg");
+}

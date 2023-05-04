@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.victorpiles.escacs.api.exception.BadCredentialsException;
 import org.victorpiles.escacs.api.exception.EmailAlreadyInUseException;
 import org.victorpiles.escacs.api.exception.EmailNotFoundException;
+import org.victorpiles.escacs.api.exception.UsernameAlreadyInUseException;
 import org.victorpiles.escacs.api.security.PasswordEncoder;
 
 import java.util.List;
@@ -45,7 +46,12 @@ public class UserService {
      * @return La informació de l'{@link User usuari} si s'ha registrat exitosament.
      */
     public User register(User user) {
+        Optional<User> userByUsername = userRepository.findByUsername(user.getUsername());
         Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
+
+        if (userByUsername.isPresent()) {
+            throw new UsernameAlreadyInUseException("There’s already an account with the username " + user.getUsername() + ". Use a different username.");
+        }
 
         if (userByEmail.isPresent()) {
             throw new EmailAlreadyInUseException("There’s already an account with the email " + user.getEmail() + ". Use a different email or sign in with this address.");
