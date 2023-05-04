@@ -1,10 +1,23 @@
+:root {
+    --square-light: var(--bs-light);
+    --square-light-hover: color-mix(in hsl, var(--bs-light) 70%, var(--bs-dark));
+    --square-dark: var(--bs-dark);
+    --square-dark-hover: color-mix(in hsl, var(--bs-dark) 70%, var(--bs-light));
+}
+
 .board {
+    margin: 0;
+    padding: 0;
+
     display: -ms-grid;
     -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     -ms-grid-rows: auto;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: auto;
+
+    max-width: 45%;
+    box-sizing: border-box;
 }
 
 .square::before {
@@ -13,21 +26,18 @@
     padding-top: 100%;
 }
 
-body {
-    padding: 0;
-    margin: 0;
-    background-color: #212121;
+.square-light {
+    background-color: var(--square-light);
 }
 
-body .board {
-    max-width: 45%;
-    box-sizing: border-box;
+.square-light:hover {
+    background-color: var(--square-light-hover);
 }
 
-body .square {
-    background-color: #eeedd3;
+.square-dark {
+    background-color: var(--square-dark);
 }
 
-body .square:nth-of-type(-2n+8), body .square:nth-of-type(8) ~ *:nth-of-type(-2n+15), body .square:nth-of-type(16) ~ *:nth-of-type(-2n+24), body .square:nth-of-type(24) ~ *:nth-of-type(-2n+31), body .square:nth-of-type(32) ~ *:nth-of-type(-2n+40), body .square:nth-of-type(40) ~ *:nth-of-type(-2n+47), body .square:nth-of-type(48) ~ *:nth-of-type(-2n+56), body .square:nth-of-type(56) ~ *:nth-of-type(-2n+63) {
-    background-color: var(--primary);
+.square-dark:hover {
+    background-color: var(--square-dark-hover);
 }

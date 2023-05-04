@@ -6,7 +6,11 @@ let columns = 8;
 /* Crea les caselles */
 for (let row = 0; row < rows; row++) {
     for (let column = 0; column < columns; column++) {
-        board.innerHTML += `<div class="square"></div>`;
+        if (row % 2 === column % 2) {
+            board.innerHTML += `<div class="square square-light"></div>`;
+        } else {
+            board.innerHTML += `<div class="square square-dark"></div>`;
+        }
     }
 }
 
