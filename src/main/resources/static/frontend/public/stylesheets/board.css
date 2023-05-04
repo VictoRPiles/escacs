@@ -1,8 +1,8 @@
 :root {
     --square-light: var(--bs-light);
-    --square-light-hover: color-mix(in hsl, var(--bs-light) 70%, var(--bs-dark));
-    --square-dark: var(--bs-dark);
-    --square-dark-hover: color-mix(in hsl, var(--bs-dark) 70%, var(--bs-light));
+    --square-light-hover: color-mix(in hsl, var(--square-light) 70%, var(--square-dark));
+    --square-dark: var(--primary);
+    --square-dark-hover: color-mix(in hsl, var(--square-dark) 70%, var(--square-light));
 }
 
 .board {
@@ -18,6 +18,12 @@
 
     max-width: 45%;
     box-sizing: border-box;
+}
+
+.square {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .square::before {
@@ -40,4 +46,52 @@
 
 .square-dark:hover {
     background-color: var(--square-dark-hover);
+}
+
+.rook-light {
+    background-image: url("../images/piece-rl.svg");
+}
+
+.rook-dark {
+    background-image: url("../images/piece-rd.svg");
+}
+
+.knight-light {
+    background-image: url("../images/piece-nl.svg");
+}
+
+.knight-dark {
+    background-image: url("../images/piece-nd.svg");
+}
+
+.bishop-light {
+    background-image: url("../images/piece-bl.svg");
+}
+
+.bishop-dark {
+    background-image: url("../images/piece-bd.svg");
+}
+
+.queen-light {
+    background-image: url("../images/piece-ql.svg");
+}
+
+.queen-dark {
+    background-image: url("../images/piece-qd.svg");
+}
+
+.king-light {
+    background-image: url("../images/piece-kl.svg");
+}
+
+.king-dark {
+    background-image: url("../images/piece-kd.svg");
+}
+
+.pawn-light {
+    background-image: url("../images/piece-pl.svg");
+}
+
+.pawn-dark {
+    background-image: url("../images/piece-pd.svg");
 }
