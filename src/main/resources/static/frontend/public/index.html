@@ -83,41 +83,21 @@
             </table>
         </div>
         <!-- ********** Llistat de jugadors ********** -->
-        <div id="online-list" class="col-sm-2 m-3 bg-light shadow">
+        <div id="player-list" class="col-sm-3 m-3 bg-light shadow">
             <table class="table table-striped caption-top">
-                <caption class="text-center fw-bold">Llistat de jugadors en linea</caption>
+                <caption class="text-center fw-bold">Llistat de jugadors</caption>
                 <thead class="table-light">
                 <tr class="align-middle">
                     <th class="text-center">
-                        <button id="reload-online-list-btn" type="button" class="btn btn-sm btn-secondary px-2 py-0"><i
+                        <button id="reload-player-list-btn" type="button" class="btn btn-sm btn-secondary px-2 py-0"><i
                                 class="bi bi-arrow-clockwise"></i></button>
                     </th>
                     <th scope="col">Nom d'usuari</th>
                     <th class="text-center" scope="col">Accions</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr class="align-middle">
-                    <th class="text-center" scope="row">1</th>
-                    <td>@username</td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-primary px-2 py-0"><i class="bi bi-arrow-right"></i></button>
-                    </td>
-                </tr>
-                <tr class="align-middle">
-                    <th class="text-center" scope="row">2</th>
-                    <td>@username</td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-primary px-2 py-0"><i class="bi bi-arrow-right"></i></button>
-                    </td>
-                </tr>
-                <tr class="align-middle">
-                    <th class="text-center" scope="row">3</th>
-                    <td>@username</td>
-                    <td class="text-center">
-                        <button class="btn btn-sm btn-primary px-2 py-0"><i class="bi bi-arrow-right"></i></button>
-                    </td>
-                </tr>
+                <tbody id="player-list-body">
+                <!-- Crea desde online JS -->
                 </tbody>
             </table>
         </div>
