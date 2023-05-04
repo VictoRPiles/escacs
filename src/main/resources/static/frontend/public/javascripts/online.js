@@ -23,7 +23,6 @@ reloadButton.addEventListener("click", async () => {
             username = username.slice(0, maxUsernameLength) + "...";
         }
 
-
         playerListElement.innerHTML += `
                 <tr class="align-middle">
                     <th class="text-center" scope="row">${onlinePlayersList.indexOf(player) + 1}</th>
