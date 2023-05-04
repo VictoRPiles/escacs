@@ -71,6 +71,12 @@ public class User {
      */
     private Integer score;
 
+    public User(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     /**
      * Inicialitza la {@link User#score puntuació} a 0 quan es registra l'usuari.
      */
