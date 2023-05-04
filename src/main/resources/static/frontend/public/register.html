@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<!-- ********** Menu ********** -->
 <nav id="navbar" class="navbar navbar-expand-sm navbar-dark sticky-top bg-dark">
     <!-- Logotype -->
     <a class="navbar-brand" href="./index.html">
@@ -43,6 +44,7 @@
     </div>
 </nav>
 
+<!-- ********** Formulari ********** -->
 <div class="container mt-5">
     <form id="register-form" class="form-signin shadow rounded" action="http://localhost:8080/api/v1/user/register"
           method="post">
@@ -71,10 +73,10 @@
         <!-- Botó d'enviar -->
         <input name="send" type="hidden"/>
         <div class="align-items-center mt-4">
-            <button class="px-4 btn btn-lg btn-primary btn-block shadow" type="submit">
+            <button class="px-4 btn btn-lg btn-green btn-block shadow" type="submit">
                 <i class="bi bi-arrow-right"></i>
             </button>
-            <span class="mx-2 fw-bolder float-end">Ja tens un compte? <a href="login.html">Inicia sessió</a></span>
+            <span class="mx-2 fw-bolder float-end">Ja tens un compte? <a href="./login.html">Inicia sessió</a></span>
         </div>
         <div id="form-validation-message" class="d-none fw-bold text-light text-center rounded mt-2 px-4 py-2"></div>
     </form>
