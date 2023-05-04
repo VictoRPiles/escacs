@@ -26,20 +26,26 @@
     <!-- Crea desde menu JS -->
 </div>
 <div class="container-fluid">
-    <label for="search"></label>
-    <input type="text" id="search" placeholder="Search for names..">
     <div id="player-list" class="m-3 bg-light shadow">
         <table id="player-list-table" class="table table-striped caption-top">
             <caption class="text-center fw-bold">Llistat de jugadors</caption>
             <thead class="table-light">
             <tr class="align-middle">
                 <th colspan="2" scope="col" class="p-0">
-                    <button id="reload-player-list-btn" type="button" class="btn btn-sm btn-secondary mx-2">
-                        <i class="bi bi-arrow-clockwise"></i>
-                    </button>
-                    <a href="./players.html" id="open-player-list-btn" class="btn btn-sm btn-primary me-2">
-                        <i class="bi bi-zoom-in"></i>
-                    </a>
+                    <div class="input-group mb-3 ms-3 w-50">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="search-icon"><i class="bi bi-search"></i></span>
+                        </div>
+                        <label for="search"></label>
+                        <input type="text" id="search" placeholder="Buscar jugadors..." aria-describedby="search-icon"
+                               class="form-control">
+                        <button id="reload-player-list-btn" type="button" class="btn btn-secondary mx-2 rounded">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                        <button id="random-player-list-btn" type="button" class="btn btn-warning me-2 rounded">
+                            <i class="bi bi-shuffle"></i>
+                        </button>
+                    </div>
                 </th>
                 <th class="text-center" scope="col">Accions</th>
             </tr>
