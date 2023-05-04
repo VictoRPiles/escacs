@@ -41,8 +41,11 @@ public class User {
     private Long id;
     /**
      * Nom o "nickname" corresponent a usuari.
+     * <p>
+     * Ha de ser un valor {@link Column#unique() únic}.
      */
     @NotBlank(message = "Username cannot be empty")
+    @Column(unique = true)
     private String username;
     /**
      * Email corresponent a l'usuari.
