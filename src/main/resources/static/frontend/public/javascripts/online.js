@@ -1,6 +1,16 @@
 const playerListElement = document.getElementById("player-list-body");
 const reloadButton = document.getElementById("reload-player-list-btn");
 
+window.onload = function () {
+    /* Recarrega la llista en carregar la pàgina */
+    reloadButton.click();
+
+    /* Recarrega la llista cada 10 segons */
+    setInterval(function () {
+        reloadButton.click();
+    }, 10000);
+};
+
 reloadButton.addEventListener("click", async () => {
     let onlinePlayersList = await fetchOnlinePlayersList();
 
