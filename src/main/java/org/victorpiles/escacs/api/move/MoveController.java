@@ -46,8 +46,8 @@ public class MoveController {
      *
      * @see MoveService#listByUser(String)
      */
-    @GetMapping(path = "/listByUser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Move>> listByUser(@RequestParam("username") @NotEmpty(message = "Username cannot be empty") String username) {
+    @GetMapping(path = "/list/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Move>> listByUser(@NotEmpty(message = "Username cannot be empty") @PathVariable String username) {
         List<Move> moveList = moveService.listByUser(username);
         return ResponseEntity.ok(moveList);
     }
