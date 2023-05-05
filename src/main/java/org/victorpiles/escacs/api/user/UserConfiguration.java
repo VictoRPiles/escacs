@@ -18,9 +18,9 @@ public class UserConfiguration {
     CommandLineRunner commandLineRunner(UserService service) {
         return args -> {
             User user = new User(
-                    "user",
-                    "user@escacs.org",
-                    "user@escacs.org"
+                    "Administrator",
+                    "admin@escacs.org",
+                    "admin@escacs.org"
             );
             service.register(user);
         };
