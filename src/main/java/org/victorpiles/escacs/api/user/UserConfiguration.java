@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class UserConfiguration {
+
     @Bean
     CommandLineRunner commandLineRunner(UserService service) {
         return args -> {

@@ -2,10 +2,10 @@ package org.victorpiles.escacs.api.user;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.victorpiles.escacs.api.exception.BadCredentialsException;
-import org.victorpiles.escacs.api.exception.EmailAlreadyInUseException;
-import org.victorpiles.escacs.api.exception.EmailNotFoundException;
-import org.victorpiles.escacs.api.exception.UsernameAlreadyInUseException;
+import org.victorpiles.escacs.api.exception.user.BadCredentialsException;
+import org.victorpiles.escacs.api.exception.user.EmailAlreadyInUseException;
+import org.victorpiles.escacs.api.exception.user.EmailNotFoundException;
+import org.victorpiles.escacs.api.exception.user.UsernameAlreadyInUseException;
 import org.victorpiles.escacs.api.security.PasswordEncoder;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class UserService {
      *
      * @return Un {@link List llistat} amb els {@link User usuaris} presents a la base de dades.
      */
-    public List<User> getList() {
+    public List<User> list() {
         return userRepository.findAll();
     }
 

@@ -1,4 +1,4 @@
-package org.victorpiles.escacs.api.exception;
+package org.victorpiles.escacs.api.exception.user;
 
 import org.victorpiles.escacs.api.user.User;
 

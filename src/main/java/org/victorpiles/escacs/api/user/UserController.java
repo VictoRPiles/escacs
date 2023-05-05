@@ -27,11 +27,11 @@ public class UserController {
      *
      * @return Un llistat tots els {@link User usuaris}.
      *
-     * @see UserService#getList()
+     * @see UserService#list()
      */
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<User>> getList() {
-        List<User> userList = userService.getList();
+    public ResponseEntity<List<User>> list() {
+        List<User> userList = userService.list();
         return ResponseEntity.ok(userList);
     }
 
