@@ -1,6 +1,4 @@
-const filterInput = document.getElementById("search");
-
-filterInput.addEventListener("keyup", filter);
+filterInput.addEventListener("input", filter);
 
 function filter() {
     let input = document.getElementById("search");
