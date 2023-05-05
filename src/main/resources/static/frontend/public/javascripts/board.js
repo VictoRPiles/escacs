@@ -7,12 +7,9 @@ let squares = 0;
 /* Crea les caselles */
 for (let row = 0; row < rows; row++) {
     for (let column = 0; column < columns; column++) {
-        if (row % 2 === column % 2) {
-            board.innerHTML += `<div id="square-${squares}" class="square square-light"></div>`;
-        }
-        else {
-            board.innerHTML += `<div id="square-${squares}" class="square square-dark"></div>`;
-        }
+        board.innerHTML += (row % 2 === column % 2)
+            ? `<div id="square-${squares}" class="square square-light"></div>`
+            : `<div id="square-${squares}" class="square square-dark"></div>`;
         squares++;
     }
 }
