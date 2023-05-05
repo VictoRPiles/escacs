@@ -10,6 +10,7 @@ import org.victorpiles.escacs.api.user.User;
  * @version 1.0
  */
 public class UsernameAlreadyInUseException extends IllegalStateException {
+
     public UsernameAlreadyInUseException(String s) {
         super(s);
     }
