@@ -1,5 +1,6 @@
 package org.victorpiles.escacs.api.gamerequest;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,6 +57,7 @@ public class GameRequest {
      * {@link LocalDateTime moment} de l'emissió de la sol·licitud de joc.
      */
     @Column(nullable = false)
+    @JsonFormat(pattern = "HH:mm")
     private LocalDateTime requestedAt;
     /**
      * {@link LocalDateTime moment} d'expiració de la sol·licitud de joc.

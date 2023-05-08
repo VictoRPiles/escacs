@@ -20,6 +20,9 @@ menu.innerHTML += `
             <li class="nav-item">
                 <a class="nav-link" href="./players.html">Llistat de jugadors</a>
             </li>
+             <li class="nav-item">
+                <a class="nav-link" href="./requests.html">Sol·licituds de joc</a>
+            </li>
         </ul>
     </div>
 </nav>

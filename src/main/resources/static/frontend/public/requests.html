@@ -2,7 +2,7 @@
 <html lang="ca">
 <head>
     <meta charset="utf-8">
-    <title>Escacs - Llistat de jugadors</title>
+    <title>Escacs - Sol·licituds de joc</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -28,7 +28,7 @@
 <div class="container-fluid">
     <div id="player-list" class="m-3 bg-light shadow">
         <table id="player-list-table" class="table table-striped caption-top">
-            <caption class="text-center fw-bold">Llistat de jugadors</caption>
+            <caption class="text-center fw-bold">Sol·licituds de joc</caption>
             <thead class="table-light">
             <tr class="align-middle">
                 <th colspan="2" scope="col" class="p-0">
@@ -36,23 +36,21 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="search-icon"><i class="bi bi-search"></i></span>
                         </div>
-                        <label for="players-search"></label>
-                        <input type="text" id="players-search" placeholder="Buscar jugadors..."
+                        <label for="requests-search"></label>
+                        <input type="text" id="requests-search" placeholder="Buscar jugadors..."
                                aria-describedby="search-icon"
-                               class="form-control" oninput="filter()">
-                        <button id="reload-player-list-btn" type="button" class="btn btn-secondary mx-2 rounded">
+                               class="form-control">
+                        <button id="reload-requests-list-btn" type="button" class="btn btn-secondary mx-2 rounded">
                             <i class="bi bi-arrow-clockwise"></i>
-                        </button>
-                        <button id="random-player-list-btn" type="button" class="btn btn-warning me-2 rounded">
-                            <i class="bi bi-shuffle"></i>
                         </button>
                     </div>
                 </th>
                 <th class="text-center" scope="col">Puntuació</th>
+                <th class="text-center" scope="col">Enviada a les</th>
                 <th class="text-center" scope="col">Accions</th>
             </tr>
             </thead>
-            <tbody id="player-list-body">
+            <tbody id="requests-list-body">
             <!-- Crea desde online JS -->
             </tbody>
         </table>
@@ -60,7 +58,7 @@
 </div>
 <!-- Escacs JS -->
 <script src="./javascripts/menu.js"></script>
-<script src="./javascripts/players.js"></script>
+<script src="./javascripts/requests.js"></script>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
