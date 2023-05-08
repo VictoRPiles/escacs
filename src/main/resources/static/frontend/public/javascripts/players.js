@@ -43,7 +43,7 @@ function updatePlayerTable(playerList) {
                     <th class="text-center" scope="row">${playerList.indexOf(player) + 1}</th>
                     <td><span>${username}</span></td>
                     <td class="text-center">
-                        <button class="btn btn-sm btn-green"><i class="bi bi-arrow-right"></i></button>
+                        <button id="send-game-request-${username}" class="btn btn-sm btn-green" onclick="send('${username}')"><i class="bi bi-arrow-right"></i></button>
                     </td>
                 </tr>`;
     });
