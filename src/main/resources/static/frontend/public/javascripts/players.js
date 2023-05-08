@@ -1,10 +1,10 @@
 const playerListElement = document.getElementById("player-list-body");
-const reloadButton = document.getElementById("reload-player-list-btn");
-const filterInput = document.getElementById("search");
+const playerListReloadButton = document.getElementById("reload-player-list-btn");
+const playerListFilterInput = document.getElementById("players-search");
 
 window.onload = function () {
     /* Recarrega la llista en carregar la pàgina */
-    reloadButton.click();
+    playerListReloadButton.click();
 
     /* Se subscriu al flux de dades -> actualitza automàticament la llista */
     let playerStreamEndpoint = "http://localhost:8080/api/v1/user/stream/all";
@@ -13,7 +13,7 @@ window.onload = function () {
 
     playerStream.onmessage = (event) => {
         /* Si el filtre existeix i no està buit */
-        if (filterInput && filterInput.value !== "") {
+        if (playerListFilterInput && playerListFilterInput.value !== "") {
             return;
         }
         const player = JSON.parse(event.data);
@@ -28,7 +28,7 @@ window.onload = function () {
     };
 };
 
-reloadButton.addEventListener("click", async () => {
+playerListReloadButton.addEventListener("click", async () => {
     let playerList = await fetchPlayersList();
     updatePlayerTable(playerList);
 });
@@ -37,11 +37,13 @@ function updatePlayerTable(playerList) {
     playerListElement.innerHTML = ``;
     playerList.forEach((player) => {
         let username = player["username"];
+        let score = player["score"];
 
         playerListElement.innerHTML += `
                 <tr class="align-middle">
                     <th class="text-center" scope="row">${playerList.indexOf(player) + 1}</th>
                     <td><span>${username}</span></td>
+                    <td class="text-center"><span>${score}</span></td>
                     <td class="text-center">
                         <button id="send-game-request-${username}" class="btn btn-sm btn-green" onclick="send('${username}')"><i class="bi bi-arrow-right"></i></button>
                     </td>
@@ -49,10 +51,8 @@ function updatePlayerTable(playerList) {
     });
 }
 
-filterInput.addEventListener("input", filter);
-
 function filter() {
-    let input = document.getElementById("search");
+    let input = document.getElementById("players-search");
     let filter = input.value.toUpperCase();
     let table = document.getElementById("player-list-table");
     let tr = table.getElementsByTagName("tr");
@@ -77,4 +77,33 @@ async function fetchPlayersList() {
     let playerList = await response.json();
     console.log("GET " + playerListEndpoint + ": " + JSON.stringify(playerList));
     return playerList;
+}
+
+async function send(requestedUserUsername) {
+    let url = "http://localhost:8080/api/v1/gameRequest/send";
+
+    let fetchOptions = {
+        method: "POST"
+    };
+
+    let endpoint = url + "?" + new URLSearchParams({
+        requestingUserUsername: "Administrator",
+        requestedUserUsername: requestedUserUsername
+    });
+
+    let response = await fetch(endpoint, fetchOptions);
+    let responseBody = await response.json();
+    console.log("POST " + endpoint + ": " + JSON.stringify(responseBody));
+
+    const sendButton = document.getElementById("send-game-request-" + requestedUserUsername);
+    if (response.ok) {
+        sendButton.classList.remove("btn-green");
+        sendButton.classList.add("btn-success");
+        sendButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+    }
+    else {
+        sendButton.classList.remove("btn-green");
+        sendButton.classList.add("btn-danger");
+        sendButton.innerHTML = `<i class="bi bi-x-lg"></i>`;
+    }
 }
