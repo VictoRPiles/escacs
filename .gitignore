@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Generats pel frontend
+src/main/resources/static/frontend/public/json/accepted.json
+src/main/resources/static/frontend/public/json/login.json
+
 # Base de dades
 *.db
 
