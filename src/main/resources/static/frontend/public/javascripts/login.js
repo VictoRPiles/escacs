@@ -42,7 +42,8 @@ async function postFormFieldsAsParameters({url, formData}) {
     });
 
     let response = await fetch(loginEndpoint, fetchOptions);
-    console.log("POST " + loginEndpoint + ": " + JSON.stringify(response));
+    let responseBody = await response.json();
+    console.log("POST " + loginEndpoint + ": " + JSON.stringify(responseBody));
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {
@@ -52,7 +53,7 @@ async function postFormFieldsAsParameters({url, formData}) {
         validationMessage.classList.remove("d-none");
         validationMessage.classList.remove("bg-primary");
         validationMessage.classList.add("bg-danger");
-        let error = await response.json();
+        let error = responseBody;
         validationMessage.innerText = error.message;
         throw new Error(error);
     }
@@ -67,5 +68,5 @@ async function postFormFieldsAsParameters({url, formData}) {
     validationMessage.classList.add("bg-primary");
     validationMessage.innerText = "Benvingut de nou!";
     /* Si la resposta és correcta, retorna el cos de la resposta. */
-    return response.json();
+    return responseBody;
 }

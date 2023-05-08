@@ -1,7 +1,9 @@
 package org.victorpiles.escacs.api.move;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.victorpiles.escacs.api.exception.move.UserHasNoMovesException;
 import org.victorpiles.escacs.api.exception.user.UsernameNotFoundException;
 import org.victorpiles.escacs.api.user.User;
@@ -16,7 +18,9 @@ import java.util.Optional;
  * @author Víctor Piles
  * @version 1.0
  */
+@Log4j2
 @Service
+@Transactional
 @AllArgsConstructor
 public class MoveService {
 
@@ -57,17 +61,21 @@ public class MoveService {
     /**
      * Registra un nou {@link Move moviment} en la base de dades.
      *
-     * @param move     {@link Move#getValue() Valor} del {@link Move moviment}.
-     * @param username {@link User Usuari} que ha executat el {@link Move moviment}.
+     * @param moveValue {@link Move#getValue() Valor} del {@link Move moviment}.
+     * @param username  {@link User Usuari} que ha executat el {@link Move moviment}.
      *
      * @return La informació del {@link Move moviment} si s'ha registrat exitosament.
      */
-    public Move execute(String move, String username) {
+    public Move execute(String moveValue, String username) {
         Optional<User> userByUsername = userRepository.findByUsername(username);
         if (userByUsername.isEmpty()) {
             throw new UsernameNotFoundException("We don't have an account for the username " + username + ". Try creating an account instead.");
         }
 
-        return moveRepository.save(new Move(move, userByUsername.get()));
+        Move move = new Move(moveValue, userByUsername.get());
+        moveRepository.save(move);
+
+        log.info("Executed: " + move);
+        return move;
     }
 }

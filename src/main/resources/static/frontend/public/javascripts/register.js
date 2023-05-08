@@ -38,17 +38,18 @@ async function postFormFieldsAsJson({url, formData}) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
+            Accept: "application/json"
         },
-        body: formDataJsonString,
+        body: formDataJsonString
     };
 
     let response = await fetch(url, fetchOptions);
-    console.log("POST " + url + ": " + JSON.stringify(response));
+    let responseBody = await response.json();
+    console.log("POST " + url + ": " + JSON.stringify(responseBody));
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {
-        let error = await response.json();
+        let error = responseBody;
 
         if (error.message.includes("username")) {
             usernameField.classList.add("is-invalid");
@@ -78,5 +79,5 @@ async function postFormFieldsAsJson({url, formData}) {
     validationMessage.classList.add("bg-primary");
     validationMessage.innerText = "Usuari registrat!";
     /* Si la resposta és correcta, retorna el cos de la resposta. */
-    return response.json();
+    return responseBody;
 }

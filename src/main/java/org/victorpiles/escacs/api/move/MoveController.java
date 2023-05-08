@@ -1,6 +1,7 @@
 package org.victorpiles.escacs.api.move;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,9 @@ public class MoveController {
     private final MoveService moveService;
 
     /**
-     * Genera una {@link ResponseEntity resposta} amb un {@link List llistat} tots els {@link Move moviments}.
+     * Genera una {@link ResponseEntity resposta} amb un {@link List llistat} de tots els {@link Move moviments}.
      *
-     * @return Un llistat tots els {@link Move moviments}.
+     * @return Un llistat amb tots els {@link Move moviments}.
      *
      * @see MoveService#list()
      */
@@ -37,17 +38,17 @@ public class MoveController {
     }
 
     /**
-     * Genera una {@link ResponseEntity resposta} amb un {@link List llistat} tots els {@link Move moviments} executat
-     * per un {@link User usuari} en concret.
+     * Genera una {@link ResponseEntity resposta} amb un {@link List llistat} de tots els {@link Move moviments}
+     * executat per un {@link User usuari} en concret.
      *
      * @param username El {@link User#getUsername() nom} de l'{@link User usuari}.
      *
-     * @return Un llistat tots els {@link Move moviments} executat per un {@link User usuari}.
+     * @return Un llistat amb tots els {@link Move moviments} executat per un {@link User usuari}.
      *
      * @see MoveService#listByUser(String)
      */
-    @GetMapping(path = "/listByUser", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Move>> listByUser(@RequestParam("username") @NotEmpty(message = "Username cannot be empty") String username) {
+    @GetMapping(path = "/list/byUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Move>> listByUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         List<Move> moveList = moveService.listByUser(username);
         return ResponseEntity.ok(moveList);
     }

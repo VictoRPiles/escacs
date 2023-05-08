@@ -1,7 +1,9 @@
 package org.victorpiles.escacs.api.user;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.victorpiles.escacs.api.exception.user.BadCredentialsException;
 import org.victorpiles.escacs.api.exception.user.EmailAlreadyInUseException;
 import org.victorpiles.escacs.api.exception.user.EmailNotFoundException;
@@ -17,7 +19,9 @@ import java.util.Optional;
  * @author Víctor Piles
  * @version 1.0
  */
+@Log4j2
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserService {
 
@@ -60,7 +64,9 @@ public class UserService {
         /* Encripta la contrasenya abans de guardar en la base de dades */
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        log.info("Encoding password for: " + user);
 
+        log.info("Registered: " + user);
         return user;
     }
 
@@ -90,6 +96,7 @@ public class UserService {
             throw new BadCredentialsException("That email and password combination didn't work. Try again.");
         }
 
+        log.info("Logged in: " + userByEmail.get());
         return userByEmail.get();
     }
 }
