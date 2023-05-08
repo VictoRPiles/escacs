@@ -3,6 +3,7 @@ package org.victorpiles.escacs.api.user;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.victorpiles.escacs.api.exception.user.BadCredentialsException;
 import org.victorpiles.escacs.api.exception.user.EmailAlreadyInUseException;
 import org.victorpiles.escacs.api.exception.user.EmailNotFoundException;
@@ -20,6 +21,7 @@ import java.util.Optional;
  */
 @Log4j2
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserService {
 

@@ -3,6 +3,7 @@ package org.victorpiles.escacs.api.move;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.victorpiles.escacs.api.exception.move.UserHasNoMovesException;
 import org.victorpiles.escacs.api.exception.user.UsernameNotFoundException;
 import org.victorpiles.escacs.api.user.User;
@@ -19,6 +20,7 @@ import java.util.Optional;
  */
 @Log4j2
 @Service
+@Transactional
 @AllArgsConstructor
 public class MoveService {
 
