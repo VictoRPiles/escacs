@@ -49,6 +49,28 @@ function updatePlayerTable(playerList) {
     });
 }
 
+filterInput.addEventListener("input", filter);
+
+function filter() {
+    let input = document.getElementById("search");
+    let filter = input.value.toUpperCase();
+    let table = document.getElementById("player-list-table");
+    let tr = table.getElementsByTagName("tr");
+
+    for (let i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            let filterValue = td.textContent || td.innerText;
+            if (filterValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            }
+            else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
+
 async function fetchPlayersList() {
     let playerListEndpoint = "http://localhost:8080/api/v1/user/list";
     const response = await fetch(playerListEndpoint);
