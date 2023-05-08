@@ -8,7 +8,7 @@ const createWindow = () => {
         icon: icon,
         webPreferences: {
             preload: path.join(__dirname, "preload.js")
-        },
+        }
     });
     mainWindow.maximize();
     mainWindow.loadFile("public/login.html").then(() => {

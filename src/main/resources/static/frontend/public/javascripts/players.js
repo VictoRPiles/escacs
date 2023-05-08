@@ -14,18 +14,18 @@ window.onload = function () {
     playerStream.onmessage = (event) => {
         /* Si el filtre existeix i no està buit */
         if (filterInput && filterInput.value !== "") {
-            return
+            return;
         }
         const player = JSON.parse(event.data);
         /* No acceptar repetits: JSON -> Map -> List */
-        playerMap.set(player.id, player)
+        playerMap.set(player.id, player);
         const playerList = Array.from(playerMap, function (entry) {
             return entry[1];
         });
         console.log("GET " + playerStreamEndpoint + ": " + JSON.stringify(playerList));
 
-        updatePlayerTable(playerList)
-    }
+        updatePlayerTable(playerList);
+    };
 };
 
 reloadButton.addEventListener("click", async () => {

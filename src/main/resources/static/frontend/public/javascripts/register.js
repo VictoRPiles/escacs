@@ -38,9 +38,9 @@ async function postFormFieldsAsJson({url, formData}) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
+            Accept: "application/json"
         },
-        body: formDataJsonString,
+        body: formDataJsonString
     };
 
     let response = await fetch(url, fetchOptions);
