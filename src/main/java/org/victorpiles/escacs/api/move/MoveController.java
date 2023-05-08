@@ -1,6 +1,7 @@
 package org.victorpiles.escacs.api.move;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,8 +47,8 @@ public class MoveController {
      *
      * @see MoveService#listByUser(String)
      */
-    @GetMapping(path = "/list/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Move>> listByUser(@NotEmpty(message = "Username cannot be empty") @PathVariable String username) {
+    @GetMapping(path = "/list/byUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Move>> listByUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         List<Move> moveList = moveService.listByUser(username);
         return ResponseEntity.ok(moveList);
     }

@@ -1,9 +1,10 @@
 package org.victorpiles.escacs.api.move.stream;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.victorpiles.escacs.api.move.Move;
@@ -42,8 +43,8 @@ public class MoveStreamController {
      * @return Un {@link Flux flux} amb els {@link Move moviments} d'un {@link User usuari} en concret presents a la
      * base de dades.
      */
-    @GetMapping(path = "/{username}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Move> byUser(@PathVariable("username") String username) {
+    @GetMapping(path = "/byUser", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Move> byUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         return Flux.fromIterable(moveService.listByUser(username));
     }
 }
