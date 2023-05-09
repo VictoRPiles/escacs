@@ -19,7 +19,7 @@ loginForm.addEventListener("submit", async (e) => {
 
         let response = await postFormFieldsAsParameters({url, formData});
 
-        fs.writeFile("public/json/login.json", JSON.stringify(response), function (err) {
+        fs.writeFile("login.json", JSON.stringify(response), function (err) {
             if (err) {
                 console.log(err);
             }

@@ -4,7 +4,7 @@ const requestListElement = document.getElementById("requests-list-body");
 const requestListReloadButton = document.getElementById("reload-requests-list-btn");
 const requestListFilterInput = document.getElementById("requests-search");
 
-const userData = JSON.parse(fs.readFileSync("public/json/login.json"));
+const userData = JSON.parse(fs.readFileSync("login.json"));
 
 let requestList;
 window.onload = function () {
@@ -141,7 +141,7 @@ async function createGame(id) {
     console.log(fetchOptions + " " + endpointWithParameters + ": " + responseJSON);
     requestListReloadButton.click();
 
-    fs.writeFile("public/json/games.json", JSON.stringify(responseJSON), function (err) {
+    fs.writeFile("games.json", JSON.stringify(responseJSON), function (err) {
         if (err) {
             console.log(err);
         }

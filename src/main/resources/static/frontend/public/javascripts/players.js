@@ -5,7 +5,7 @@ const playerListElement = document.getElementById("player-list-body");
 const playerListReloadButton = document.getElementById("reload-player-list-btn");
 const playerListFilterInput = document.getElementById("players-search");
 
-const userData = JSON.parse(fs.readFileSync("public/json/login.json"));
+const userData = JSON.parse(fs.readFileSync("login.json"));
 
 jquery(document).ready(() => {
     /* Recarrega la llista en carregar la pàgina */

@@ -8,40 +8,46 @@ let columns = 8;
 let squares = 0;
 let moveCount = 0;
 
-const gameData = JSON.parse(fs.readFileSync("public/json/games.json"));
-
 jquery(document).ready(() => {
-    lightPlayerName.innerText = gameData["request"]["requestingUser"]["username"];
-    darkPlayerName.innerText = gameData["request"]["requestedUser"]["username"];
-
-    /* Se subscriu al flux de dades -> actualitza automàticament la llista */
-    let moveStreamEndpoint = "http://localhost:8080/api/v1/move/stream/byGame?gameId=" + gameData["id"];
-    let moveStream = new EventSource(moveStreamEndpoint);
-    const moveMap = new Map();
-
-    let previousMove = "";
-
-    moveStream.onmessage = (event) => {
-        const move = JSON.parse(event.data);
-        /* No acceptar repetits: JSON -> Map -> List */
-        moveMap.set(move.id, move);
-        const moveList = Array.from(moveMap, function (entry) {
-            return entry[1];
-        });
-        console.log("GET " + moveStreamEndpoint + ": " + JSON.stringify(moveList));
-
-        let newMove = moveList[moveList.length - 1];
-
-        /* Realment s'ha executat un moviment nou, no és un missatge periòdic del stream */
-        if (previousMove.id !== newMove.id) {
-            console.log("New move: " + JSON.stringify(newMove.value));
-            previousMove = newMove;
-
-            updateBoard(newMove.value);
-            updateMoveList(newMove.value);
-            moveCount++;
+    fs.exists("games.json", function (exist) {
+        let gameData;
+        if (exist) {
+            gameData = JSON.parse(fs.readFileSync("games.json"));
         }
-    };
+
+        /* Se subscriu al flux de dades -> actualitza automàticament la llista */
+        let moveStreamEndpoint = "http://localhost:8080/api/v1/move/stream/byGame?gameId=" + gameData["id"];
+        let moveStream = new EventSource(moveStreamEndpoint);
+        const moveMap = new Map();
+
+        let previousMove = "";
+
+        moveStream.onmessage = (event) => {
+            gameData = JSON.parse(fs.readFileSync("games.json"));
+            lightPlayerName.innerText = gameData["request"]["requestingUser"]["username"];
+            darkPlayerName.innerText = gameData["request"]["requestedUser"]["username"];
+
+            const move = JSON.parse(event.data);
+            /* No acceptar repetits: JSON -> Map -> List */
+            moveMap.set(move.id, move);
+            const moveList = Array.from(moveMap, function (entry) {
+                return entry[1];
+            });
+            console.log("GET " + moveStreamEndpoint + ": " + JSON.stringify(moveList));
+
+            let newMove = moveList[moveList.length - 1];
+
+            /* Realment s'ha executat un moviment nou, no és un missatge periòdic del stream */
+            if (previousMove.id !== newMove.id) {
+                console.log("New move: " + JSON.stringify(newMove.value));
+                previousMove = newMove;
+
+                updateBoard(newMove.value);
+                updateMoveList(newMove.value);
+                moveCount++;
+            }
+        };
+    });
 });
 
 /* Crea les caselles */
