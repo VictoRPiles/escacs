@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.victorpiles.escacs.api.exception.game.GameNotFoundException;
 import org.victorpiles.escacs.api.exception.gamerequest.GameRequestNotAcceptedException;
 import org.victorpiles.escacs.api.exception.gamerequest.GameRequestNotFoundException;
 import org.victorpiles.escacs.api.gamerequest.GameRequest;
@@ -34,6 +35,25 @@ public class GameService {
      */
     public List<Game> list() {
         return gameRepository.findAll();
+    }
+
+    public Game getByGameRequest(UUID gameRequestUUID) {
+        Optional<GameRequest> gameRequestOptional = gameRequestRepository.findById(gameRequestUUID);
+        if (gameRequestOptional.isEmpty()) {
+            throw new GameRequestNotFoundException("Game request " + gameRequestUUID + " not found.");
+        }
+
+        GameRequest gameRequest = gameRequestOptional.get();
+        if (!gameRequest.isAccepted() || gameRequest.isRejected()) {
+            throw new GameRequestNotAcceptedException("Game request " + gameRequestUUID + " is not accepted yet.");
+        }
+
+        Optional<Game> gameOptional = gameRepository.findByRequest(gameRequest);
+        if (gameOptional.isEmpty()) {
+            throw new GameNotFoundException("Game with request " + gameRequestUUID + " not found.");
+        }
+
+        return gameOptional.get();
     }
 
     /**

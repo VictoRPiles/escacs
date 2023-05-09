@@ -111,10 +111,6 @@ async function accept(id) {
     requestListReloadButton.click();
 
     await createGame(id);
-
-    setTimeout(() => {
-        window.location.replace("./index.html");
-    }, 1000);
 }
 
 async function createGame(id) {

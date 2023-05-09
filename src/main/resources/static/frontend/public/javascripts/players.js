@@ -98,6 +98,7 @@ async function send(requestedUserUsername) {
 
     let response = await fetch(endpoint, fetchOptions);
     let responseBody = await response.json();
+    let requestUUID = responseBody["id"];
     console.log("POST " + endpoint + ": " + JSON.stringify(responseBody));
 
     const sendButton = document.getElementById("send-game-request-" + requestedUserUsername);
@@ -111,4 +112,45 @@ async function send(requestedUserUsername) {
         sendButton.classList.add("btn-danger");
         sendButton.innerHTML = `<i class="bi bi-x-lg"></i>`;
     }
+
+    /* Se subscriu al flux de dades -> actualitza automàticament la llista */
+    let requestStreamEndpoint = "http://localhost:8080/api/v1/gameRequest/stream/to/user?username=" + requestedUserUsername;
+    let requestStream = new EventSource(requestStreamEndpoint);
+
+    requestStream.onmessage = async (event) => {
+        let requestList = JSON.parse(event.data);
+        console.log("GET " + requestStreamEndpoint + ": " + JSON.stringify(requestList));
+
+        for (const request of requestList) {
+            if (request["id"] === requestUUID) {
+                console.log(request);
+            }
+
+            let requestAccepted = request["accepted"];
+            if (requestAccepted) {
+                console.log("Request " + requestUUID + " accepted");
+                let fetchOptions = {
+                    method: "GET"
+                };
+
+                let endpoint = "http://localhost:8080/api/v1/game/listByGameRequest" + "?" + new URLSearchParams({
+                    gameRequestUUID: requestUUID,
+                });
+
+                let response = await fetch(endpoint, fetchOptions);
+                let responseBody = await response.json();
+                console.log("GET " + endpoint + ": " + JSON.stringify(responseBody));
+
+                fs.writeFile("games.json", JSON.stringify(responseBody), function (err) {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+
+                setTimeout(() => {
+                    window.location.replace("./index.html");
+                }, 1000);
+            }
+        }
+    };
 }

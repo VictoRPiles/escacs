@@ -36,8 +36,8 @@ public class GameRequestStreamController {
      * concret presents a la base de dades.
      */
     @GetMapping(path = "/to/user", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<GameRequest> toUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
-        return Flux.fromIterable(gameRequestService.listByRequestedUser(username));
+    public Flux<List<GameRequest>> toUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
+        return Flux.just(gameRequestService.listByRequestedUser(username));
     }
 
     /**
