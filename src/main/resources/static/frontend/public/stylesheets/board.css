@@ -1,8 +1,12 @@
 :root {
     --square-light: var(--bs-light);
-    --square-light-hover: color-mix(in hsl, var(--square-light) 70%, var(--square-dark));
     --square-dark: var(--primary);
+
     --square-dark-hover: color-mix(in hsl, var(--square-dark) 70%, var(--square-light));
+    --square-light-hover: color-mix(in hsl, var(--square-light) 70%, var(--square-dark));
+
+    --square-light-selected: #f7f769;
+    --square-dark-selected: #bbcb2b;
 }
 
 .board {
@@ -37,12 +41,20 @@
     background-color: var(--square-light);
 }
 
+.square-light-selected {
+    background-color: var(--square-light-selected);
+}
+
 .square-light:hover {
     background-color: var(--square-light-hover);
 }
 
 .square-dark {
     background-color: var(--square-dark);
+}
+
+.square-dark-selected {
+    background-color: var(--square-dark-selected);
 }
 
 .square-dark:hover {

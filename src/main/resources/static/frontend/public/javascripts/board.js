@@ -8,6 +8,10 @@ let columns = 8;
 let squares = 0;
 let moveCount = 0;
 
+let isSquareSelected = false;
+let selectedSquare;
+let targetSquare;
+
 jquery(document).ready(() => {
     fs.exists("games.json", function (exist) {
         let gameData;
@@ -33,13 +37,12 @@ jquery(document).ready(() => {
             const moveList = Array.from(moveMap, function (entry) {
                 return entry[1];
             });
-            console.log("GET " + moveStreamEndpoint + ": " + JSON.stringify(moveList));
 
             let newMove = moveList[moveList.length - 1];
 
             /* Realment s'ha executat un moviment nou, no és un missatge periòdic del stream */
             if (previousMove.id !== newMove.id) {
-                console.log("New move: " + JSON.stringify(newMove.value));
+
                 previousMove = newMove;
 
                 updateBoard(newMove.value);
@@ -53,10 +56,18 @@ jquery(document).ready(() => {
 /* Crea les caselles */
 for (let row = 0; row < rows; row++) {
     for (let column = 0; column < columns; column++) {
-        board.innerHTML += (row % 2 === column % 2)
-            ? `<div id="square-${squares}" class="square square-light"></div>`
-            : `<div id="square-${squares}" class="square square-dark"></div>`;
-        squares++;
+        if (squares < 10) {
+            board.innerHTML += (row % 2 === column % 2)
+                ? `<div id="square-0${squares}" class="square square-light"></div>`
+                : `<div id="square-0${squares}" class="square square-dark"></div>`;
+            squares++;
+        }
+        else {
+            board.innerHTML += (row % 2 === column % 2)
+                ? `<div id="square-${squares}" class="square square-light"></div>`
+                : `<div id="square-${squares}" class="square square-dark"></div>`;
+            squares++;
+        }
     }
 }
 
@@ -119,9 +130,117 @@ for (let row = 1; row <= rows; row++) {
         else if (count >= 48 && count <= 55) {
             item.classList.add("pawn-light");
         }
-
         count++;
     }
+}
+
+/* AddEventListener a les caselles */
+for (let i = 0; i < items.length; i++) {
+    let square = items[i];
+
+    square.addEventListener("click", () => {
+        for (let j = 0; j < items.length; j++) {
+            if (items[j].classList.contains("square-light-selected")) {
+                items[j].classList.remove("square-light-selected");
+            }
+            else if (items[j].classList.contains("square-dark-selected")) {
+                items[j].classList.remove("square-dark-selected");
+            }
+        }
+
+        if (!isSquareSelected) {
+            if (square.classList.contains("square-light")) {
+                square.classList.add("square-light-selected");
+            }
+            else if (square.classList.contains("square-dark")) {
+                square.classList.add("square-dark-selected");
+            }
+            isSquareSelected = true;
+
+            selectedSquare = square;
+        }
+        else {
+
+            targetSquare = square;
+
+            let selectedSquareId = selectedSquare.id;
+            let targetSquareId = targetSquare.id;
+            let selectedSquarePiece;
+            if (selectedSquare.classList.contains("rook-light")) {
+                selectedSquarePiece = "rl";
+            }
+            else if (selectedSquare.classList.contains("rook-dark")) {
+                selectedSquarePiece = "rd";
+            }
+            else if (selectedSquare.classList.contains("knight-light")) {
+                selectedSquarePiece = "nl";
+            }
+            else if (selectedSquare.classList.contains("knight-dark")) {
+                selectedSquarePiece = "nd";
+            }
+            else if (selectedSquare.classList.contains("bishop-light")) {
+                selectedSquarePiece = "bl";
+            }
+            else if (selectedSquare.classList.contains("bishop-dark")) {
+                selectedSquarePiece = "bd";
+            }
+            else if (selectedSquare.classList.contains("queen-light")) {
+                selectedSquarePiece = "ql";
+            }
+            else if (selectedSquare.classList.contains("queen-dark")) {
+                selectedSquarePiece = "qd";
+            }
+            else if (selectedSquare.classList.contains("king-light")) {
+                selectedSquarePiece = "kl";
+            }
+            else if (selectedSquare.classList.contains("king-dark")) {
+                selectedSquarePiece = "kd";
+            }
+            else if (selectedSquare.classList.contains("pawn-light")) {
+                selectedSquarePiece = "pl";
+            }
+            else if (selectedSquare.classList.contains("pawn-dark")) {
+                selectedSquarePiece = "pd";
+            }
+            else {
+                return;
+            }
+
+            let selectedSquareIndex = selectedSquareId.substring(selectedSquareId.length - 2);
+            let targetSquareIndex = targetSquareId.substring(targetSquareId.length - 2);
+
+            let selectedSquareNotation = indexToNotation(selectedSquareIndex);
+            let targetSquareNotation = indexToNotation(targetSquareIndex);
+
+            let move = selectedSquarePiece + selectedSquareNotation + targetSquareNotation;
+
+            const userData = JSON.parse(fs.readFileSync("login.json"));
+
+            fs.exists("games.json", async function (exist) {
+                let gameData;
+                if (exist) {
+                    gameData = JSON.parse(fs.readFileSync("games.json"));
+
+                }
+
+                let fetchOptions = {
+                    method: "POST"
+                };
+
+                let endpoint = "http://localhost:8080/api/v1/move/execute" + "?" + new URLSearchParams({
+                    move: move,
+                    gameId: gameData["id"],
+                    username: userData["username"],
+                });
+
+                let response = await fetch(endpoint, fetchOptions);
+                let responseBody = await response.json();
+
+                isSquareSelected = false;
+            });
+        }
+    });
+
 }
 
 function updateBoard(move) {
@@ -157,7 +276,6 @@ function updateBoard(move) {
     squareClass = chessPiece + "-" + pieceColor;
     fromSquareIndex = notationToIndex(from);
     toSquareIndex = notationToIndex(to);
-    console.log("From square " + fromSquareIndex + " to " + toSquareIndex + " with class " + squareClass);
 
     items[fromSquareIndex].classList.remove(squareClass);
     items[toSquareIndex].classList.add(squareClass);
@@ -219,4 +337,12 @@ function notationToIndex(chessNotation) {
     const column = chessNotation.charCodeAt(0) - "a".charCodeAt(0);
     const rank = parseInt(chessNotation.charAt(1)) - 1;
     return (7 - rank) * 8 + column;
+}
+
+function indexToNotation(squareIndex) {
+    squareIndex = parseInt(squareIndex);
+
+    const file = String.fromCharCode("a".charCodeAt(0) + (squareIndex % 8));
+    const rank = 8 - Math.floor(squareIndex / 8);
+    return file + rank;
 }
