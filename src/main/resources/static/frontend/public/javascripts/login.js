@@ -19,9 +19,9 @@ loginForm.addEventListener("submit", async (e) => {
 
         let response = await postFormFieldsAsParameters({url, formData});
 
-        fs.writeFile("public/json/login.json", JSON.stringify(response), function (err) {
+        fs.writeFile("login.json", JSON.stringify(response), function (err) {
             if (err) {
-                console.log(err);
+
             }
         });
         /* Quan s'inicia sessió correctament, espera 1 segon i canvia a la pàgina de jugadors */
@@ -51,7 +51,6 @@ async function postFormFieldsAsParameters({url, formData}) {
 
     let response = await fetch(loginEndpoint, fetchOptions);
     let responseBody = await response.json();
-    console.log("POST " + loginEndpoint + ": " + JSON.stringify(responseBody));
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {

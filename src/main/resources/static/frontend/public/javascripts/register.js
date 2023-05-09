@@ -45,7 +45,6 @@ async function postFormFieldsAsJson({url, formData}) {
 
     let response = await fetch(url, fetchOptions);
     let responseBody = await response.json();
-    console.log("POST " + url + ": " + JSON.stringify(responseBody));
 
     /* Si la resposta no és correcta, llança un error (per depurar-lo). */
     if (!response.ok) {

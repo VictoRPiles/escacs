@@ -4,7 +4,7 @@ const requestListElement = document.getElementById("requests-list-body");
 const requestListReloadButton = document.getElementById("reload-requests-list-btn");
 const requestListFilterInput = document.getElementById("requests-search");
 
-const userData = JSON.parse(fs.readFileSync("public/json/login.json"));
+const userData = JSON.parse(fs.readFileSync("login.json"));
 
 let requestList;
 window.onload = function () {
@@ -22,7 +22,6 @@ window.onload = function () {
         }
         const request = JSON.parse(event.data);
         requestList = request;
-        console.log("GET " + requestStreamEndpoint + ": " + JSON.stringify(requestList));
 
         updateRequestTable(request);
     };
@@ -82,7 +81,7 @@ async function fetchRequestsList() {
     let requestListEndpoint = "http://localhost:8080/api/v1/gameRequest/pending/to?username=" + userData["username"];
     const response = await fetch(requestListEndpoint);
     let requestList = await response.json();
-    console.log("GET " + requestListEndpoint + ": " + JSON.stringify(requestList));
+
     return requestList;
 }
 
@@ -107,14 +106,10 @@ async function accept(id) {
     if (!response.ok) {
         throw new Error(responseJSON.message);
     }
-    console.log(fetchOptions + " " + endpointWithParameters + ": " + responseJSON);
+
     requestListReloadButton.click();
 
     await createGame(id);
-
-    setTimeout(() => {
-        window.location.replace("./index.html");
-    }, 1000);
 }
 
 async function createGame(id) {
@@ -138,12 +133,12 @@ async function createGame(id) {
     if (!response.ok) {
         throw new Error(responseJSON.message);
     }
-    console.log(fetchOptions + " " + endpointWithParameters + ": " + responseJSON);
+
     requestListReloadButton.click();
 
-    fs.writeFile("public/json/games.json", JSON.stringify(responseJSON), function (err) {
+    fs.writeFile("games.json", JSON.stringify(responseJSON), function (err) {
         if (err) {
-            console.log(err);
+
         }
     });
 
@@ -173,6 +168,6 @@ async function reject(id) {
     if (!response.ok) {
         throw new Error(responseJSON.message);
     }
-    console.log(fetchOptions + " " + endpointWithParameters + ": " + responseJSON);
+
     requestListReloadButton.click();
 }

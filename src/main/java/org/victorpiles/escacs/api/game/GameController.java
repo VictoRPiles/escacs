@@ -37,6 +37,19 @@ public class GameController {
     }
 
     /**
+     * Genera una {@link ResponseEntity resposta} amb un {@link List llistat} totes les {@link Game partides}.
+     *
+     * @return Un llistat otes les {@link Game partides}.
+     *
+     * @see GameService#list()
+     */
+    @GetMapping(path = "/listByGameRequest", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Game> getByGameRequest(@RequestParam UUID gameRequestUUID) {
+        Game gameByRequest = gameService.getByGameRequest(gameRequestUUID);
+        return ResponseEntity.ok(gameByRequest);
+    }
+
+    /**
      * Crea una nova {@link Game partida} a partir de la {@link GameRequest sol·licitud de joc} passada com a
      * paràmetre.
      *

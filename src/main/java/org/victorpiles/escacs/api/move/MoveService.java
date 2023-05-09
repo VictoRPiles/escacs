@@ -114,7 +114,7 @@ public class MoveService {
         Move move = new Move(moveValue, game, user);
         moveRepository.save(move);
 
-        log.info("Executed: " + move);
+        log.info("Executed: " + move.getValue() + " by " + user.getUsername() + " in game " + game.getId() + ".");
         return move;
     }
 }
