@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 const loginForm = document.getElementById("login-form");
 const emailField = document.getElementById("email");
 const passwordField = document.getElementById("password");
@@ -15,7 +17,13 @@ loginForm.addEventListener("submit", async (e) => {
         /* Agafa tots els camps del formulari i posa els valors dels camps a disposició a través d'una instància de FormData. */
         let formData = new FormData(form);
 
-        await postFormFieldsAsParameters({url, formData});
+        let response = await postFormFieldsAsParameters({url, formData});
+
+        fs.writeFile("public/json/login.json", JSON.stringify(response), function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
         /* Quan s'inicia sessió correctament, espera 1 segon i canvia a la pàgina de jugadors */
         setTimeout(() => {
             window.location.replace("./index.html");

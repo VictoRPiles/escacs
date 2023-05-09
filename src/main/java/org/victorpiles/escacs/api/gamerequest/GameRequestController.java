@@ -44,7 +44,7 @@ public class GameRequestController {
      * {@link GameRequest sol·licituds de joc} d'un {@link GameRequest#getRequestingUser() emissor} en concret.
      *
      * @return Un amb llistat totes les {@link GameRequest sol·licituds de joc} d'un
-     * {@link GameRequest#getRequestingUser() emissor} en concret
+     * {@link GameRequest#getRequestingUser() emissor} en concret.
      *
      * @see GameRequestService#listByRequestingUser(String)
      */
@@ -59,13 +59,29 @@ public class GameRequestController {
      * {@link GameRequest sol·licituds de joc} d'un {@link GameRequest#getRequestedUser() receptor} en concret.
      *
      * @return Un amb llistat totes les {@link GameRequest sol·licituds de joc} d'un
-     * {@link GameRequest#getRequestedUser() receptor} en concret
+     * {@link GameRequest#getRequestedUser() receptor} en concret.
      *
      * @see GameRequestService#listByRequestedUser(String)
      */
     @GetMapping(path = "/list/to", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<GameRequest>> listByRequestedUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         List<GameRequest> gameRequestList = gameRequestService.listByRequestedUser(username);
+        return ResponseEntity.ok(gameRequestList);
+    }
+
+    /**
+     * Genera una {@link ResponseEntity resposta} amb un {@link List llistat} de les
+     * {@link GameRequest sol·licituds de joc} pendents d'un {@link GameRequest#getRequestedUser() receptor} en
+     * concret.
+     *
+     * @return Un amb llistat totes les {@link GameRequest sol·licituds de joc} pendents d'un
+     * {@link GameRequest#getRequestedUser() receptor} en concret.
+     *
+     * @see GameRequestService#listByRequestedUser(String)
+     */
+    @GetMapping(path = "/pending/to", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<GameRequest>> pendingByRequestedUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
+        List<GameRequest> gameRequestList = gameRequestService.pendingByRequestedUser(username);
         return ResponseEntity.ok(gameRequestList);
     }
 
@@ -105,6 +121,21 @@ public class GameRequestController {
     @PutMapping(path = "/accept", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GameRequest> accept(@RequestParam("uuid") UUID gameRequestUUID) {
         GameRequest accepted = gameRequestService.accept(gameRequestUUID);
+        return ResponseEntity.ok(accepted);
+    }
+
+    /**
+     * Marca la {@link GameRequest sol·licitud de joc} com {@link GameRequest#isRejected() rebutjada}.
+     *
+     * @param gameRequestUUID L'identificador del la {@link GameRequest sol·licitud de joc}
+     *
+     * @return La {@link GameRequest sol·licitud de joc}, si s'ha rebutjat amb èxit.
+     *
+     * @see GameRequestService#reject(UUID)
+     */
+    @PutMapping(path = "/reject", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GameRequest> reject(@RequestParam("uuid") UUID gameRequestUUID) {
+        GameRequest accepted = gameRequestService.reject(gameRequestUUID);
         return ResponseEntity.ok(accepted);
     }
 }

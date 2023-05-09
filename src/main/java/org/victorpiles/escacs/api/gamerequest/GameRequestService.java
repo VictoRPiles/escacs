@@ -51,9 +51,6 @@ public class GameRequestService {
         }
 
         List<GameRequest> gameRequestByRequestingUser = gameRequestRepository.findAllByRequestingUser(userByUsername.get());
-        if (gameRequestByRequestingUser.isEmpty()) {
-            throw new UserHasNotSentGameRequestsException("User " + username + " has not sent game requests.");
-        }
 
         return gameRequestByRequestingUser.stream().toList();
     }
@@ -71,11 +68,25 @@ public class GameRequestService {
         }
 
         List<GameRequest> gameRequestByRequestedUser = gameRequestRepository.findAllByRequestedUser(userByUsername.get());
-        if (gameRequestByRequestedUser.isEmpty()) {
-            throw new UserHasNotReceivedGameRequestsException("User " + username + " has not received game requests.");
-        }
 
         return gameRequestByRequestedUser.stream().toList();
+    }
+
+    /**
+     * Busca a la base de dades les {@link GameRequest sol·licituds de joc} pendents d'un
+     * {@link GameRequest#getRequestedUser() receptor} en concret.
+     *
+     * @return Un {@link List llistat} amb les {@link GameRequest sol·licituds de joc} presents a la base de dades.
+     */
+    public List<GameRequest> pendingByRequestedUser(String username) {
+        Optional<User> userByUsername = userRepository.findByUsername(username);
+        if (userByUsername.isEmpty()) {
+            throw new UsernameNotFoundException("We don't have an account for the username " + username + ". Try creating an account instead.");
+        }
+
+        List<GameRequest> pendingGameRequestByRequestedUser = gameRequestRepository.findAllByRequestedUserAndAcceptedAndRejected(userByUsername.get(), false, false);
+
+        return pendingGameRequestByRequestedUser.stream().toList();
     }
 
     /**
@@ -125,12 +136,43 @@ public class GameRequestService {
         if (gameRequest.isAccepted()) {
             throw new GameRequestAlreadyAcceptedException("Game request " + gameRequestUUID + " has already been accepted.");
         }
+        if (gameRequest.isRejected()) {
+            throw new GameRequestAlreadyRejectedException("Game request " + gameRequestUUID + " has been rejected.");
+        }
         if (gameRequest.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new GameRequestExpiredException("Game request " + gameRequestUUID + " has expired at " + gameRequest.getExpiresAt() + ".");
         }
 
         gameRequest.setAccepted(true);
+        gameRequest.setAcceptedAt(LocalDateTime.now());
         log.info("Game request accepted: " + gameRequestUUID);
+        return gameRequest;
+    }
+
+    /**
+     * Valida i actualitza el camp {@link GameRequest#isRejected() rejected} de la
+     * {@link GameRequest sol·licitud de joc} a la base de dades.
+     *
+     * @param gameRequestUUID L'identificador del la {@link GameRequest sol·licitud de joc}
+     *
+     * @return La {@link GameRequest sol·licitud de joc}, si s'ha rebutjat amb èxit.
+     */
+    public GameRequest reject(UUID gameRequestUUID) {
+        Optional<GameRequest> gameRequestOptional = gameRequestRepository.findById(gameRequestUUID);
+        if (gameRequestOptional.isEmpty()) {
+            throw new GameRequestNotFoundException("Game request " + gameRequestUUID + " not found.");
+        }
+
+        GameRequest gameRequest = gameRequestOptional.get();
+        if (gameRequest.isAccepted()) {
+            throw new GameRequestAlreadyRejectedException("Game request " + gameRequestUUID + " has already been rejected.");
+        }
+        if (gameRequest.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new GameRequestExpiredException("Game request " + gameRequestUUID + " has expired at " + gameRequest.getExpiresAt() + ".");
+        }
+
+        gameRequest.setRejected(true);
+        log.info("Game request rejected: " + gameRequestUUID);
         return gameRequest;
     }
 }

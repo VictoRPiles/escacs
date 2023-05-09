@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.victorpiles.escacs.api.exception.move.UserHasNoMovesException;
 import org.victorpiles.escacs.api.exception.user.UsernameNotFoundException;
 import org.victorpiles.escacs.api.user.User;
 import org.victorpiles.escacs.api.user.UserRepository;
@@ -51,9 +50,6 @@ public class MoveService {
         }
 
         List<Move> movesByUser = moveRepository.findAllByUser(userByUsername.get());
-        if (movesByUser.isEmpty()) {
-            throw new UserHasNoMovesException("User " + username + " has no moves.");
-        }
 
         return movesByUser.stream().toList();
     }

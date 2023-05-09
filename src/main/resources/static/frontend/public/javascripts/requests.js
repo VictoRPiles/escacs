@@ -1,15 +1,19 @@
+const fs = require("fs");
+
 const requestListElement = document.getElementById("requests-list-body");
 const requestListReloadButton = document.getElementById("reload-requests-list-btn");
 const requestListFilterInput = document.getElementById("requests-search");
 
+const userData = JSON.parse(fs.readFileSync("public/json/login.json"));
+
+let requestList;
 window.onload = function () {
     /* Recarrega la llista en carregar la pàgina */
     requestListReloadButton.click();
 
     /* Se subscriu al flux de dades -> actualitza automàticament la llista */
-    let requestStreamEndpoint = "http://localhost:8080/api/v1/gameRequest/stream/to/user?username=User";
+    let requestStreamEndpoint = "http://localhost:8080/api/v1/gameRequest/stream/pending/to/user?username=" + userData["username"];
     let requestStream = new EventSource(requestStreamEndpoint);
-    const requestMap = new Map();
 
     requestStream.onmessage = (event) => {
         /* Si el filtre existeix i no està buit */
@@ -17,19 +21,17 @@ window.onload = function () {
             return;
         }
         const request = JSON.parse(event.data);
-        /* No acceptar repetits: JSON -> Map -> List */
-        requestMap.set(request.id, request);
-        const requestList = Array.from(requestMap, function (entry) {
-            return entry[1];
-        });
+        requestList = request;
         console.log("GET " + requestStreamEndpoint + ": " + JSON.stringify(requestList));
 
-        updateRequestTable(requestList);
+        console.log(request);
+        updateRequestTable(request);
     };
 };
 
 requestListReloadButton.addEventListener("click", async () => {
     let requestList = await fetchRequestsList();
+    console.log(requestList);
     updateRequestTable(requestList);
 });
 
@@ -37,6 +39,7 @@ function updateRequestTable(requestList) {
     requestListElement.innerHTML = ``;
     requestList.forEach((request) => {
         let requestingUser = request["requestingUser"];
+        let requestUUID = request["id"];
         let requestedAt = request["requestedAt"];
         let requestingUserUsername = requestingUser["username"];
         let requestingUserScore = requestingUser["score"];
@@ -48,8 +51,8 @@ function updateRequestTable(requestList) {
                     <td class="text-center"><span>${requestingUserScore}</span></td>
                     <td class="text-center"><span>${requestedAt}</span></td>
                     <td class="text-center">
-                        <button id="accept-game-request-${requestingUserUsername}" class="btn btn-sm btn-success" onclick="send('${requestingUserUsername}')"><i class="bi bi-check-lg"></i></button>
-                        <button id="reject-game-request-${requestingUserUsername}" class="btn btn-sm btn-danger" onclick="send('${requestingUserUsername}')"><i class="bi bi-x-lg"></i></button>
+                        <button id="accept-game-request-${requestUUID}" class="btn btn-sm btn-success" onclick="accept('${requestUUID}')"><i class="bi bi-check-lg"></i></button>
+                        <button id="reject-game-request-${requestUUID}" class="btn btn-sm btn-danger" onclick="reject('${requestUUID}')"><i class="bi bi-x-lg"></i></button>
                     </td>
                 </tr>`;
     });
@@ -78,9 +81,69 @@ function filter() {
 }
 
 async function fetchRequestsList() {
-    let requestListEndpoint = "http://localhost:8080/api/v1/gameRequest/list/to?username=User";
+    let requestListEndpoint = "http://localhost:8080/api/v1/gameRequest/pending/to?username=" + userData["username"];
     const response = await fetch(requestListEndpoint);
     let requestList = await response.json();
     console.log("GET " + requestListEndpoint + ": " + JSON.stringify(requestList));
     return requestList;
+}
+
+async function accept(id) {
+    let url = "http://localhost:8080/api/v1/gameRequest/accept";
+
+    let request = requestList.find(request => {
+        return request.id === id;
+    });
+
+    let fetchOptions = {
+        method: "PUT"
+    };
+
+    let endpointWithParameters = url + "?" + new URLSearchParams({
+        uuid: request.id
+    });
+
+    let response = await fetch(endpointWithParameters, fetchOptions);
+    let responseJSON = await response.json();
+
+    if (!response.ok) {
+        throw new Error(responseJSON.message);
+    }
+    console.log(fetchOptions + " " + endpointWithParameters + ": " + responseJSON);
+    requestListReloadButton.click();
+
+    fs.writeFile("public/json/accepted.json", JSON.stringify(responseJSON), function (err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+    setTimeout(() => {
+        window.location.replace("./index.html");
+    }, 1000);
+}
+
+async function reject(id) {
+    let url = "http://localhost:8080/api/v1/gameRequest/reject";
+
+    let request = requestList.find(request => {
+        return request.id === id;
+    });
+
+    let fetchOptions = {
+        method: "PUT"
+    };
+
+    let endpointWithParameters = url + "?" + new URLSearchParams({
+        uuid: request.id
+    });
+
+    let response = await fetch(endpointWithParameters, fetchOptions);
+    let responseJSON = await response.json();
+
+    if (!response.ok) {
+        throw new Error(responseJSON.message);
+    }
+    console.log(fetchOptions + " " + endpointWithParameters + ": " + responseJSON);
+    requestListReloadButton.click();
 }
