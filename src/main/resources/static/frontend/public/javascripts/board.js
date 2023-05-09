@@ -1,8 +1,47 @@
 const board = document.getElementById("board");
+const moveList = document.getElementById("move-list-body");
+const lightPlayerName = document.getElementById("light-player-name");
+const darkPlayerName = document.getElementById("dark-player-name");
 
 let rows = 8;
 let columns = 8;
 let squares = 0;
+let moveCount = 0;
+
+const gameData = JSON.parse(fs.readFileSync("public/json/games.json"));
+
+jquery(document).ready(() => {
+    lightPlayerName.innerText = gameData["request"]["requestingUser"]["username"];
+    darkPlayerName.innerText = gameData["request"]["requestedUser"]["username"];
+
+    /* Se subscriu al flux de dades -> actualitza automàticament la llista */
+    let moveStreamEndpoint = "http://localhost:8080/api/v1/move/stream/byGame?gameId=" + gameData["id"];
+    let moveStream = new EventSource(moveStreamEndpoint);
+    const moveMap = new Map();
+
+    let previousMove = "";
+
+    moveStream.onmessage = (event) => {
+        const move = JSON.parse(event.data);
+        /* No acceptar repetits: JSON -> Map -> List */
+        moveMap.set(move.id, move);
+        const moveList = Array.from(moveMap, function (entry) {
+            return entry[1];
+        });
+        console.log("GET " + moveStreamEndpoint + ": " + JSON.stringify(moveList));
+
+        let newMove = moveList[moveList.length - 1];
+
+        /* Realment s'ha executat un moviment nou, no és un missatge periòdic del stream */
+        if (previousMove.id !== newMove.id) {
+            console.log("New move: " + JSON.stringify(newMove.value));
+            previousMove = newMove;
+
+            updateMoveList(move);
+            moveCount++;
+        }
+    };
+});
 
 /* Crea les caselles */
 for (let row = 0; row < rows; row++) {
@@ -76,4 +115,54 @@ for (let row = 1; row <= rows; row++) {
 
         count++;
     }
+}
+
+function updateMoveList(move) {
+    let moveInfo = move.value.substring(2).replace("x", "").toUpperCase();
+
+    if (moveCount % 2 === 0) {
+        moveList.innerHTML += `
+            <tr class="align-middle" id="moves-${moveCount}-${moveCount + 1}">
+                <th class="text-center" scope="row">${(moveCount / 2) + 1}</th>
+                <td id="move-${moveCount}"><i id="move-${moveCount}-icon" class="fas me-2"></i>${moveInfo}</td>
+                <td id="move-${moveCount + 1}"></td>
+            </tr>
+        `;
+        const firstColumnMoveIcon = document.getElementById("move-" + moveCount + "-icon");
+        firstColumnMoveIcon.classList.add(...classByMoveValue(move.value));
+    }
+    else {
+        const secondColumnMove = document.getElementById("move-" + moveCount);
+        secondColumnMove.innerHTML = `<i id="move-${moveCount}-icon" class="fas me-2"></i>${moveInfo}`;
+        const secondColumnMoveIcon = document.getElementById("move-" + moveCount + "-icon");
+        secondColumnMoveIcon.classList.add(...classByMoveValue(move.value));
+    }
+}
+
+function classByMoveValue(move) {
+    let chessPiece, textColor = "text-dark";
+    if (move.startsWith("b")) {
+        chessPiece = "fa-chess-bishop";
+    }
+    else if (move.startsWith("k")) {
+        chessPiece = "fa-chess-king";
+    }
+    else if (move.startsWith("n")) {
+        chessPiece = "fa-chess-knight";
+    }
+    else if (move.startsWith("p")) {
+        chessPiece = "fa-chess-pawn";
+    }
+    else if (move.startsWith("q")) {
+        chessPiece = "fa-chess-queen";
+    }
+    else if (move.startsWith("r")) {
+        chessPiece = "fa-chess-rook";
+    }
+
+    if (move.includes("x")) {
+        textColor = "text-danger";
+    }
+
+    return [chessPiece, textColor];
 }
