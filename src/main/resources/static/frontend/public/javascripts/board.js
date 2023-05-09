@@ -37,7 +37,8 @@ jquery(document).ready(() => {
             console.log("New move: " + JSON.stringify(newMove.value));
             previousMove = newMove;
 
-            updateMoveList(move);
+            updateBoard(newMove.value);
+            updateMoveList(newMove.value);
             moveCount++;
         }
     };
@@ -117,8 +118,49 @@ for (let row = 1; row <= rows; row++) {
     }
 }
 
+function updateBoard(move) {
+    let squareClass, chessPiece, pieceColor;
+    if (move.startsWith("b")) {
+        chessPiece = "bishop";
+    }
+    else if (move.startsWith("k")) {
+        chessPiece = "king";
+    }
+    else if (move.startsWith("n")) {
+        chessPiece = "knight";
+    }
+    else if (move.startsWith("p")) {
+        chessPiece = "pawn";
+    }
+    else if (move.startsWith("q")) {
+        chessPiece = "queen";
+    }
+    else if (move.startsWith("r")) {
+        chessPiece = "rook";
+    }
+
+    if (move.charAt(1) === "l") {
+        pieceColor = "light";
+    }
+    else if (move.charAt(1) === "d") {
+        pieceColor = "dark";
+    }
+
+    let from = move.substring(2, 4).replace("x", "");
+    let to = move.substring(4).replace("x", "");
+    squareClass = chessPiece + "-" + pieceColor;
+    fromSquareIndex = notationToIndex(from);
+    toSquareIndex = notationToIndex(to);
+    console.log("From square " + fromSquareIndex + " to " + toSquareIndex + " with class " + squareClass);
+
+    items[fromSquareIndex].classList.remove(squareClass);
+    items[toSquareIndex].classList.add(squareClass);
+}
+
 function updateMoveList(move) {
-    let moveInfo = move.value.substring(2).replace("x", "").toUpperCase();
+    let from = move.substring(2, 4).replace("x", "");
+    let to = move.substring(4).replace("x", "");
+    let moveInfo = (from + " - " + to).toUpperCase();
 
     if (moveCount % 2 === 0) {
         moveList.innerHTML += `
@@ -129,13 +171,13 @@ function updateMoveList(move) {
             </tr>
         `;
         const firstColumnMoveIcon = document.getElementById("move-" + moveCount + "-icon");
-        firstColumnMoveIcon.classList.add(...classByMoveValue(move.value));
+        firstColumnMoveIcon.classList.add(...classByMoveValue(move));
     }
     else {
         const secondColumnMove = document.getElementById("move-" + moveCount);
         secondColumnMove.innerHTML = `<i id="move-${moveCount}-icon" class="fas me-2"></i>${moveInfo}`;
         const secondColumnMoveIcon = document.getElementById("move-" + moveCount + "-icon");
-        secondColumnMoveIcon.classList.add(...classByMoveValue(move.value));
+        secondColumnMoveIcon.classList.add(...classByMoveValue(move));
     }
 }
 
@@ -165,4 +207,10 @@ function classByMoveValue(move) {
     }
 
     return [chessPiece, textColor];
+}
+
+function notationToIndex(chessNotation) {
+    const column = chessNotation.charCodeAt(0) - "a".charCodeAt(0);
+    const rank = parseInt(chessNotation.charAt(1)) - 1;
+    return (7 - rank) * 8 + column;
 }
