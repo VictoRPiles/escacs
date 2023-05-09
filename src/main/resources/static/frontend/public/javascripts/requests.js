@@ -24,14 +24,12 @@ window.onload = function () {
         requestList = request;
         console.log("GET " + requestStreamEndpoint + ": " + JSON.stringify(requestList));
 
-        console.log(request);
         updateRequestTable(request);
     };
 };
 
 requestListReloadButton.addEventListener("click", async () => {
     let requestList = await fetchRequestsList();
-    console.log(requestList);
     updateRequestTable(requestList);
 });
 
@@ -112,7 +110,38 @@ async function accept(id) {
     console.log(fetchOptions + " " + endpointWithParameters + ": " + responseJSON);
     requestListReloadButton.click();
 
-    fs.writeFile("public/json/accepted.json", JSON.stringify(responseJSON), function (err) {
+    await createGame(id);
+
+    setTimeout(() => {
+        window.location.replace("./index.html");
+    }, 1000);
+}
+
+async function createGame(id) {
+    let url = "http://localhost:8080/api/v1/game/create";
+
+    let request = requestList.find(request => {
+        return request.id === id;
+    });
+
+    let fetchOptions = {
+        method: "POST"
+    };
+
+    let endpointWithParameters = url + "?" + new URLSearchParams({
+        gameRequestUUID: request.id
+    });
+
+    let response = await fetch(endpointWithParameters, fetchOptions);
+    let responseJSON = await response.json();
+
+    if (!response.ok) {
+        throw new Error(responseJSON.message);
+    }
+    console.log(fetchOptions + " " + endpointWithParameters + ": " + responseJSON);
+    requestListReloadButton.click();
+
+    fs.writeFile("public/json/games.json", JSON.stringify(responseJSON), function (err) {
         if (err) {
             console.log(err);
         }
