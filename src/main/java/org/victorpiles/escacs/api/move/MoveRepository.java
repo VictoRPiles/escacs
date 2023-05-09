@@ -3,6 +3,7 @@ package org.victorpiles.escacs.api.move;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.victorpiles.escacs.api.game.Game;
 import org.victorpiles.escacs.api.user.User;
 
 import java.util.List;
@@ -25,4 +26,14 @@ public interface MoveRepository extends JpaRepository<Move, Long> {
      * @return El {@link List llistat} de {@link Move moviments} realitzats per l'{@link User usuari}.
      */
     List<Move> findAllByUser(User user);
+
+    /**
+     * Busca en la base de dades els {@link Move moviments} executats a la {@link Game partida} passada com a
+     * paràmetre.
+     *
+     * @param game La {@link Game partida} a buscar.
+     *
+     * @return El {@link List llistat} de {@link Move moviments} realitzats a la {@link Game partida}.
+     */
+    List<Move> findAllByGame(Game game);
 }

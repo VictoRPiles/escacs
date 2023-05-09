@@ -2,11 +2,11 @@ package org.victorpiles.escacs.api.move;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.victorpiles.escacs.api.game.Game;
 import org.victorpiles.escacs.api.user.User;
 
 /**
@@ -44,14 +44,27 @@ public class Move {
     @NotBlank(message = "Move value cannot be empty")
     private String value;
     /**
+     * {@link Game Partida} on s'ha executat el moviment.
+     */
+    @ManyToOne
+    @JoinColumn(
+            nullable = false,
+            name = "game_id"
+    )
+    private Game game;
+    /**
      * {@link User Usuari} que ha executat el moviment.
      */
     @ManyToOne
-    @NotNull(message = "User who has moved cannot be null")
+    @JoinColumn(
+            nullable = false,
+            name = "user_id"
+    )
     private User user;
 
-    public Move(String value, User user) {
+    public Move(String value, Game game, User user) {
         this.value = value;
+        this.game = game;
         this.user = user;
     }
 }

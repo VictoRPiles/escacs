@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.victorpiles.escacs.api.game.Game;
 import org.victorpiles.escacs.api.user.User;
 
 import java.util.List;
@@ -58,13 +59,14 @@ public class MoveController {
      * amb estatus 201 (created) si s'ha executat amb èxit.
      *
      * @param move     {@link Move#getValue() Valor} del {@link Move moviment}.
+     * @param gameId   La {@link Game partida} on s'ha executat el moviment.
      * @param username {@link User Usuari} que ha executat el {@link Move moviment}.
      *
-     * @see MoveService#execute(String, String)
+     * @see MoveService#execute(String, Long, String)
      */
     @PostMapping(path = "/execute")
-    public ResponseEntity<Move> execute(@RequestParam("move") String move, @RequestParam("username") @NotEmpty(message = "Username cannot be empty") String username) {
-        Move executed = moveService.execute(move, username);
+    public ResponseEntity<Move> execute(@RequestParam("move") String move, @RequestParam("gameId") Long gameId, @RequestParam("username") @NotEmpty(message = "Username cannot be empty") String username) {
+        Move executed = moveService.execute(move, gameId, username);
 
         return ResponseEntity
                 .created(

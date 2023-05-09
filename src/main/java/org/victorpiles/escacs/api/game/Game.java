@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.victorpiles.escacs.api.gamerequest.GameRequest;
+import org.victorpiles.escacs.api.user.User;
 
 /**
  * Entitat encarregada de representar una partida d'escacs.
@@ -45,8 +46,25 @@ public class Game {
             name = "game_request_id"
     )
     private GameRequest request;
+    /**
+     * Indica si la partida ha finalitzat o no.
+     */
+    private boolean ended;
+    /**
+     * {@link User Usuari} guanyador de la partida.
+     */
+    @ManyToOne
+    @JoinColumn(
+            name = "winner_id"
+    )
+    private User winner;
 
     public Game(GameRequest request) {
         this.request = request;
+    }
+
+    @PrePersist
+    private void initializeGame() {
+        this.ended = false;
     }
 }
