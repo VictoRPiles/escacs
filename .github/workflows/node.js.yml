@@ -21,11 +21,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        working-directory: src/main/resources/static/frontend
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
       - name: Npm CI and package
         working-directory: src/main/resources/static/frontend
         run: |
