@@ -67,6 +67,14 @@ public class GameRequest {
      * Indica si la sol·licitud de joc ha segut o no acceptada pel receptor.
      */
     private boolean accepted;
+    /**
+     * {@link LocalDateTime moment} d'acceptació de la sol·licitud de joc.
+     */
+    private LocalDateTime acceptedAt;
+    /**
+     * Indica si la sol·licitud de joc ha segut o no rebutjada pel receptor.
+     */
+    private boolean rejected;
 
     public GameRequest(User requestingUser, User requestedUser) {
         this.requestingUser = requestingUser;

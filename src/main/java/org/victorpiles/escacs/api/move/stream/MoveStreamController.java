@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.victorpiles.escacs.api.game.Game;
 import org.victorpiles.escacs.api.move.Move;
 import org.victorpiles.escacs.api.move.MoveService;
 import org.victorpiles.escacs.api.user.User;
@@ -46,5 +47,18 @@ public class MoveStreamController {
     @GetMapping(path = "/byUser", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Move> byUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         return Flux.fromIterable(moveService.listByUser(username));
+    }
+
+    /**
+     * Se subscriu als {@link Move moviments} d'una {@link Game partida} en concret presents a la base de dades.
+     *
+     * @param gameId L'{@link Game#getId() identificador} de la {@link Game partida}.
+     *
+     * @return Un {@link Flux flux} amb els {@link Move moviments} d'una {@link Game partida} en concret presents a la
+     * base de dades.
+     */
+    @GetMapping(path = "/byGame", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Move> byGame(@PathParam("gameId") Long gameId) {
+        return Flux.fromIterable(moveService.listByGame(gameId));
     }
 }

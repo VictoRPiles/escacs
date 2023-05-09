@@ -34,3 +34,11 @@
     text-overflow: ellipsis;
     max-width: 25vh;
 }
+
+.username-truncate > tr > th > span {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10vh;
+}

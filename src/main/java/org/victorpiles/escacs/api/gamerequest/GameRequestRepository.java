@@ -52,4 +52,20 @@ public interface GameRequestRepository extends JpaRepository<GameRequest, Long> 
      * passat com a paràmetre.
      */
     List<GameRequest> findAllByRequestedUser(User user);
+
+    /**
+     * Busca en la base de dades les {@link GameRequest sol·licituds de joc} amb el
+     * {@link GameRequest#getRequestedUser() receptor} i els estatus d'{@link GameRequest#isAccepted() acceptació} i
+     * {@link GameRequest#isRejected() rebuig} passats com a paràmetres.
+     *
+     * @param requestedUser L'{@link GameRequest#getRequestedUser() usuari receptor} de la
+     *                      {@link GameRequest sol·licituds de joc} a buscar.
+     * @param accepted      L'estatus d'{@link GameRequest#isAccepted() acceptació}.
+     * @param rejected      L'estatus de {@link GameRequest#isRejected() rebuig}.
+     *
+     * @return Les {@link GameRequest sol·licituds de joc} amb el {@link GameRequest#getRequestedUser() receptor} i els
+     * estatus d'{@link GameRequest#isAccepted() acceptació} i {@link GameRequest#isRejected() rebuig} passats com a
+     * paràmetres.
+     */
+    List<GameRequest> findAllByRequestedUserAndAcceptedAndRejected(User requestedUser, boolean accepted, boolean rejected);
 }

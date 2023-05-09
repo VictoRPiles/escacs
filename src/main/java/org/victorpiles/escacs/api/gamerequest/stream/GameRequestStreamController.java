@@ -12,6 +12,8 @@ import org.victorpiles.escacs.api.gamerequest.GameRequestService;
 import org.victorpiles.escacs.api.user.User;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+
 /**
  * {@link Flux Fluxos} de dades relacionades amb les {@link GameRequest sol·licituds de joc}
  *
@@ -36,5 +38,19 @@ public class GameRequestStreamController {
     @GetMapping(path = "/to/user", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<GameRequest> toUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         return Flux.fromIterable(gameRequestService.listByRequestedUser(username));
+    }
+
+    /**
+     * Se subscriu a les {@link GameRequest sol·licituds de joc} pendents d'un {@link User usuari receptor} en concret
+     * presents a la base de dades.
+     *
+     * @param username {@link User#getUsername() Nom} del usuari receptor.
+     *
+     * @return Un {@link Flux flux} amb les {@link GameRequest sol·licituds de joc} pendents d'un
+     * {@link User usuari receptor} en concret presents a la base de dades.
+     */
+    @GetMapping(path = "/pending/to/user", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<List<GameRequest>> pendingToUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
+        return Flux.just(gameRequestService.pendingByRequestedUser(username));
     }
 }

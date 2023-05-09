@@ -1,8 +1,13 @@
+const fs = require("fs");
+const jquery = require("jquery");
+
 const playerListElement = document.getElementById("player-list-body");
 const playerListReloadButton = document.getElementById("reload-player-list-btn");
 const playerListFilterInput = document.getElementById("players-search");
 
-window.onload = function () {
+const userData = JSON.parse(fs.readFileSync("public/json/login.json"));
+
+jquery(document).ready(() => {
     /* Recarrega la llista en carregar la pàgina */
     playerListReloadButton.click();
 
@@ -26,7 +31,7 @@ window.onload = function () {
 
         updatePlayerTable(playerList);
     };
-};
+});
 
 playerListReloadButton.addEventListener("click", async () => {
     let playerList = await fetchPlayersList();
@@ -87,7 +92,7 @@ async function send(requestedUserUsername) {
     };
 
     let endpoint = url + "?" + new URLSearchParams({
-        requestingUserUsername: "Administrator",
+        requestingUserUsername: userData["username"],
         requestedUserUsername: requestedUserUsername
     });
 

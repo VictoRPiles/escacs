@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="./stylesheets/board.css"/>
     <!-- Font awesome -->
     <script src="https://kit.fontawesome.com/4bc96658f9.js" crossorigin="anonymous"></script>
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 
 <body class="bg-secondary">
@@ -36,29 +38,15 @@
         <div id="move-list" class="col-sm-2 m-3 bg-light shadow">
             <table class="table table-striped caption-top">
                 <caption class="text-center fw-bold">Llistat de moviments</caption>
-                <thead class="table-light">
+                <thead class="table-light  username-truncate">
                 <tr class="align-middle">
                     <th class="text-center" scope="col">#</th>
-                    <th id="light-player-name" scope="col">Jugador 1</th>
-                    <th id="dark-player-name" scope="col">Jugador 2</th>
+                    <th scope="col"><span id="light-player-name">Jugador 1</span></th>
+                    <th scope="col"><span id="dark-player-name">Jugador 2</span></th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr class="align-middle">
-                    <th class="text-center" scope="row">1</th>
-                    <td><i class="fas fa-chess-pawn me-2"></i>f3</td>
-                    <td><i class="fas fa-chess-pawn me-2"></i>e5</td>
-                </tr>
-                <tr class="align-middle">
-                    <th class="text-center" scope="row">2</th>
-                    <td><i class="fas fa-chess-knight me-2"></i>cr</td>
-                    <td><i class="fas fa-chess-knight me-2"></i>c6</td>
-                </tr>
-                <tr class="align-middle">
-                    <th class="text-center" scope="row">3</th>
-                    <td><i class="fas fa-chess-pawn me-2"></i>f4</td>
-                    <td><i class="fas fa-chess-pawn me-2"></i>exf4</td>
-                </tr>
+                <tbody id="move-list-body">
+                <!-- Crea desde board JS -->
                 </tbody>
             </table>
         </div>
@@ -93,8 +81,8 @@
 
 <!-- Escacs JS -->
 <script src="./javascripts/menu.js"></script>
-<script src="./javascripts/board.js"></script>
 <script src="./javascripts/players.js"></script>
+<script src="./javascripts/board.js"></script>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
