@@ -142,6 +142,15 @@ function highlightSquare(square) {
     }
 }
 
+function highlightSquareAttack(square) {
+    if (square.classList.contains("square-light")) {
+        square.classList.add("bg-danger");
+    }
+    else if (square.classList.contains("square-dark")) {
+        square.classList.add("bg-danger");
+    }
+}
+
 /* AddEventListener a les caselles */
 for (let i = 0; i < items.length; i++) {
     let square = items[i];
@@ -151,6 +160,10 @@ for (let i = 0; i < items.length; i++) {
 
         for (let j = 0; j < items.length; j++) {
             let squareItem = items[j];
+
+            if (squareItem.classList.contains("bg-danger")) {
+                squareItem.classList.remove("bg-danger");
+            }
 
             if (squareItem.classList.contains("square-light-selected")) {
                 squareItem.classList.remove("square-light-selected");
@@ -199,7 +212,11 @@ for (let i = 0; i < items.length; i++) {
                 responseBody.forEach((move) => {
                     let validSquareIndex = notationToIndex(move.substring(move.length - 2));
                     let validSquare = items[validSquareIndex];
-                    highlightSquare(validSquare);
+
+                    if (pieceBySquare(validSquare) != null) {
+                        highlightSquareAttack(validSquare);
+                    }
+                    else highlightSquare(validSquare);
                 });
             }
         }
