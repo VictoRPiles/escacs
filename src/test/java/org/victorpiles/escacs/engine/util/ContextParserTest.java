@@ -2,6 +2,7 @@ package org.victorpiles.escacs.engine.util;
 
 import org.junit.jupiter.api.Test;
 import org.victorpiles.escacs.engine.Board;
+import org.victorpiles.escacs.engine.util.parser.ContextParser;
 
 class ContextParserTest {
 

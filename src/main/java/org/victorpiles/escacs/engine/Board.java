@@ -1,11 +1,16 @@
 package org.victorpiles.escacs.engine;
 
+import lombok.Getter;
+import org.victorpiles.escacs.api.move.Move;
+import org.victorpiles.escacs.engine.move.MoveStatus;
 import org.victorpiles.escacs.engine.piece.Piece;
 import org.victorpiles.escacs.engine.square.Square;
+import org.victorpiles.escacs.engine.util.parser.MoveParser;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Board {
 
     private final List<Square> squareList;
@@ -25,6 +30,20 @@ public class Board {
         }
 
         return new Board(squares);
+    }
+
+    public MoveStatus execute(Move move) {
+        int origin = MoveParser.parsePieceOriginPosition(move);
+        Piece movedPiece = squareList.get(origin).getPiece();
+
+        List<String> validMoveValues = movedPiece.getValidMoveValues(this);
+        if (!validMoveValues.contains(move.getValue())) {
+            return MoveStatus.KO;
+        }
+
+        // TODO: 10/5/23 Escac i escac mat
+
+        return MoveStatus.OK;
     }
 
     @Override

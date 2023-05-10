@@ -1,6 +1,7 @@
 package org.victorpiles.escacs.engine.util;
 
 import org.junit.jupiter.api.Test;
+import org.victorpiles.escacs.engine.util.notation.NotationConverter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

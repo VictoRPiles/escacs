@@ -74,4 +74,11 @@ public class MoveController {
                 )
                 .body(executed);
     }
+
+    @PostMapping(path = "/listValid")
+    public ResponseEntity<List<String>> listValid(@RequestParam("piece") String piece, @RequestParam("context") String context) {
+        List<String> validMoves = moveService.listValid(piece, context);
+
+        return ResponseEntity.ok(validMoves);
+    }
 }

@@ -124,4 +124,8 @@ public class MoveService {
         log.info("Executed: " + move.getValue() + " by " + user.getUsername() + " in game " + game.getId() + ".");
         return move;
     }
+
+    public List<String> listValid(String piece, String context) {
+        return Engine.getValidMoveValues(piece, context);
+    }
 }

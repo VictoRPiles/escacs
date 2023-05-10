@@ -1,4 +1,4 @@
-package org.victorpiles.escacs.engine.util;
+package org.victorpiles.escacs.engine.util.notation;
 
 public abstract class NotationConverter {
 
