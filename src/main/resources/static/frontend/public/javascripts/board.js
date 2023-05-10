@@ -42,7 +42,6 @@ jquery(document).ready(() => {
 
             /* Realment s'ha executat un moviment nou, no és un missatge periòdic del stream */
             if (previousMove.id !== newMove.id) {
-
                 previousMove = newMove;
 
                 updateBoard(newMove.value);
@@ -139,12 +138,25 @@ for (let i = 0; i < items.length; i++) {
     let square = items[i];
 
     square.addEventListener("click", () => {
+        let context = "";
+
         for (let j = 0; j < items.length; j++) {
-            if (items[j].classList.contains("square-light-selected")) {
-                items[j].classList.remove("square-light-selected");
+            let squareItem = items[j];
+
+            if (squareItem.classList.contains("square-light-selected")) {
+                squareItem.classList.remove("square-light-selected");
             }
-            else if (items[j].classList.contains("square-dark-selected")) {
-                items[j].classList.remove("square-dark-selected");
+            else if (squareItem.classList.contains("square-dark-selected")) {
+                squareItem.classList.remove("square-dark-selected");
+            }
+
+            let squareItemId = squareItem.id;
+            let squareItemIndex = squareItemId.substring(squareItemId.length - 2);
+            let squareItemNotation = indexToNotation(squareItemIndex);
+            let pieceOnItem = pieceBySquare(squareItem);
+            if (pieceOnItem !== null) {
+                let squareInformation = pieceOnItem + squareItemNotation;
+                context += squareInformation;
             }
         }
 
@@ -160,49 +172,13 @@ for (let i = 0; i < items.length; i++) {
             selectedSquare = square;
         }
         else {
-
             targetSquare = square;
 
             let selectedSquareId = selectedSquare.id;
             let targetSquareId = targetSquare.id;
-            let selectedSquarePiece;
-            if (selectedSquare.classList.contains("rook-light")) {
-                selectedSquarePiece = "rl";
-            }
-            else if (selectedSquare.classList.contains("rook-dark")) {
-                selectedSquarePiece = "rd";
-            }
-            else if (selectedSquare.classList.contains("knight-light")) {
-                selectedSquarePiece = "nl";
-            }
-            else if (selectedSquare.classList.contains("knight-dark")) {
-                selectedSquarePiece = "nd";
-            }
-            else if (selectedSquare.classList.contains("bishop-light")) {
-                selectedSquarePiece = "bl";
-            }
-            else if (selectedSquare.classList.contains("bishop-dark")) {
-                selectedSquarePiece = "bd";
-            }
-            else if (selectedSquare.classList.contains("queen-light")) {
-                selectedSquarePiece = "ql";
-            }
-            else if (selectedSquare.classList.contains("queen-dark")) {
-                selectedSquarePiece = "qd";
-            }
-            else if (selectedSquare.classList.contains("king-light")) {
-                selectedSquarePiece = "kl";
-            }
-            else if (selectedSquare.classList.contains("king-dark")) {
-                selectedSquarePiece = "kd";
-            }
-            else if (selectedSquare.classList.contains("pawn-light")) {
-                selectedSquarePiece = "pl";
-            }
-            else if (selectedSquare.classList.contains("pawn-dark")) {
-                selectedSquarePiece = "pd";
-            }
-            else {
+            let selectedSquarePiece = pieceBySquare(selectedSquare);
+            /* No hi ha peça a la casella */
+            if (selectedSquarePiece === null) {
                 return;
             }
 
@@ -220,7 +196,6 @@ for (let i = 0; i < items.length; i++) {
                 let gameData;
                 if (exist) {
                     gameData = JSON.parse(fs.readFileSync("games.json"));
-
                 }
 
                 let fetchOptions = {
@@ -229,8 +204,9 @@ for (let i = 0; i < items.length; i++) {
 
                 let endpoint = "http://localhost:8080/api/v1/move/execute" + "?" + new URLSearchParams({
                     move: move,
+                    context: context,
                     gameId: gameData["id"],
-                    username: userData["username"],
+                    username: userData["username"]
                 });
 
                 let response = await fetch(endpoint, fetchOptions);
@@ -331,6 +307,52 @@ function classByMoveValue(move) {
     }
 
     return [chessPiece, textColor];
+}
+
+function pieceBySquare(square) {
+    let pieceInSquare;
+
+    if (square.classList.contains("rook-light")) {
+        pieceInSquare = "rl";
+    }
+    else if (square.classList.contains("rook-dark")) {
+        pieceInSquare = "rd";
+    }
+    else if (square.classList.contains("knight-light")) {
+        pieceInSquare = "nl";
+    }
+    else if (square.classList.contains("knight-dark")) {
+        pieceInSquare = "nd";
+    }
+    else if (square.classList.contains("bishop-light")) {
+        pieceInSquare = "bl";
+    }
+    else if (square.classList.contains("bishop-dark")) {
+        pieceInSquare = "bd";
+    }
+    else if (square.classList.contains("queen-light")) {
+        pieceInSquare = "ql";
+    }
+    else if (square.classList.contains("queen-dark")) {
+        pieceInSquare = "qd";
+    }
+    else if (square.classList.contains("king-light")) {
+        pieceInSquare = "kl";
+    }
+    else if (square.classList.contains("king-dark")) {
+        pieceInSquare = "kd";
+    }
+    else if (square.classList.contains("pawn-light")) {
+        pieceInSquare = "pl";
+    }
+    else if (square.classList.contains("pawn-dark")) {
+        pieceInSquare = "pd";
+    }
+    else {
+        pieceInSquare = null;
+    }
+
+    return pieceInSquare;
 }
 
 function notationToIndex(chessNotation) {

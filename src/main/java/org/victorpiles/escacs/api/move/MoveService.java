@@ -6,12 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.victorpiles.escacs.api.exception.game.GameEndedException;
 import org.victorpiles.escacs.api.exception.game.GameNotFoundException;
+import org.victorpiles.escacs.api.exception.move.InvalidMoveException;
 import org.victorpiles.escacs.api.exception.user.UserNotInGameException;
 import org.victorpiles.escacs.api.exception.user.UsernameNotFoundException;
 import org.victorpiles.escacs.api.game.Game;
 import org.victorpiles.escacs.api.game.GameRepository;
 import org.victorpiles.escacs.api.user.User;
 import org.victorpiles.escacs.api.user.UserRepository;
+import org.victorpiles.escacs.engine.Engine;
 
 import java.util.List;
 import java.util.Optional;
@@ -89,7 +91,7 @@ public class MoveService {
      *
      * @return La informació del {@link Move moviment} si s'ha registrat exitosament.
      */
-    public Move execute(String moveValue, Long gameId, String username) {
+    public Move execute(String moveValue, String context, Long gameId, String username) {
         Optional<User> userByUsername = userRepository.findByUsername(username);
         if (userByUsername.isEmpty()) {
             throw new UsernameNotFoundException("We don't have an account for the username " + username + ". Try creating an account instead.");
@@ -112,6 +114,11 @@ public class MoveService {
         }
 
         Move move = new Move(moveValue, game, user);
+
+        if (!Engine.isValidMove(move, context)) {
+            throw new InvalidMoveException("Move " + move.getValue() + " is not valid.");
+        }
+
         moveRepository.save(move);
 
         log.info("Executed: " + move.getValue() + " by " + user.getUsername() + " in game " + game.getId() + ".");
