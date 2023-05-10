@@ -133,11 +133,20 @@ for (let row = 1; row <= rows; row++) {
     }
 }
 
+function highlightSquare(square) {
+    if (square.classList.contains("square-light")) {
+        square.classList.add("square-light-selected");
+    }
+    else if (square.classList.contains("square-dark")) {
+        square.classList.add("square-dark-selected");
+    }
+}
+
 /* AddEventListener a les caselles */
 for (let i = 0; i < items.length; i++) {
     let square = items[i];
 
-    square.addEventListener("click", () => {
+    square.addEventListener("click", async () => {
         let context = "";
 
         for (let j = 0; j < items.length; j++) {
@@ -161,15 +170,38 @@ for (let i = 0; i < items.length; i++) {
         }
 
         if (!isSquareSelected) {
-            if (square.classList.contains("square-light")) {
-                square.classList.add("square-light-selected");
-            }
-            else if (square.classList.contains("square-dark")) {
-                square.classList.add("square-dark-selected");
-            }
+            highlightSquare(square);
             isSquareSelected = true;
 
             selectedSquare = square;
+
+            let selectedSquareId = selectedSquare.id;
+            let selectedSquarePiece = pieceBySquare(selectedSquare);
+            /* Si hi ha peça a la casella */
+            if (selectedSquarePiece !== null) {
+                let selectedSquareIndex = selectedSquareId.substring(selectedSquareId.length - 2);
+                let selectedSquareNotation = indexToNotation(selectedSquareIndex);
+
+                let pieceInfo = selectedSquarePiece + selectedSquareNotation;
+
+                let fetchOptions = {
+                    method: "POST"
+                };
+
+                let endpoint = "http://localhost:8080/api/v1/move/listValid" + "?" + new URLSearchParams({
+                    piece: pieceInfo,
+                    context: context
+                });
+
+                let response = await fetch(endpoint, fetchOptions);
+                let responseBody = await response.json();
+
+                responseBody.forEach((move) => {
+                    let validSquareIndex = notationToIndex(move.substring(move.length - 2));
+                    let validSquare = items[validSquareIndex];
+                    highlightSquare(validSquare);
+                });
+            }
         }
         else {
             targetSquare = square;
