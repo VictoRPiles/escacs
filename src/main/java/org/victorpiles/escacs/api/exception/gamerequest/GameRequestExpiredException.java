@@ -14,6 +14,7 @@ import java.util.UUID;
  * @version 1.0
  */
 public class GameRequestExpiredException extends IllegalStateException {
+
     public GameRequestExpiredException(String s) {
         super(s);
     }

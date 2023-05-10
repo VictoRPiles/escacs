@@ -11,6 +11,7 @@ import org.victorpiles.escacs.api.user.User;
  * @version 1.0
  */
 public class UserHasNotReceivedGameRequestsException extends IllegalStateException {
+
     public UserHasNotReceivedGameRequestsException(String message) {
         super(message);
     }

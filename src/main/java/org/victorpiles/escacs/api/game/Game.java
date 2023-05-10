@@ -20,6 +20,7 @@ import org.victorpiles.escacs.api.user.User;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Game {
+
     /**
      * {@link Id Identificador} corresponent a la partida.
      * <p>

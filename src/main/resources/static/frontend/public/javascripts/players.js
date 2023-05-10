@@ -131,7 +131,7 @@ async function send(requestedUserUsername) {
                 };
 
                 let endpoint = "http://localhost:8080/api/v1/game/listByGameRequest" + "?" + new URLSearchParams({
-                    gameRequestUUID: requestUUID,
+                    gameRequestUUID: requestUUID
                 });
 
                 let response = await fetch(endpoint, fetchOptions);

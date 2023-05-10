@@ -14,6 +14,7 @@ import java.util.UUID;
  * @version 1.0
  */
 public class GameRequestAlreadyAcceptedException extends IllegalStateException {
+
     public GameRequestAlreadyAcceptedException(String s) {
         super(s);
     }

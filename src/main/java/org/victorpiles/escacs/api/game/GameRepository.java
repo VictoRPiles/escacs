@@ -16,5 +16,6 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface GameRepository extends JpaRepository<Game, Long> {
+
     Optional<Game> findByRequest(GameRequest request);
 }

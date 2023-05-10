@@ -24,6 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping(path = "/api/v1/gameRequest/stream")
 public class GameRequestStreamController {
+
     private final GameRequestService gameRequestService;
 
     /**

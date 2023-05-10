@@ -18,6 +18,7 @@ import java.util.UUID;
 @Repository
 @Transactional(readOnly = true)
 public interface GameRequestRepository extends JpaRepository<GameRequest, Long> {
+
     /**
      * Busca en la base de dades la {@link GameRequest sol·licitud de joc} amb
      * l'{@link GameRequest#getId() identificador} passat com a paràmetre.
