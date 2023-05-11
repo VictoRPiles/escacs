@@ -10,6 +10,14 @@
         <relativePath/>
     </parent>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/VictoRPiles/escacs/</url>
+        </repository>
+    </distributionManagement>
+
     <groupId>org.victorpiles</groupId>
     <artifactId>escacs</artifactId>
     <version>1.1.0</version>
