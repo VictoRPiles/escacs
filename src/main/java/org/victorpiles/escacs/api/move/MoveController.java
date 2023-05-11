@@ -62,16 +62,23 @@ public class MoveController {
      * @param gameId   La {@link Game partida} on s'ha executat el moviment.
      * @param username {@link User Usuari} que ha executat el {@link Move moviment}.
      *
-     * @see MoveService#execute(String, Long, String)
+     * @see MoveService#execute(String, String, Long, String)
      */
     @PostMapping(path = "/execute")
-    public ResponseEntity<Move> execute(@RequestParam("move") String move, @RequestParam("gameId") Long gameId, @RequestParam("username") @NotEmpty(message = "Username cannot be empty") String username) {
-        Move executed = moveService.execute(move, gameId, username);
+    public ResponseEntity<Move> execute(@RequestParam("move") String move, @RequestParam("context") String context, @RequestParam("gameId") Long gameId, @RequestParam("username") @NotEmpty(message = "Username cannot be empty") String username) {
+        Move executed = moveService.execute(move, context, gameId, username);
 
         return ResponseEntity
                 .created(
                         ServletUriComponentsBuilder.fromCurrentRequest().path("/execute").buildAndExpand(executed).toUri()
                 )
                 .body(executed);
+    }
+
+    @PostMapping(path = "/listValid")
+    public ResponseEntity<List<String>> listValid(@RequestParam("piece") String piece, @RequestParam("context") String context) {
+        List<String> validMoves = moveService.listValid(piece, context);
+
+        return ResponseEntity.ok(validMoves);
     }
 }

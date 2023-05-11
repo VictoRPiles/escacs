@@ -25,6 +25,7 @@ import java.util.UUID;
 @Transactional
 @AllArgsConstructor
 public class GameService {
+
     private final GameRepository gameRepository;
     private final GameRequestRepository gameRequestRepository;
 

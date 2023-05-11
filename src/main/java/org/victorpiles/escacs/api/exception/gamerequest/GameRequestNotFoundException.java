@@ -10,6 +10,7 @@ import org.victorpiles.escacs.api.gamerequest.GameRequest;
  * @version 1.0
  */
 public class GameRequestNotFoundException extends IllegalStateException {
+
     public GameRequestNotFoundException(String s) {
         super(s);
     }

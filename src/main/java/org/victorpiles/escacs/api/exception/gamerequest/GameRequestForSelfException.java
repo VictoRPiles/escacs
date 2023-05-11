@@ -13,6 +13,7 @@ import org.victorpiles.escacs.api.user.User;
  * @version 1.0
  */
 public class GameRequestForSelfException extends IllegalStateException {
+
     public GameRequestForSelfException(String s) {
         super(s);
     }

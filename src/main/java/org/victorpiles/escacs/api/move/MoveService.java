@@ -6,12 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.victorpiles.escacs.api.exception.game.GameEndedException;
 import org.victorpiles.escacs.api.exception.game.GameNotFoundException;
+import org.victorpiles.escacs.api.exception.move.InvalidMoveException;
 import org.victorpiles.escacs.api.exception.user.UserNotInGameException;
 import org.victorpiles.escacs.api.exception.user.UsernameNotFoundException;
 import org.victorpiles.escacs.api.game.Game;
 import org.victorpiles.escacs.api.game.GameRepository;
 import org.victorpiles.escacs.api.user.User;
 import org.victorpiles.escacs.api.user.UserRepository;
+import org.victorpiles.escacs.engine.Engine;
 
 import java.util.List;
 import java.util.Optional;
@@ -89,7 +91,7 @@ public class MoveService {
      *
      * @return La informació del {@link Move moviment} si s'ha registrat exitosament.
      */
-    public Move execute(String moveValue, Long gameId, String username) {
+    public Move execute(String moveValue, String context, Long gameId, String username) {
         Optional<User> userByUsername = userRepository.findByUsername(username);
         if (userByUsername.isEmpty()) {
             throw new UsernameNotFoundException("We don't have an account for the username " + username + ". Try creating an account instead.");
@@ -107,14 +109,43 @@ public class MoveService {
             throw new GameEndedException("Game " + gameId + " has ended.");
         }
 
-        if (!(game.getRequest().getRequestedUser().equals(user) || game.getRequest().getRequestingUser().equals(user))) {
+        User requestingUser = game.getRequest().getRequestingUser();
+        User requestedUser = game.getRequest().getRequestedUser();
+        if (!(requestedUser.equals(user) || requestingUser.equals(user))) {
             throw new UserNotInGameException("User " + username + " is not a player of the game " + gameId + ".");
         }
 
         Move move = new Move(moveValue, game, user);
+
+        if (!user.equals(requestingUser) && Engine.getPieceAlliance(moveValue).isLight() || !user.equals(requestedUser) && !Engine.getPieceAlliance(moveValue).isLight()) {
+            throw new InvalidMoveException("Move " + move.getValue() + " is not valid. User " + username + " cannot move opponent pieces.");
+        }
+
+        if (!Engine.isValidMove(move, context)) {
+            throw new InvalidMoveException("Move " + move.getValue() + " is not valid.");
+        }
+
+        List<Move> moveList = moveRepository.findAllByGame(game);
+        if (moveList.isEmpty()) {
+            if (!user.equals(requestingUser)) {
+                throw new InvalidMoveException("Move " + move.getValue() + " is not valid. User " + username + " has to wait for the opponent to move.");
+            }
+        }
+        else {
+            Move lastMove = moveList.get(moveList.size() - 1);
+
+            if (lastMove.getUser().equals(user)) {
+                throw new InvalidMoveException("Move " + move.getValue() + " is not valid. User " + username + " has to wait for the opponent to move.");
+            }
+        }
+
         moveRepository.save(move);
 
         log.info("Executed: " + move.getValue() + " by " + user.getUsername() + " in game " + game.getId() + ".");
         return move;
+    }
+
+    public List<String> listValid(String piece, String context) {
+        return Engine.getValidMoveValues(piece, context);
     }
 }

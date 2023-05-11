@@ -62,6 +62,10 @@ public class Move {
     )
     private User user;
 
+    public Move(String value) {
+        this.value = value;
+    }
+
     public Move(String value, Game game, User user) {
         this.value = value;
         this.game = game;
