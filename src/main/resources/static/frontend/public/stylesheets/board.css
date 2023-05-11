@@ -42,7 +42,7 @@
 }
 
 .square-light-selected {
-    background-color: var(--square-light-selected);
+    background-color: var(--square-light-selected) !important;
 }
 
 .square-light:hover {
@@ -54,7 +54,7 @@
 }
 
 .square-dark-selected {
-    background-color: var(--square-dark-selected);
+    background-color: var(--square-dark-selected) !important;
 }
 
 .square-dark:hover {
