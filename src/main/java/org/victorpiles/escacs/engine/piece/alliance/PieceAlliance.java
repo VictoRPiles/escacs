@@ -10,6 +10,11 @@ public enum PieceAlliance implements NotationEnum {
         }
 
         @Override
+        public int direction() {
+            return -1;
+        }
+
+        @Override
         public String getNotation() {
             return "l";
         }
@@ -21,10 +26,17 @@ public enum PieceAlliance implements NotationEnum {
         }
 
         @Override
+        public int direction() {
+            return 1;
+        }
+
+        @Override
         public String getNotation() {
             return "d";
         }
     };
 
     public abstract boolean isLight();
+
+    public abstract int direction();
 }
