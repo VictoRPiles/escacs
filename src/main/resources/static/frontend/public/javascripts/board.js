@@ -183,15 +183,15 @@ for (let i = 0; i < items.length; i++) {
         }
 
         if (!isSquareSelected) {
-            highlightSquare(square);
-            isSquareSelected = true;
-
             selectedSquare = square;
 
             let selectedSquareId = selectedSquare.id;
             let selectedSquarePiece = pieceBySquare(selectedSquare);
             /* Si hi ha peça a la casella */
             if (selectedSquarePiece !== null) {
+                highlightSquare(square);
+                isSquareSelected = true;
+
                 let selectedSquareIndex = selectedSquareId.substring(selectedSquareId.length - 2);
                 let selectedSquareNotation = indexToNotation(selectedSquareIndex);
 
