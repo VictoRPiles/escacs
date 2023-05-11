@@ -120,7 +120,13 @@ public class MoveService {
         }
 
         List<Move> moveList = moveRepository.findAllByGame(game);
-        if (!moveList.isEmpty()) {
+        if (moveList.isEmpty()) {
+            User requestingUser = game.getRequest().getRequestingUser();
+            if (!user.equals(requestingUser)) {
+                throw new InvalidMoveException("Move " + move.getValue() + " is not valid. User " + username + " has to wait for the opponent to move.");
+            }
+        }
+        else {
             Move lastMove = moveList.get(moveList.size() - 1);
 
             if (lastMove.getUser().equals(user)) {
