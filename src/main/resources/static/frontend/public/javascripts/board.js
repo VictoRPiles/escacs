@@ -303,6 +303,7 @@ function updateBoard(move) {
     toSquareIndex = notationToIndex(to);
 
     items[fromSquareIndex].classList.remove(squareClass);
+    removeSquarePiece(items[toSquareIndex]);
     items[toSquareIndex].classList.add(squareClass);
 }
 
@@ -402,6 +403,45 @@ function pieceBySquare(square) {
     }
 
     return pieceInSquare;
+}
+
+function removeSquarePiece(square) {
+    if (square.classList.contains("rook-light")) {
+        square.classList.remove("rook-light");
+    }
+    else if (square.classList.contains("rook-dark")) {
+        square.classList.remove("rook-dark");
+    }
+    else if (square.classList.contains("knight-light")) {
+        square.classList.remove("knight-light");
+    }
+    else if (square.classList.contains("knight-dark")) {
+        square.classList.remove("knight-dark");
+    }
+    else if (square.classList.contains("bishop-light")) {
+        square.classList.remove("bishop-light");
+    }
+    else if (square.classList.contains("bishop-dark")) {
+        square.classList.remove("bishop-dark");
+    }
+    else if (square.classList.contains("queen-light")) {
+        square.classList.remove("queen-light");
+    }
+    else if (square.classList.contains("queen-dark")) {
+        square.classList.remove("queen-dark");
+    }
+    else if (square.classList.contains("king-light")) {
+        square.classList.remove("king-light");
+    }
+    else if (square.classList.contains("king-dark")) {
+        square.classList.remove("king-dark");
+    }
+    else if (square.classList.contains("pawn-light")) {
+        square.classList.remove("pawn-light");
+    }
+    else if (square.classList.contains("pawn-dark")) {
+        square.classList.remove("pawn-dark");
+    }
 }
 
 function notationToIndex(chessNotation) {
