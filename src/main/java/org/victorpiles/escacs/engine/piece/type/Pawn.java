@@ -1,6 +1,5 @@
 package org.victorpiles.escacs.engine.piece.type;
 
-import lombok.extern.log4j.Log4j2;
 import org.victorpiles.escacs.engine.Board;
 import org.victorpiles.escacs.engine.piece.Piece;
 import org.victorpiles.escacs.engine.piece.alliance.PieceAlliance;
@@ -11,7 +10,6 @@ import org.victorpiles.escacs.engine.util.parser.MoveParser;
 import java.util.ArrayList;
 import java.util.List;
 
-@Log4j2
 public class Pawn extends Piece {
 
     public Pawn(PieceType type, PieceAlliance alliance, int position) {
@@ -31,18 +29,6 @@ public class Pawn extends Piece {
             if (!Square.isValidPosition(destination)) {
                 continue;
             }
-            if (BoardUtils.FIRST_COLUMN.get(position) && ((offset == -17) || (offset == -10) || (offset == 6) || (offset == 15))) {
-                continue;
-            }
-            if (BoardUtils.SECOND_COLUMN.get(position) && ((offset == -10) || (offset == 6))) {
-                continue;
-            }
-            if (BoardUtils.SEVENTH_COLUMN.get(position) && ((offset == -6) || (offset == 10))) {
-                continue;
-            }
-            if (BoardUtils.EIGHT_COLUMN.get(position) && ((offset == -15) || (offset == -6) || (offset == 10) || (offset == 17))) {
-                continue;
-            }
 
             /* Casella de destí ocupada en moviment de desplaçament -> moviment no vàlid  */
             Square destinationSquare = board.getSquareList().get(destination);
@@ -57,17 +43,11 @@ public class Pawn extends Piece {
                 /* Si és negre i està a la sèptima fila -> primer moviment */
                 boolean darkAndSeventhRank = !alliance.isLight() && BoardUtils.SEVENTH_RANK.get(position);
 
-                log.info(BoardUtils.SECOND_RANK);
-                log.info("lightAndSecondRank:" + lightAndSecondRank);
-                log.info("darkAndSeventhRank:" + darkAndSeventhRank);
 
                 /* Si no és el primer moviment -> moviment no vàlid */
                 if (!(lightAndSecondRank || darkAndSeventhRank)) {
-                    log.info("NO PRIMER");
                     continue;
                 }
-
-                log.info("PRIMER");
 
                 /* Casella entre el peó i el destí ocupada -> moviment no vàlid */
                 int behindDestination = position + (8 * alliance.direction());
