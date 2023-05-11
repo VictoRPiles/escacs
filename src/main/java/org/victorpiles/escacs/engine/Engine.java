@@ -3,6 +3,7 @@ package org.victorpiles.escacs.engine;
 import org.victorpiles.escacs.api.move.Move;
 import org.victorpiles.escacs.engine.move.MoveStatus;
 import org.victorpiles.escacs.engine.piece.Piece;
+import org.victorpiles.escacs.engine.piece.alliance.PieceAlliance;
 import org.victorpiles.escacs.engine.util.parser.ContextParser;
 import org.victorpiles.escacs.engine.util.parser.PieceParser;
 
@@ -22,5 +23,11 @@ public class Engine {
         Piece piece = PieceParser.parsePiece(pieceNotation);
 
         return piece.getValidMoveValues(board);
+    }
+
+    public static PieceAlliance getPieceAlliance(String pieceNotation) {
+        Piece piece = PieceParser.parsePiece(pieceNotation);
+
+        return piece.getAlliance();
     }
 }

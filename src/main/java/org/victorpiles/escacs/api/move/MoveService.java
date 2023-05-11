@@ -109,11 +109,17 @@ public class MoveService {
             throw new GameEndedException("Game " + gameId + " has ended.");
         }
 
-        if (!(game.getRequest().getRequestedUser().equals(user) || game.getRequest().getRequestingUser().equals(user))) {
+        User requestingUser = game.getRequest().getRequestingUser();
+        User requestedUser = game.getRequest().getRequestedUser();
+        if (!(requestedUser.equals(user) || requestingUser.equals(user))) {
             throw new UserNotInGameException("User " + username + " is not a player of the game " + gameId + ".");
         }
 
         Move move = new Move(moveValue, game, user);
+
+        if (!user.equals(requestingUser) && Engine.getPieceAlliance(moveValue).isLight() || !user.equals(requestedUser) && !Engine.getPieceAlliance(moveValue).isLight()) {
+            throw new InvalidMoveException("Move " + move.getValue() + " is not valid. User " + username + " cannot move opponent pieces.");
+        }
 
         if (!Engine.isValidMove(move, context)) {
             throw new InvalidMoveException("Move " + move.getValue() + " is not valid.");
@@ -121,7 +127,6 @@ public class MoveService {
 
         List<Move> moveList = moveRepository.findAllByGame(game);
         if (moveList.isEmpty()) {
-            User requestingUser = game.getRequest().getRequestingUser();
             if (!user.equals(requestingUser)) {
                 throw new InvalidMoveException("Move " + move.getValue() + " is not valid. User " + username + " has to wait for the opponent to move.");
             }
