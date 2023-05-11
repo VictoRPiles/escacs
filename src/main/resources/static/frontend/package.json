@@ -1,6 +1,6 @@
 {
   "name": "escacs",
-  "version": "1.0",
+  "version": "1.0.0",
   "author": "Víctor Piles",
   "private": true,
   "main": "main.js",
