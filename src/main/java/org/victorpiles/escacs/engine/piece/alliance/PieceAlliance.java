@@ -15,6 +15,11 @@ public enum PieceAlliance implements NotationEnum {
         }
 
         @Override
+        public PieceAlliance opponent() {
+            return DARK;
+        }
+
+        @Override
         public String getNotation() {
             return "l";
         }
@@ -31,6 +36,11 @@ public enum PieceAlliance implements NotationEnum {
         }
 
         @Override
+        public PieceAlliance opponent() {
+            return LIGHT;
+        }
+
+        @Override
         public String getNotation() {
             return "d";
         }
@@ -39,4 +49,6 @@ public enum PieceAlliance implements NotationEnum {
     public abstract boolean isLight();
 
     public abstract int direction();
+
+    public abstract PieceAlliance opponent();
 }

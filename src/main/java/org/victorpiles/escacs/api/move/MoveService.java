@@ -14,6 +14,7 @@ import org.victorpiles.escacs.api.game.GameRepository;
 import org.victorpiles.escacs.api.user.User;
 import org.victorpiles.escacs.api.user.UserRepository;
 import org.victorpiles.escacs.engine.Engine;
+import org.victorpiles.escacs.engine.move.MoveStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -91,7 +92,7 @@ public class MoveService {
      *
      * @return La informació del {@link Move moviment} si s'ha registrat exitosament.
      */
-    public Move execute(String moveValue, String context, Long gameId, String username) {
+    public MoveStatus execute(String moveValue, String context, Long gameId, String username) {
         Optional<User> userByUsername = userRepository.findByUsername(username);
         if (userByUsername.isEmpty()) {
             throw new UsernameNotFoundException("We don't have an account for the username " + username + ". Try creating an account instead.");
@@ -121,7 +122,8 @@ public class MoveService {
             throw new InvalidMoveException("Move " + move.getValue() + " is not valid. User " + username + " cannot move opponent pieces.");
         }
 
-        if (!Engine.isValidMove(move, context)) {
+        MoveStatus moveStatus = Engine.isValidMove(move, context);
+        if (moveStatus.equals(MoveStatus.KO)) {
             throw new InvalidMoveException("Move " + move.getValue() + " is not valid.");
         }
 
@@ -141,8 +143,8 @@ public class MoveService {
 
         moveRepository.save(move);
 
-        log.info("Executed: " + move.getValue() + " by " + user.getUsername() + " in game " + game.getId() + ".");
-        return move;
+        log.info("Executed: " + move.getValue() + " [" + moveStatus + "] by " + user.getUsername() + " in game " + game.getId() + ".");
+        return moveStatus;
     }
 
     public List<String> listValid(String piece, String context) {

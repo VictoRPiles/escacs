@@ -12,6 +12,12 @@ public enum MoveStatus {
         public boolean ok() {
             return false;
         }
+    },
+    CHECK {
+        @Override
+        public boolean ok() {
+            return false;
+        }
     };
 
     public abstract boolean ok();

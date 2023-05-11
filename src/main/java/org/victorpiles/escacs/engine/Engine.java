@@ -11,11 +11,9 @@ import java.util.List;
 
 public class Engine {
 
-    public static boolean isValidMove(Move move, String context) {
+    public static MoveStatus isValidMove(Move move, String context) {
         Board board = ContextParser.parse(context);
-        MoveStatus status = board.execute(move);
-
-        return status.ok();
+        return board.execute(move);
     }
 
     public static List<String> getValidMoveValues(String pieceNotation, String context) {
