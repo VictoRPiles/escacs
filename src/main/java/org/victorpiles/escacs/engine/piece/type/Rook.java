@@ -26,16 +26,20 @@ public class Rook extends Piece {
 
             /* Moviments en la direcció del vector */
             while (Square.isValidPosition(destination)) {
-                destination += vector;
-
                 /* Casella fora dels límits del tauler -> no seguir en la direcció del vector */
                 if (!Square.isValidPosition(destination)) {
                     break;
                 }
-                if (BoardUtils.FIRST_COLUMN.get(position) && (vector == -1)) {
+                if (BoardUtils.FIRST_COLUMN.get(destination) && (vector == -1)) {
                     break;
                 }
-                if (BoardUtils.EIGHT_COLUMN.get(position) && (vector == 1)) {
+                if (BoardUtils.EIGHT_COLUMN.get(destination) && (vector == 1)) {
+                    break;
+                }
+
+                destination += vector;
+
+                if (!Square.isValidPosition(destination)) {
                     break;
                 }
 

@@ -26,16 +26,20 @@ public class Queen extends Piece {
 
             /* Moviments en la direcció del vector */
             while (Square.isValidPosition(destination)) {
-                destination += vector;
-
                 /* Casella fora dels límits del tauler -> no seguir en la direcció del vector */
                 if (!Square.isValidPosition(destination)) {
                     break;
                 }
-                if (BoardUtils.FIRST_COLUMN.get(position) && ((vector == -9) || (vector == -1) || (vector == 7))) {
+                if (BoardUtils.FIRST_COLUMN.get(destination) && ((vector == -9) || (vector == -1) || (vector == 7))) {
                     break;
                 }
-                if (BoardUtils.EIGHT_COLUMN.get(position) && ((vector == -7) || (vector == 1) || (vector == 9))) {
+                if (BoardUtils.EIGHT_COLUMN.get(destination) && ((vector == -7) || (vector == 1) || (vector == 9))) {
+                    break;
+                }
+
+                destination += vector;
+
+                if (!Square.isValidPosition(destination)) {
                     break;
                 }
 
