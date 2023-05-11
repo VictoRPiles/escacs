@@ -241,6 +241,7 @@ for (let i = 0; i < items.length; i++) {
 
             let move = selectedSquarePiece + selectedSquareNotation + targetSquareNotation;
 
+            const userData = JSON.parse(fs.readFileSync("login.json"));
             fs.exists("games.json", async function (exist) {
                 let gameData;
                 if (exist) {
