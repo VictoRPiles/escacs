@@ -119,10 +119,6 @@ async function send(requestedUserUsername) {
         let requestList = JSON.parse(event.data);
 
         for (const request of requestList) {
-            if (request["id"] === requestUUID) {
-
-            }
-
             let requestAccepted = request["accepted"];
             if (requestAccepted) {
 
