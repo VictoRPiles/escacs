@@ -119,6 +119,15 @@ public class MoveService {
             throw new InvalidMoveException("Move " + move.getValue() + " is not valid.");
         }
 
+        List<Move> moveList = moveRepository.findAllByGame(game);
+        if (!moveList.isEmpty()) {
+            Move lastMove = moveList.get(moveList.size() - 1);
+
+            if (lastMove.getUser().equals(user)) {
+                throw new InvalidMoveException("Move " + move.getValue() + " is not valid. User " + username + " has to wait for the opponent to move.");
+            }
+        }
+
         moveRepository.save(move);
 
         log.info("Executed: " + move.getValue() + " by " + user.getUsername() + " in game " + game.getId() + ".");

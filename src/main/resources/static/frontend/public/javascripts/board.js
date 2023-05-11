@@ -44,6 +44,8 @@ jquery(document).ready(() => {
             if (previousMove.id !== newMove.id) {
                 previousMove = newMove;
 
+                console.log("Move by: " + newMove["user"]["username"] + " -> " + newMove["value"]);
+
                 updateBoard(newMove.value);
                 updateMoveList(newMove.value);
                 moveCount++;
@@ -238,8 +240,6 @@ for (let i = 0; i < items.length; i++) {
             let targetSquareNotation = indexToNotation(targetSquareIndex);
 
             let move = selectedSquarePiece + selectedSquareNotation + targetSquareNotation;
-
-            const userData = JSON.parse(fs.readFileSync("login.json"));
 
             fs.exists("games.json", async function (exist) {
                 let gameData;
