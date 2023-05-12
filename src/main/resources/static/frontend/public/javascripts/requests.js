@@ -138,7 +138,7 @@ async function createGame(id) {
 
     fs.writeFile("games.json", JSON.stringify(responseJSON), function (err) {
         if (err) {
-
+            console.log(err);
         }
     });
 

@@ -132,7 +132,7 @@ async function send(requestedUserUsername) {
 
                 fs.writeFile("games.json", JSON.stringify(responseBody), function (err) {
                     if (err) {
-
+                        console.log(err);
                     }
                 });
 
