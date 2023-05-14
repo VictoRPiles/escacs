@@ -13,6 +13,6 @@ function createWindows(): void {
         },
         show: false
     });
-    window.loadFile("./index.html");
+    window.loadFile("./login.html");
     window.on("ready-to-show", () => window.show());
 }
