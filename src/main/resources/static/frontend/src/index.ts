@@ -1,8 +1,8 @@
-import {app, BrowserWindow} from "electron"
+import {app, BrowserWindow} from "electron";
 
-let window: BrowserWindow
+let window: BrowserWindow;
 
-app.whenReady().then(createWindows)
+app.whenReady().then(createWindows);
 
 function createWindows(): void {
     window = new BrowserWindow({
@@ -12,7 +12,7 @@ function createWindows(): void {
             preload: __dirname + "/preload.js"
         },
         show: false
-    })
-    window.loadFile("./index.html")
-    window.on("ready-to-show", () => window.show())
+    });
+    window.loadFile("./index.html");
+    window.on("ready-to-show", () => window.show());
 }
