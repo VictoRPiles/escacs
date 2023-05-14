@@ -5,13 +5,14 @@ const HTTP_PUT = "PUT";
 async function fetchWithMethod<T>(httpMethod: string, url: string, parameters: Map<string, string> | null) {
     if (parameters !== null) {
         url = url.concat(toUrlParameters(parameters));
-        console.log(url);
+        console.log(httpMethod + " " + url);
     }
     let response = await fetch(url, {method: httpMethod});
+    let responseBody = await response.json();
     if (!response.ok) {
-        throw new Error(response.statusText);
+        throw new Error(responseBody.message);
     }
-    return await response.json() as Promise<T>;
+    return responseBody as Promise<T>;
 }
 
 async function get<T>(url: string, parameters: Map<string, string> | null): Promise<T> {
