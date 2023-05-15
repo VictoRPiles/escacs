@@ -45,22 +45,21 @@ public class UserService {
      * La {@link User#getPassword() contrasenya} s'{@link PasswordEncoder#encode(String) encriptarà} abans de guardar-lo
      * en la base de dades.
      *
-     * @param user La informació de l'{@link User usuari}.
-     *
      * @return La informació de l'{@link User usuari} si s'ha registrat exitosament.
      */
-    public User register(User user) {
-        Optional<User> userByUsername = userRepository.findByUsername(user.getUsername());
-        Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
+    public User register(String username, String email, String password) {
+        Optional<User> userByUsername = userRepository.findByUsername(username);
+        Optional<User> userByEmail = userRepository.findByEmail(email);
 
         if (userByUsername.isPresent()) {
-            throw new UsernameAlreadyInUseException("There’s already an account with the username " + user.getUsername() + ". Use a different username.");
+            throw new UsernameAlreadyInUseException("There’s already an account with the username " + username + ". Use a different username.");
         }
 
         if (userByEmail.isPresent()) {
-            throw new EmailAlreadyInUseException("There’s already an account with the email " + user.getEmail() + ". Use a different email or sign in with this address.");
+            throw new EmailAlreadyInUseException("There’s already an account with the email " + email + ". Use a different email or sign in with this address.");
         }
 
+        User user = new User(username, email, password);
         /* Encripta la contrasenya abans de guardar en la base de dades */
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -79,9 +78,7 @@ public class UserService {
      *
      * @param email    El {@link User#getEmail() email}.
      * @param password La {@link User#getPassword() contrasenya}.
-     *
      * @return La informació de l'{@link User usuari} si ha iniciat sessió exitosament.
-     *
      * @see PasswordEncoder#match(String, String)
      */
     public User login(String email, String password) {
