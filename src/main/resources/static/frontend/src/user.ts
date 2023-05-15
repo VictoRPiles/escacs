@@ -1,5 +1,3 @@
-let loggedUser: User;
-
 class User {
     readonly id: number;
     readonly username: string;

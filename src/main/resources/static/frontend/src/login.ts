@@ -1,3 +1,4 @@
+let loggedUser: User;
 const loginForm = document.getElementById("login-form") as HTMLFormElement;
 if (loginForm) {
     loginForm.addEventListener("submit", (event: SubmitEvent) => {
