@@ -13,7 +13,12 @@ if (loginForm) {
                 let userId = userJson["id"];
                 let userUsername = userJson["username"];
                 let userEmail = userJson["email"];
+
                 loggedUser = new User(userId, userUsername, userEmail);
+                sessionStorage.setItem("loggedUserId", String(loggedUser.id));
+                sessionStorage.setItem("loggedUserUsername", loggedUser.username);
+                sessionStorage.setItem("loggedUserEmail", loggedUser.email);
+
                 console.log("Login -> " + loggedUser);
 
                 showSuccessInLoginForm();

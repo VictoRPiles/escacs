@@ -65,21 +65,26 @@ function squareClicked(clickedSquare: HTMLElement) {
         isSquareSelected = false;
 
         let moveInformation = toMoveInformation(clickedSquare);
-        console.log("Executing move -> " + moveInformation);
+
         let context = boardToContext();
-        let parameters = new Map<string, string>([
-            ["move", moveInformation],
-            ["context", context],
-            ["gameId", "1"],
-            ["username", "loggedUser.username"]
-        ]);
-        post("http://localhost:8080/api/v1/move/execute", parameters)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                reportError(error);
-            });
+        let gameId = sessionStorage.getItem("gameId");
+        let username = sessionStorage.getItem("loggedUserUsername");
+        if (gameId && username) {
+            let parameters = new Map<string, string>([
+                ["move", moveInformation],
+                ["context", context],
+                ["gameId", gameId],
+                ["username", username]
+            ]);
+            post("http://localhost:8080/api/v1/move/execute", parameters)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => {
+                    reportError(error);
+                });
+            console.log("Executing move -> " + moveInformation);
+        }
     }
 }
 
