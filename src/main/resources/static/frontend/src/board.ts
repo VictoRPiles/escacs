@@ -63,28 +63,29 @@ function squareClicked(clickedSquare: HTMLElement) {
         highlightValidMoves(clickedSquare);
     } else {
         isSquareSelected = false;
+        executeMove(toMoveInformation(clickedSquare));
+    }
+}
 
-        let moveInformation = toMoveInformation(clickedSquare);
-
-        let context = boardToContext();
-        let gameId = sessionStorage.getItem("gameId");
-        let username = sessionStorage.getItem("loggedUserUsername");
-        if (gameId && username) {
-            let parameters = new Map<string, string>([
-                ["move", moveInformation],
-                ["context", context],
-                ["gameId", gameId],
-                ["username", username]
-            ]);
-            post("http://localhost:8080/api/v1/move/execute", parameters)
-                .then(response => {
-                    console.log(response);
-                })
-                .catch(error => {
-                    reportError(error);
-                });
-            console.log("Executing move -> " + moveInformation);
-        }
+function executeMove(moveInformation: string) {
+    let context = boardToContext();
+    let gameId = sessionStorage.getItem("gameId");
+    let username = sessionStorage.getItem("loggedUserUsername");
+    if (gameId && username) {
+        let parameters = new Map<string, string>([
+            ["move", moveInformation],
+            ["context", context],
+            ["gameId", gameId],
+            ["username", username]
+        ]);
+        post("http://localhost:8080/api/v1/move/execute", parameters)
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                reportError(error);
+            });
+        console.log("Executing move -> " + moveInformation);
     }
 }
 
