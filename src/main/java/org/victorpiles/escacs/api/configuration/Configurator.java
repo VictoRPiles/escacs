@@ -4,7 +4,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.victorpiles.escacs.api.gamerequest.GameRequestService;
-import org.victorpiles.escacs.api.user.User;
 import org.victorpiles.escacs.api.user.UserService;
 
 /**
@@ -22,18 +21,8 @@ public class Configurator {
             GameRequestService gameRequestService
     ) {
         return args -> {
-            User administrator = new User(
-                    "Administrator",
-                    "admin@escacs.org",
-                    "admin@escacs.org"
-            );
-            User user = new User(
-                    "User",
-                    "user@escacs.org",
-                    "user@escacs.org"
-            );
-            userService.register(administrator);
-            userService.register(user);
+            userService.register("Administrator", "admin@escacs.com", "admin@escacs.com");
+            userService.register("User", "user@escacs.com", "user@escacs.com");
 
             gameRequestService.send("Administrator", "User");
         };
