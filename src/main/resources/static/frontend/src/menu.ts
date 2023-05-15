@@ -17,7 +17,7 @@ if (menu) {
                 <a class="nav-link fw-bold fs-4" href="./players.html">Llistat de jugadors</a>
             </li>
              <li class="nav-item">
-                <a class="nav-link fw-bold fs-4" href="./requests.html">Sol·licituds de joc</a>
+                <a class="nav-link fw-bold fs-4" href="./games.html">Sol·licituds de joc</a>
             </li>
         </ul>
         <!-- Nom del usuari -->
