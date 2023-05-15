@@ -20,7 +20,7 @@
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: auto;
 
-    max-width: 45%;
+    max-width: 90%;
     box-sizing: border-box;
 }
 
