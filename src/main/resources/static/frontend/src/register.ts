@@ -1,10 +1,10 @@
-const loginForm = document.getElementById("login-form") as HTMLFormElement;
-if (loginForm) {
-    loginForm.addEventListener("submit", (event: SubmitEvent) => {
+const registerForm = document.getElementById("register-form") as HTMLFormElement;
+if (registerForm) {
+    registerForm.addEventListener("submit", (event: SubmitEvent) => {
         event.preventDefault();
 
-        let action = "http://localhost:8080/api/v1/user/login";
-        let parameters = formToParameters(new FormData(loginForm));
+        let action = "http://localhost:8080/api/v1/user/register";
+        let parameters = formToParameters(new FormData(registerForm));
 
         post(action, parameters)
             .then(response => {
@@ -12,27 +12,31 @@ if (loginForm) {
                 let userId = userJson["id"];
                 let userUsername = userJson["username"];
                 let userEmail = userJson["email"];
-                loggedUser = new User(userId, userUsername, userEmail);
-                console.log("Login -> " + loggedUser);
+                console.log("Registered -> " + new User(userId, userUsername, userEmail));
 
-                showSuccessInLoginForm();
+                showSuccessInRegisterForm();
 
-                /* Quan s'inicia sessió correctament, espera 1 segon i canvia a la pàgina d'inici */
+                /* Quan s'inicia sessió correctament, espera 1 segon i canvia a la pàgina d'inici de sessió */
                 setTimeout(() => {
-                    window.location.replace("./index.html");
+                    window.location.replace("./login.html");
                 }, 1000);
             })
             .catch(error => {
-                showFailureInLoginForm(error);
+                showFailureInRegisterForm(error);
             });
     });
 }
 
-function showSuccessInLoginForm() {
+function showSuccessInRegisterForm() {
+    const usernameField = document.getElementById("username");
     const emailField = document.getElementById("email");
     const passwordField = document.getElementById("password");
     const validationMessage = document.getElementById("form-validation-message");
 
+    if (usernameField) {
+        usernameField.classList.remove("is-invalid");
+        usernameField.classList.add("is-valid");
+    }
     if (emailField) {
         emailField.classList.remove("is-invalid");
         emailField.classList.add("is-valid");
@@ -49,11 +53,15 @@ function showSuccessInLoginForm() {
     }
 }
 
-function showFailureInLoginForm(error: Error) {
+function showFailureInRegisterForm(error: Error) {
+    const usernameField = document.getElementById("username");
     const emailField = document.getElementById("email");
     const passwordField = document.getElementById("password");
     const validationMessage = document.getElementById("form-validation-message");
 
+    if (usernameField) {
+        usernameField.classList.add("is-invalid");
+    }
     if (emailField) {
         emailField.classList.add("is-invalid");
     }

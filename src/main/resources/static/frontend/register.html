@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Escacs - Iniciar sessió</title>
+    <title>Escacs - Registrar-se</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
@@ -15,8 +15,15 @@
 
 <body>
 <div class="container mt-5">
-    <form id="login-form" class="form-signin shadow rounded">
-        <h2 class="form-signin-heading fw-bolder mb-4">Iniciar sessió</h2>
+    <form id="register-form" class="form-signin shadow rounded">
+        <h2 class="form-signin-heading fw-bolder mb-4">Registrar-se</h2>
+        <!-- Nom d'usuari -->
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="username-icon"><i class="bi bi-person-fill"></i></span>
+            <label for="username"></label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Nom d'usuari"
+                   aria-describedby="username-icon" required autofocus>
+        </div>
         <!-- Email -->
         <div class="input-group mb-3">
             <span class="input-group-text" id="email-icon"><i class="bi bi-at"></i></span>
@@ -36,7 +43,7 @@
             <button class="px-4 btn btn-lg btn-success btn-block shadow" type="submit">
                 <i class="bi bi-arrow-right"></i>
             </button>
-            <span class="mx-2 fw-bolder float-end">No tens un compte? <a href="./register.html">Registra't</a></span>
+            <span class="mx-2 fw-bolder float-end">Ja tens un compte? <a href="./login.html">Inicia sessió</a></span>
         </div>
         <div id="form-validation-message" class="d-none fw-bold text-light text-center rounded mt-2 px-4 py-2"></div>
     </form>
@@ -44,6 +51,6 @@
 <script src="dist/request.js"></script>
 <script src="dist/form.js"></script>
 <script src="dist/user.js"></script>
-<script src="dist/login.js"></script>
+<script src="dist/register.js"></script>
 </body>
 </html>
