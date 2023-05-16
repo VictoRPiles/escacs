@@ -85,6 +85,9 @@ function send(requestedUserUsername: string) {
                                 sessionStorage.setItem("gameId", game.id);
                                 console.log("Joining game -> " + sessionStorage.getItem("gameId"));
 
+                                sessionStorage.setItem("requestingUserUsername", game.request.requestingUser.username);
+                                sessionStorage.setItem("requestedUserUsername", game.request.requestedUser.username);
+
                                 let alert = document.getElementById("alert") as HTMLElement;
                                 let alertMessage = document.getElementById("alert-message") as HTMLElement;
                                 alert.classList.remove("d-none");

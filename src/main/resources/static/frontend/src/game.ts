@@ -84,6 +84,8 @@ function createGame(id: string) {
             gameListReloadButton.click();
 
             sessionStorage.setItem("gameId", created.id);
+            sessionStorage.setItem("requestingUserUsername", created.request.requestingUser.username);
+            sessionStorage.setItem("requestedUserUsername", created.request.requestedUser.username);
             console.log("Joining game -> " + sessionStorage.getItem("gameId"));
 
             setTimeout(() => {

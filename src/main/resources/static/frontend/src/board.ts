@@ -15,6 +15,17 @@ function listenGameMoves() {
     let previousMove: any;
 
     moveStream.onmessage = (event) => {
+        if (!previousMove) {
+            const lightPlayerName = document.getElementById("light-player-name") as HTMLElement;
+            const darkPlayerName = document.getElementById("dark-player-name") as HTMLElement;
+
+            let requestingUserUsername = sessionStorage.getItem("requestingUserUsername") as string;
+            let requestedUserUsername = sessionStorage.getItem("requestedUserUsername") as string;
+
+            lightPlayerName.innerText = requestingUserUsername;
+            darkPlayerName.innerText = requestedUserUsername;
+        }
+
         const move = JSON.parse(event.data);
         /* No acceptar repetits: JSON -> Map -> List */
         moveMap.set(move.id, move);
@@ -30,7 +41,7 @@ function listenGameMoves() {
 
             console.log("Move by: " + newMove["user"]["username"] + " -> " + newMove["value"]);
 
-            // updateBoard(newMove.value);
+            updateBoard(newMove.value);
             updateMoveList(newMove.value);
             moveCount++;
         }
@@ -58,6 +69,68 @@ function updateMoveList(move: any) {
         secondColumnMove.innerHTML = `<i id="move-${moveCount}-icon" class="fas me-2"></i>${moveInfo}`;
         const secondColumnMoveIcon = document.getElementById("move-" + moveCount + "-icon") as HTMLElement;
         secondColumnMoveIcon.classList.add(classByMoveValue(move));
+    }
+}
+
+function updateBoard(move: string) {
+    let squareClass, chessPiece, pieceColor;
+    if (move.startsWith("b")) {
+        chessPiece = "bishop";
+    } else if (move.startsWith("k")) {
+        chessPiece = "king";
+    } else if (move.startsWith("n")) {
+        chessPiece = "knight";
+    } else if (move.startsWith("p")) {
+        chessPiece = "pawn";
+    } else if (move.startsWith("q")) {
+        chessPiece = "queen";
+    } else if (move.startsWith("r")) {
+        chessPiece = "rook";
+    }
+
+    if (move.charAt(1) === "l") {
+        pieceColor = "light";
+    } else if (move.charAt(1) === "d") {
+        pieceColor = "dark";
+    }
+
+    let from = move.substring(2, 4).replace("x", "");
+    let to = move.substring(4).replace("x", "");
+    squareClass = chessPiece + "-" + pieceColor;
+    let fromSquareIndex = notationToIndex(from);
+    let toSquareIndex = notationToIndex(to);
+
+    let squaresElements = document.querySelectorAll(".square");
+    squaresElements[fromSquareIndex].classList.remove(squareClass);
+    removePiece(squaresElements[toSquareIndex]);
+    squaresElements[toSquareIndex].classList.add(squareClass);
+}
+
+function removePiece(square: Element) {
+    if (square.classList.contains("rook-light")) {
+        square.classList.remove("rook-light");
+    } else if (square.classList.contains("rook-dark")) {
+        square.classList.remove("rook-dark");
+    } else if (square.classList.contains("knight-light")) {
+        square.classList.remove("knight-light");
+    } else if (square.classList.contains("knight-dark")) {
+        square.classList.remove("knight-dark");
+    } else if (square.classList.contains("bishop-light")) {
+        square.classList.remove("bishop-light");
+    } else if (square.classList.contains("bishop-dark")) {
+        square.classList.remove("bishop-dark");
+    } else if (square.classList.contains("queen-light")) {
+        square.classList.remove("queen-light");
+    } else if (square.classList.contains("queen-dark")) {
+        square.classList.remove("queen-dark");
+    } else if (square.classList.contains("king-light")) {
+        square.classList.remove("king-light");
+    } else if (square.classList.contains("king-dark")) {
+        square.classList.remove("king-dark");
+    } else if (square.classList.contains("pawn-light")) {
+        square.classList.remove("pawn-light");
+    } else if (square.classList.contains("pawn-dark")) {
+        square.classList.remove("pawn-dark");
     }
 }
 
@@ -126,6 +199,8 @@ function squareClicked(clickedSquare: HTMLElement) {
             squareElement.classList.remove("square-light-selected");
         } else if (squareElement.classList.contains("square-dark-selected")) {
             squareElement.classList.remove("square-dark-selected");
+        } else if (squareElement.classList.contains("bg-danger")) {
+            squareElement.classList.remove("bg-danger");
         }
     });
 
