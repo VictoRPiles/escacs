@@ -1,6 +1,7 @@
 package org.victorpiles.escacs.api.security;
 
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -25,7 +26,7 @@ public class PasswordEncoder {
      * @return La contrasenya encriptada.
      */
     @SneakyThrows(value = {NoSuchAlgorithmException.class, InvalidKeySpecException.class})
-    public static String encode(String password) {
+    public static @NotNull String encode(@NotNull String password) {
         char[] passwordCharArray = password.toCharArray();
         byte[] salt = password.getBytes();
         int iterationCount = 65536;
@@ -47,7 +48,7 @@ public class PasswordEncoder {
      *
      * @return Si les contrasenyes coincideixen.
      */
-    public static boolean match(String plainPassword, String encodedPassword) {
+    public static boolean match(@NotNull String plainPassword, @NotNull String encodedPassword) {
         return encodedPassword.equals(encode(plainPassword));
     }
 }

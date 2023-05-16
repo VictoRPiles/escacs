@@ -2,6 +2,7 @@ package org.victorpiles.escacs.api.game;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.victorpiles.escacs.api.exception.game.GameNotFoundException;
@@ -26,19 +27,19 @@ import java.util.UUID;
 @AllArgsConstructor
 public class GameService {
 
-    private final GameRepository gameRepository;
-    private final GameRequestRepository gameRequestRepository;
+    private final @NotNull GameRepository gameRepository;
+    private final @NotNull GameRequestRepository gameRequestRepository;
 
     /**
      * Busca totes les {@link Game partides} presents a la base de dades.
      *
      * @return Un {@link List llistat} amb les {@link Game partides} presents a la base de dades.
      */
-    public List<Game> list() {
+    public @NotNull List<Game> list() {
         return gameRepository.findAll();
     }
 
-    public Game getByGameRequest(UUID gameRequestUUID) {
+    public @NotNull Game getByGameRequest(UUID gameRequestUUID) {
         Optional<GameRequest> gameRequestOptional = gameRequestRepository.findById(gameRequestUUID);
         if (gameRequestOptional.isEmpty()) {
             throw new GameRequestNotFoundException("Game request " + gameRequestUUID + " not found.");
@@ -65,7 +66,7 @@ public class GameService {
      *
      * @return {@link GameRequest Nova partida} si s'ha creat amb èxit.
      */
-    public Game create(UUID gameRequestUUID) {
+    public @NotNull Game create(UUID gameRequestUUID) {
         Optional<GameRequest> gameRequestOptional = gameRequestRepository.findById(gameRequestUUID);
         if (gameRequestOptional.isEmpty()) {
             throw new GameRequestNotFoundException("Game request " + gameRequestUUID + " not found.");

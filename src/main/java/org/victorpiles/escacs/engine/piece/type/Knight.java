@@ -1,6 +1,7 @@
 package org.victorpiles.escacs.engine.piece.type;
 
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
 import org.victorpiles.escacs.engine.Board;
 import org.victorpiles.escacs.engine.piece.Piece;
 import org.victorpiles.escacs.engine.piece.alliance.PieceAlliance;
@@ -19,7 +20,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<String> getValidMoveValues(Board board) {
+    public @NotNull List<String> getValidMoveValues(@NotNull Board board) {
         int[] offsets = {-17, -15, -10, -6, 6, 10, 15, 17};
         List<String> validMoveValues = new ArrayList<>();
 

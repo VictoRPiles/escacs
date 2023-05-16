@@ -2,6 +2,7 @@ package org.victorpiles.escacs.api.user;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.victorpiles.escacs.api.exception.user.*;
@@ -22,14 +23,14 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final @NotNull UserRepository userRepository;
 
     /**
      * Busca tots els {@link User usuaris} presents a la base de dades.
      *
      * @return Un {@link List llistat} amb els {@link User usuaris} presents a la base de dades.
      */
-    public List<User> list() {
+    public @NotNull List<User> list() {
         return userRepository.findAll();
     }
 
@@ -44,7 +45,7 @@ public class UserService {
      *
      * @return La informació de l'{@link User usuari} si s'ha registrat exitosament.
      */
-    public User register(String username, String email, String password) {
+    public @NotNull User register(String username, String email, String password) {
         Optional<User> userByUsername = userRepository.findByUsername(username);
         Optional<User> userByEmail = userRepository.findByEmail(email);
 
@@ -80,7 +81,7 @@ public class UserService {
      *
      * @see PasswordEncoder#match(String, String)
      */
-    public User login(String email, String password) {
+    public @NotNull User login(String email, String password) {
         Optional<User> userByEmail = userRepository.findByEmail(email);
 
         if (userByEmail.isEmpty()) {
@@ -96,7 +97,7 @@ public class UserService {
         return userByEmail.get();
     }
 
-    public User score(Long id, int score) {
+    public @NotNull User score(@NotNull Long id, int score) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isEmpty()) {
             throw new UserNotInGameException("We don't have an account with the id " + id);

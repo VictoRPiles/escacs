@@ -1,6 +1,7 @@
 package org.victorpiles.escacs.api.user;
 
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/user")
 public class UserController {
 
-    private final UserService userService;
+    private final @NotNull UserService userService;
 
     /**
      * Genera una {@link ResponseEntity resposta} amb un {@link List llistat} tots els {@link User usuaris}.
@@ -29,7 +30,7 @@ public class UserController {
      * @see UserService#list()
      */
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<User>> list() {
+    public @NotNull ResponseEntity<List<User>> list() {
         List<User> userList = userService.list();
         return ResponseEntity.ok(userList);
     }
@@ -41,7 +42,7 @@ public class UserController {
      * @return {@link ResponseEntity Resposta} amb estatus 201 (created) si s'ha registrat amb èxit.
      */
     @PostMapping(path = "/register")
-    public ResponseEntity<User> register(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password) {
+    public @NotNull ResponseEntity<User> register(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password) {
         User registered = userService.register(username, email, password);
         return ResponseEntity
                 .created(
@@ -62,13 +63,13 @@ public class UserController {
      * @see UserService#login(String, String)
      */
     @PostMapping(path = "/login")
-    public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public @NotNull ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password) {
         User logged = userService.login(email, password);
         return ResponseEntity.ok(logged);
     }
 
     @PutMapping(path = "/score")
-    public ResponseEntity<User> score(@RequestParam("id") Long id, @RequestParam("score") int score) {
+    public @NotNull ResponseEntity<User> score(@RequestParam("id") @NotNull Long id, @RequestParam("score") int score) {
         User scored = userService.score(id, score);
         return ResponseEntity.ok(scored);
     }

@@ -1,5 +1,6 @@
 package org.victorpiles.escacs.engine.piece.type;
 
+import org.jetbrains.annotations.NotNull;
 import org.victorpiles.escacs.engine.Board;
 import org.victorpiles.escacs.engine.piece.Piece;
 import org.victorpiles.escacs.engine.piece.alliance.PieceAlliance;
@@ -17,7 +18,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<String> getValidMoveValues(Board board) {
+    public @NotNull List<String> getValidMoveValues(@NotNull Board board) {
         /* Els peons només poden avançar en una direcció, que varia segons l'aliança */
         int[] offsets = {7 * alliance.direction(), 8 * alliance.direction(), 9 * alliance.direction(), 16 * alliance.direction()};
         List<String> validMoveValues = new ArrayList<>();

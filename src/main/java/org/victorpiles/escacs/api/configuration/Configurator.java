@@ -1,5 +1,6 @@
 package org.victorpiles.escacs.api.configuration;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +17,10 @@ import org.victorpiles.escacs.api.user.UserService;
 public class Configurator {
 
     @Bean
+    @NotNull
     CommandLineRunner commandLineRunner(
-            UserService userService,
-            GameRequestService gameRequestService
+            @NotNull UserService userService,
+            @NotNull GameRequestService gameRequestService
     ) {
         return args -> {
             userService.register("Administrator", "admin@escacs.com", "admin@escacs.com");

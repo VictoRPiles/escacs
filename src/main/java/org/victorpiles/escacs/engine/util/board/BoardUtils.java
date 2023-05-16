@@ -1,5 +1,7 @@
 package org.victorpiles.escacs.engine.util.board;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,7 +18,7 @@ public abstract class BoardUtils {
     public static final List<Boolean> SECOND_RANK = initializeRow(48);
     public static final List<Boolean> SEVENTH_RANK = initializeRow(8);
 
-    private static List<Boolean> initializeColumn(int columnNumber) {
+    private static @NotNull List<Boolean> initializeColumn(int columnNumber) {
         final Boolean[] column = new Boolean[NUMBER_OF_SQUARES];
         Arrays.fill(column, false);
         do {
@@ -26,7 +28,7 @@ public abstract class BoardUtils {
         return List.of((column));
     }
 
-    private static List<Boolean> initializeRow(int rowNumber) {
+    private static @NotNull List<Boolean> initializeRow(int rowNumber) {
         final Boolean[] row = new Boolean[NUMBER_OF_SQUARES];
         Arrays.fill(row, false);
         do {

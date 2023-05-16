@@ -2,6 +2,8 @@ package org.victorpiles.escacs.engine;
 
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.victorpiles.escacs.engine.move.MoveStatus;
 import org.victorpiles.escacs.engine.piece.Piece;
 import org.victorpiles.escacs.engine.piece.alliance.PieceAlliance;
@@ -27,21 +29,21 @@ public class Board {
         this.squareList = squareList;
     }
 
-    public void addPiece(Piece piece) {
+    public void addPiece(@NotNull Piece piece) {
         squareList.get(piece.getPosition()).setPiece(piece);
     }
 
-    public void removePiece(Piece piece) {
+    public void removePiece(@NotNull Piece piece) {
         squareList.get(piece.getPosition()).setPiece(null);
     }
 
-    private void movePiece(Piece movedPiece, String moveValue) {
+    private void movePiece(@NotNull Piece movedPiece, @NotNull String moveValue) {
         this.removePiece(movedPiece);
         movedPiece.setPosition(MoveParser.parsePieceDestinationPosition(moveValue));
         this.addPiece(movedPiece);
     }
 
-    public King findKing(PieceAlliance alliance) {
+    public @Nullable King findKing(PieceAlliance alliance) {
         // TODO: 11/5/23 orElseThrow en findKing
         return (King) squareList
                 .stream()
@@ -52,7 +54,7 @@ public class Board {
                 .orElse(null);
     }
 
-    public List<Piece> getPiecesOfAlliance(PieceAlliance alliance) {
+    public @NotNull List<Piece> getPiecesOfAlliance(PieceAlliance alliance) {
         return squareList
                 .stream()
                 .filter(Square::isOccupied)
@@ -61,7 +63,7 @@ public class Board {
                 .collect(Collectors.toList());
     }
 
-    public boolean isKingInCheck(PieceAlliance alliance) {
+    public boolean isKingInCheck(@NotNull PieceAlliance alliance) {
         King king = findKing(alliance);
         List<Piece> opponentPieces = getPiecesOfAlliance(alliance.opponent());
 
@@ -82,7 +84,7 @@ public class Board {
         return false;
     }
 
-    public boolean isKingInCheckMate(PieceAlliance alliance) {
+    public boolean isKingInCheckMate(@NotNull PieceAlliance alliance) {
         if (!isKingInCheck(alliance)) {
             return false;
         }
@@ -104,7 +106,7 @@ public class Board {
         return true;
     }
 
-    public static Board build() {
+    public static @NotNull Board build() {
         ArrayList<Square> squares = new ArrayList<>();
         for (int i = 0; i < 64; i++) {
             squares.add(new Square());
@@ -113,7 +115,7 @@ public class Board {
         return new Board(squares);
     }
 
-    public MoveStatus execute(String move, boolean evaluateCheckMate) {
+    public @NotNull MoveStatus execute(@NotNull String move, boolean evaluateCheckMate) {
         int origin = MoveParser.parsePieceOriginPosition(move);
         Piece movedPiece = squareList.get(origin).getPiece();
 
@@ -140,7 +142,7 @@ public class Board {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < squareList.size(); i++) {
@@ -154,11 +156,9 @@ public class Board {
         return sb.toString();
     }
 
-    public static Board copyOf(Board board) {
+    public static @NotNull Board copyOf(@NotNull Board board) {
         Board clone = new Board();
-        board.squareList.forEach(square -> {
-            clone.squareList.add(new Square(square.getPiece()));
-        });
+        board.squareList.forEach(square -> clone.squareList.add(new Square(square.getPiece())));
         return clone;
     }
 }

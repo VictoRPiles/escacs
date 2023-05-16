@@ -3,6 +3,7 @@ package org.victorpiles.escacs.api.move.stream;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ import reactor.core.publisher.Flux;
 @RequestMapping(path = "/api/v1/move/stream")
 public class MoveStreamController {
 
-    private final MoveService moveService;
+    private final @NotNull MoveService moveService;
 
     /**
      * Se subscriu a tots els {@link Move moviments} presents a la base de dades.
@@ -32,7 +33,7 @@ public class MoveStreamController {
      * @return Un {@link Flux flux} amb tots els {@link Move moviments} presents a la base de dades.
      */
     @GetMapping(path = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Move> all() {
+    public @NotNull Flux<Move> all() {
         return Flux.fromIterable(moveService.list());
     }
 
@@ -45,7 +46,7 @@ public class MoveStreamController {
      * base de dades.
      */
     @GetMapping(path = "/byUser", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Move> byUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
+    public @NotNull Flux<Move> byUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         return Flux.fromIterable(moveService.listByUser(username));
     }
 
@@ -58,7 +59,7 @@ public class MoveStreamController {
      * base de dades.
      */
     @GetMapping(path = "/byGame", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Move> byGame(@PathParam("gameId") Long gameId) {
+    public @NotNull Flux<Move> byGame(@PathParam("gameId") Long gameId) {
         return Flux.fromIterable(moveService.listByGame(gameId));
     }
 }

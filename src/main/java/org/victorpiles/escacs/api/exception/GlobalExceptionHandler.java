@@ -2,6 +2,7 @@ package org.victorpiles.escacs.api.exception;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 /**
  * Controla la forma de manejar les {@link Exception excepcions}.
  * <p>
- * Concretament aquesta implementació es centra en les {@link ConstraintViolationException excepcions de validació}.
+ * Concretament aquesta implementació se centra en les {@link ConstraintViolationException excepcions de validació}.
  *
  * @author Víctor Piles
  * @version 1.0
@@ -33,7 +34,7 @@ public class GlobalExceptionHandler {
      * @return Una {@link ResponseEntity resposta} amb els missatges i l'estatus {@link HttpStatus#BAD_REQUEST}.
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Map<String, List<String>>> handleValidationErrors(ConstraintViolationException exception) {
+    public @NotNull ResponseEntity<Map<String, List<String>>> handleValidationErrors(@NotNull ConstraintViolationException exception) {
         List<String> errors = exception
                 .getConstraintViolations()
                 .stream().map(ConstraintViolation::getMessage)
@@ -50,7 +51,7 @@ public class GlobalExceptionHandler {
      *
      * @return Un {@link Map mapa} amb la clau "errors" i el llistat d'errors com a valor.
      */
-    private Map<String, List<String>> getErrorsMap(List<String> errors) {
+    private @NotNull Map<String, List<String>> getErrorsMap(List<String> errors) {
         Map<String, List<String>> errorResponse = new HashMap<>();
         errorResponse.put("errors", errors);
         return errorResponse;
