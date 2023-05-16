@@ -72,7 +72,7 @@ public class GameRequest {
      */
     private LocalDateTime acceptedAt;
     /**
-     * Indica si la sol·licitud de joc ha segut o no rebutjada pel receptor.
+     * Indica si la sol·licitud de joc ha estat o no rebutjada pel receptor.
      */
     private boolean rejected;
 

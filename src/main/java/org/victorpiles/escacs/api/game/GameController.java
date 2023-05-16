@@ -1,6 +1,7 @@
 package org.victorpiles.escacs.api.game;
 
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @RequestMapping(path = "/api/v1/game")
 public class GameController {
 
-    private final GameService gameService;
+    private final @NotNull GameService gameService;
 
     /**
      * Genera una {@link ResponseEntity resposta} amb un {@link List llistat} totes les {@link Game partides}.
@@ -31,7 +32,7 @@ public class GameController {
      * @see GameService#list()
      */
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Game>> list() {
+    public @NotNull ResponseEntity<List<Game>> list() {
         List<Game> gameList = gameService.list();
         return ResponseEntity.ok(gameList);
     }
@@ -44,7 +45,7 @@ public class GameController {
      * @see GameService#list()
      */
     @GetMapping(path = "/listByGameRequest", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Game> getByGameRequest(@RequestParam UUID gameRequestUUID) {
+    public @NotNull ResponseEntity<Game> getByGameRequest(@RequestParam UUID gameRequestUUID) {
         Game gameByRequest = gameService.getByGameRequest(gameRequestUUID);
         return ResponseEntity.ok(gameByRequest);
     }
@@ -60,7 +61,7 @@ public class GameController {
      * @see GameService#create(UUID)
      */
     @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Game> create(@RequestParam UUID gameRequestUUID) {
+    public @NotNull ResponseEntity<Game> create(@RequestParam UUID gameRequestUUID) {
         Game created = gameService.create(gameRequestUUID);
         return ResponseEntity
                 .created(

@@ -3,6 +3,7 @@ package org.victorpiles.escacs.api.gamerequest;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @RequestMapping(path = "/api/v1/gameRequest")
 public class GameRequestController {
 
-    private final GameRequestService gameRequestService;
+    private final @NotNull GameRequestService gameRequestService;
 
     /**
      * Genera una {@link ResponseEntity resposta} amb un {@link List llistat} de totes les
@@ -34,7 +35,7 @@ public class GameRequestController {
      * @see GameRequestService#list()
      */
     @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GameRequest>> list() {
+    public @NotNull ResponseEntity<List<GameRequest>> list() {
         List<GameRequest> gameRequestList = gameRequestService.list();
         return ResponseEntity.ok(gameRequestList);
     }
@@ -49,7 +50,7 @@ public class GameRequestController {
      * @see GameRequestService#listByRequestingUser(String)
      */
     @GetMapping(path = "/list/from", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GameRequest>> listByRequestingUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
+    public @NotNull ResponseEntity<List<GameRequest>> listByRequestingUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         List<GameRequest> gameRequestList = gameRequestService.listByRequestingUser(username);
         return ResponseEntity.ok(gameRequestList);
     }
@@ -64,7 +65,7 @@ public class GameRequestController {
      * @see GameRequestService#listByRequestedUser(String)
      */
     @GetMapping(path = "/list/to", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GameRequest>> listByRequestedUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
+    public @NotNull ResponseEntity<List<GameRequest>> listByRequestedUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         List<GameRequest> gameRequestList = gameRequestService.listByRequestedUser(username);
         return ResponseEntity.ok(gameRequestList);
     }
@@ -80,7 +81,7 @@ public class GameRequestController {
      * @see GameRequestService#listByRequestedUser(String)
      */
     @GetMapping(path = "/pending/to", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<GameRequest>> pendingByRequestedUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
+    public @NotNull ResponseEntity<List<GameRequest>> pendingByRequestedUser(@NotEmpty(message = "Username cannot be empty") @PathParam("username") String username) {
         List<GameRequest> gameRequestList = gameRequestService.pendingByRequestedUser(username);
         return ResponseEntity.ok(gameRequestList);
     }
@@ -97,7 +98,7 @@ public class GameRequestController {
      * @see GameRequestService#send(String, String)
      */
     @PostMapping(path = "/send", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameRequest> send(
+    public @NotNull ResponseEntity<GameRequest> send(
             @RequestParam("requestingUserUsername") String requestingUserUsername,
             @RequestParam("requestedUserUsername") String requestedUserUsername
     ) {
@@ -119,7 +120,7 @@ public class GameRequestController {
      * @see GameRequestService#accept(UUID)
      */
     @PutMapping(path = "/accept", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameRequest> accept(@RequestParam("uuid") UUID gameRequestUUID) {
+    public @NotNull ResponseEntity<GameRequest> accept(@RequestParam("uuid") UUID gameRequestUUID) {
         GameRequest accepted = gameRequestService.accept(gameRequestUUID);
         return ResponseEntity.ok(accepted);
     }
@@ -134,7 +135,7 @@ public class GameRequestController {
      * @see GameRequestService#reject(UUID)
      */
     @PutMapping(path = "/reject", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GameRequest> reject(@RequestParam("uuid") UUID gameRequestUUID) {
+    public @NotNull ResponseEntity<GameRequest> reject(@RequestParam("uuid") UUID gameRequestUUID) {
         GameRequest accepted = gameRequestService.reject(gameRequestUUID);
         return ResponseEntity.ok(accepted);
     }

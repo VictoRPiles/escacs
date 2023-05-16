@@ -2,6 +2,7 @@ package org.victorpiles.escacs.api.gamerequest;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.victorpiles.escacs.api.exception.gamerequest.*;
@@ -26,15 +27,15 @@ import java.util.UUID;
 @AllArgsConstructor
 public class GameRequestService {
 
-    private final GameRequestRepository gameRequestRepository;
-    private final UserRepository userRepository;
+    private final @NotNull GameRequestRepository gameRequestRepository;
+    private final @NotNull UserRepository userRepository;
 
     /**
      * Busca totes les {@link GameRequest sol·licituds de joc} presents a la base de dades.
      *
      * @return Un {@link List llistat} amb les {@link GameRequest sol·licituds de joc} presents a la base de dades.
      */
-    public List<GameRequest> list() {
+    public @NotNull List<GameRequest> list() {
         return gameRequestRepository.findAll();
     }
 
@@ -44,7 +45,7 @@ public class GameRequestService {
      *
      * @return Un {@link List llistat} amb les {@link GameRequest sol·licituds de joc} presents a la base de dades.
      */
-    public List<GameRequest> listByRequestingUser(String username) {
+    public @NotNull List<GameRequest> listByRequestingUser(String username) {
         Optional<User> userByUsername = userRepository.findByUsername(username);
         if (userByUsername.isEmpty()) {
             throw new UsernameNotFoundException("We don't have an account for the username " + username + ". Try creating an account instead.");
@@ -61,7 +62,7 @@ public class GameRequestService {
      *
      * @return Un {@link List llistat} amb les {@link GameRequest sol·licituds de joc} presents a la base de dades.
      */
-    public List<GameRequest> listByRequestedUser(String username) {
+    public @NotNull List<GameRequest> listByRequestedUser(String username) {
         Optional<User> userByUsername = userRepository.findByUsername(username);
         if (userByUsername.isEmpty()) {
             throw new UsernameNotFoundException("We don't have an account for the username " + username + ". Try creating an account instead.");
@@ -78,7 +79,7 @@ public class GameRequestService {
      *
      * @return Un {@link List llistat} amb les {@link GameRequest sol·licituds de joc} presents a la base de dades.
      */
-    public List<GameRequest> pendingByRequestedUser(String username) {
+    public @NotNull List<GameRequest> pendingByRequestedUser(String username) {
         Optional<User> userByUsername = userRepository.findByUsername(username);
         if (userByUsername.isEmpty()) {
             throw new UsernameNotFoundException("We don't have an account for the username " + username + ". Try creating an account instead.");
@@ -97,7 +98,7 @@ public class GameRequestService {
      *
      * @return La {@link GameRequest sol·licitud de joc}, si s'ha enviat amb èxit.
      */
-    public GameRequest send(String requestingUserUsername, String requestedUserUsername) {
+    public @NotNull GameRequest send(String requestingUserUsername, String requestedUserUsername) {
         Optional<User> requestingUser = userRepository.findByUsername(requestingUserUsername);
         if (requestingUser.isEmpty()) {
             throw new UsernameNotFoundException("We don't have an account for the username " + requestingUserUsername + ". Try creating an account instead.");
@@ -126,7 +127,7 @@ public class GameRequestService {
      *
      * @return La {@link GameRequest sol·licitud de joc}, si s'ha acceptat amb èxit.
      */
-    public GameRequest accept(UUID gameRequestUUID) {
+    public @NotNull GameRequest accept(UUID gameRequestUUID) {
         Optional<GameRequest> gameRequestOptional = gameRequestRepository.findById(gameRequestUUID);
         if (gameRequestOptional.isEmpty()) {
             throw new GameRequestNotFoundException("Game request " + gameRequestUUID + " not found.");
@@ -157,7 +158,7 @@ public class GameRequestService {
      *
      * @return La {@link GameRequest sol·licitud de joc}, si s'ha rebutjat amb èxit.
      */
-    public GameRequest reject(UUID gameRequestUUID) {
+    public @NotNull GameRequest reject(UUID gameRequestUUID) {
         Optional<GameRequest> gameRequestOptional = gameRequestRepository.findById(gameRequestUUID);
         if (gameRequestOptional.isEmpty()) {
             throw new GameRequestNotFoundException("Game request " + gameRequestUUID + " not found.");

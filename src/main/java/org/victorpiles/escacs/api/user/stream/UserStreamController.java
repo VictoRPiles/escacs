@@ -1,6 +1,7 @@
 package org.victorpiles.escacs.api.user.stream;
 
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import reactor.core.publisher.Flux;
 @RequestMapping(path = "/api/v1/user/stream")
 public class UserStreamController {
 
-    private final UserService userService;
+    private final @NotNull UserService userService;
 
     /**
      * Se subscriu a tots els {@link User usuaris} presents a la base de dades.
@@ -28,7 +29,7 @@ public class UserStreamController {
      * @return Un {@link Flux flux} amb tots els {@link User usuaris} presents a la base de dades.
      */
     @GetMapping(path = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<User> all() {
+    public @NotNull Flux<User> all() {
         return Flux.fromIterable(userService.list());
     }
 }

@@ -1,5 +1,6 @@
 package org.victorpiles.escacs.engine.piece.alliance;
 
+import org.jetbrains.annotations.NotNull;
 import org.victorpiles.escacs.engine.piece.notation.NotationEnum;
 
 public enum PieceAlliance implements NotationEnum {
@@ -15,12 +16,12 @@ public enum PieceAlliance implements NotationEnum {
         }
 
         @Override
-        public PieceAlliance opponent() {
+        public @NotNull PieceAlliance opponent() {
             return DARK;
         }
 
         @Override
-        public String getNotation() {
+        public @NotNull String getNotation() {
             return "l";
         }
     },
@@ -36,12 +37,12 @@ public enum PieceAlliance implements NotationEnum {
         }
 
         @Override
-        public PieceAlliance opponent() {
+        public @NotNull PieceAlliance opponent() {
             return LIGHT;
         }
 
         @Override
-        public String getNotation() {
+        public @NotNull String getNotation() {
             return "d";
         }
     };

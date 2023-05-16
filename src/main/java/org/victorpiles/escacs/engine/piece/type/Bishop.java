@@ -1,5 +1,6 @@
 package org.victorpiles.escacs.engine.piece.type;
 
+import org.jetbrains.annotations.NotNull;
 import org.victorpiles.escacs.engine.Board;
 import org.victorpiles.escacs.engine.piece.Piece;
 import org.victorpiles.escacs.engine.piece.alliance.PieceAlliance;
@@ -17,7 +18,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<String> getValidMoveValues(Board board) {
+    public @NotNull List<String> getValidMoveValues(@NotNull Board board) {
         int[] vectors = {-9, -7, 7, 9};
         List<String> validMoveValues = new ArrayList<>();
 

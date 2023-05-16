@@ -20,7 +20,7 @@
 
     <groupId>org.victorpiles</groupId>
     <artifactId>escacs</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <name>escacs</name>
     <description>Joc d'escacs multijugador</description>
 
@@ -63,6 +63,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>24.0.1</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,11 +1,12 @@
 package org.victorpiles.escacs.engine.util.parser;
 
+import org.jetbrains.annotations.NotNull;
 import org.victorpiles.escacs.engine.Board;
 import org.victorpiles.escacs.engine.piece.Piece;
 
 public abstract class ContextParser {
 
-    public static Board parse(String context) {
+    public static @NotNull Board parse(@NotNull String context) {
         Board board = Board.build();
 
         String[] squareInContext = parseSquares(context);
@@ -18,7 +19,7 @@ public abstract class ContextParser {
         return board;
     }
 
-    private static String[] parseSquares(String context) {
+    private static String @NotNull [] parseSquares(@NotNull String context) {
         int squareInfoLength = 4;
 
         int numberOfSquares = context.length() / squareInfoLength;

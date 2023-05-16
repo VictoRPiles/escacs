@@ -1,5 +1,6 @@
 package org.victorpiles.escacs.engine.piece.type;
 
+import org.jetbrains.annotations.NotNull;
 import org.victorpiles.escacs.engine.piece.notation.NotationEnum;
 
 public enum PieceType implements NotationEnum {
@@ -10,7 +11,7 @@ public enum PieceType implements NotationEnum {
         }
 
         @Override
-        public String getNotation() {
+        public @NotNull String getNotation() {
             return "r";
         }
     },
@@ -21,7 +22,7 @@ public enum PieceType implements NotationEnum {
         }
 
         @Override
-        public String getNotation() {
+        public @NotNull String getNotation() {
             return "b";
         }
     },
@@ -32,7 +33,7 @@ public enum PieceType implements NotationEnum {
         }
 
         @Override
-        public String getNotation() {
+        public @NotNull String getNotation() {
             return "n";
         }
     },
@@ -43,7 +44,7 @@ public enum PieceType implements NotationEnum {
         }
 
         @Override
-        public String getNotation() {
+        public @NotNull String getNotation() {
             return "k";
         }
     },
@@ -54,7 +55,7 @@ public enum PieceType implements NotationEnum {
         }
 
         @Override
-        public String getNotation() {
+        public @NotNull String getNotation() {
             return "q";
         }
     },
@@ -65,7 +66,7 @@ public enum PieceType implements NotationEnum {
         }
 
         @Override
-        public String getNotation() {
+        public @NotNull String getNotation() {
             return "p";
         }
     };
