@@ -86,7 +86,7 @@ function score(score: number) {
     put("http://localhost:8080/api/v1/user/score", parameters)
         .then(response => {
             let scored = JSON.parse(JSON.stringify(response));
-            console.log("Updated score: " + scored);
+            console.log("Updated score: " + scored.score);
         });
 }
 
