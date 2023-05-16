@@ -13,10 +13,21 @@ window.onload = () => {
         if (gameListFilterInput && gameListFilterInput.value !== "") {
             return;
         }
-        const gameList = JSON.parse(event.data);
-        updateGamesTable(gameList);
+        gameListReloadButton.click();
     };
 };
+
+function sortByRequestedAt(gamesList: [any]) {
+    return gamesList.sort(function (requestA, requestB) {
+        if (requestA.requestedAt > requestB.requestedAt) {
+            return -1;
+        }
+        if (requestA.requestedAt < requestB.requestedAt) {
+            return 1;
+        }
+        return 0;
+    });
+}
 
 gameListReloadButton.addEventListener("click", async () => {
     let username = sessionStorage.getItem("loggedUserUsername");
@@ -29,8 +40,8 @@ gameListReloadButton.addEventListener("click", async () => {
     ]);
     get("http://localhost:8080/api/v1/gameRequest/pending/to", parameters)
         .then(response => {
-            let gamesList = JSON.parse(JSON.stringify(response)) as [string];
-            updateGamesTable(gamesList);
+            let gamesList = JSON.parse(JSON.stringify(response)) as [any];
+            updateGamesTable(sortByRequestedAt(gamesList));
         });
 });
 
