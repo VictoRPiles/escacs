@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.victorpiles.escacs.api.game.Game;
 import org.victorpiles.escacs.api.user.User;
+import org.victorpiles.escacs.engine.move.MoveStatus;
 
 /**
  * Entitat encarregada de representar un moviment d'escacs.
@@ -61,6 +62,7 @@ public class Move {
             name = "user_id"
     )
     private User user;
+    private MoveStatus status;
 
     public Move(String value) {
         this.value = value;

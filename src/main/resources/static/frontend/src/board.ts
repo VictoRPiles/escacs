@@ -41,6 +41,10 @@ function listenGameMoves() {
 
             console.log("Move by: " + newMove["user"]["username"] + " -> " + newMove["value"]);
 
+            if (newMove.status === "CHECK") {
+                markCheck(newMove.value);
+            }
+
             updateBoard(newMove.value);
             updateMoveList(newMove.value);
             moveCount++;
@@ -219,6 +223,22 @@ function squareClicked(clickedSquare: HTMLElement) {
     }
 }
 
+function markCheck(moveInformation: string) {
+    let kingClass = "";
+    if (moveInformation.charAt(1) === "l") {
+        kingClass = "king-dark";
+    } else if (moveInformation.charAt(1) === "d") {
+        kingClass = "king-light";
+    }
+
+    let squaresElements = document.querySelectorAll(".square");
+    squaresElements.forEach(squareElement => {
+        if (squareElement.classList.contains(kingClass)) {
+            highlightSquareAsAttack(squareElement as HTMLElement);
+        }
+    });
+}
+
 function executeMove(moveInformation: string) {
     let context = boardToContext();
     let gameId = sessionStorage.getItem("gameId");
@@ -230,14 +250,18 @@ function executeMove(moveInformation: string) {
             ["gameId", gameId],
             ["username", username]
         ]);
+        console.log("Executing move -> " + moveInformation);
         post("http://localhost:8080/api/v1/move/execute", parameters)
             .then(response => {
-                console.log(response);
+                let status = JSON.parse(JSON.stringify(response)) as string;
+                console.log("Status -> " + status);
+                if (status === "CHECK") {
+                    markCheck(moveInformation);
+                }
             })
             .catch(error => {
                 reportError(error);
             });
-        console.log("Executing move -> " + moveInformation);
     }
 }
 
