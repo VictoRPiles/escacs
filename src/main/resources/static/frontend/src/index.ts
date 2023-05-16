@@ -11,6 +11,7 @@ function createWindows(): void {
         webPreferences: {
             preload: __dirname + "/preload.js"
         },
+        icon: (__dirname + "/images/knight-green.png").replace("/dist", ""),
         show: false
     });
     window.loadFile("./login.html");

@@ -30,4 +30,4 @@ jobs:
         working-directory: src/main/resources/static/frontend
         run: |
           npm ci
-          npm run build
+          npm run package

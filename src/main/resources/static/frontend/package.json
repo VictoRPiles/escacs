@@ -1,18 +1,32 @@
 {
   "name": "escacs",
-  "version": "1.1.1",
-  "description": "",
+  "version": "1.2.0",
+  "description": "Joc d'escacs multijugador",
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run build && electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "npm run build && electron-forge package",
+    "make": "npm run build && electron-forge make"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "chess",
+    "game",
+    "escacs"
+  ],
+  "author": "Víctor Piles",
+  "license": "GPL-3",
   "devDependencies": {
+    "@electron-forge/cli": "^6.1.1",
+    "@electron-forge/maker-deb": "^6.1.1",
+    "@electron-forge/maker-rpm": "^6.1.1",
+    "@electron-forge/maker-squirrel": "^6.1.1",
+    "@electron-forge/maker-zip": "^6.1.1",
     "electron": "^24.3.0",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
   }
 }
