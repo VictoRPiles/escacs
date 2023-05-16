@@ -50,6 +50,8 @@ function updatePlayerTable(playerList: any[]) {
     });
 }
 
+const moveList = document.getElementById("move-list-body") as HTMLElement;
+
 function send(requestedUserUsername: string) {
     let requestingUserUsername = sessionStorage.getItem("loggedUserUsername");
     if (!requestingUserUsername) {
@@ -76,13 +78,23 @@ function send(requestedUserUsername: string) {
                 let requestList = JSON.parse(event.data) as [any];
                 requestList.forEach(request => {
                     if (request.id === sent.id && request.accepted) {
-                        sessionStorage.setItem("gameId", sent.id);
-                        console.log("Joining game -> " + sessionStorage.getItem("gameId"));
+                        let parameters = new Map<string, string>([
+                            ["gameRequestUUID", sent.id]
+                        ]);
+                        get("http://localhost:8080/api/v1/game/listByGameRequest", parameters)
+                            .then(response => {
+                                let game = JSON.parse(JSON.stringify(response)) as any;
+                                sessionStorage.setItem("gameId", game.id);
+                                console.log("Joining game -> " + sessionStorage.getItem("gameId"));
 
-                        let alert = document.getElementById("alert") as HTMLElement;
-                        let alertMessage = document.getElementById("alert-message") as HTMLElement;
-                        alert.classList.remove("d-none");
-                        alertMessage.innerText = requestedUserUsername + " ha acceptat la sol·licitud de joc!";
+                                let alert = document.getElementById("alert") as HTMLElement;
+                                let alertMessage = document.getElementById("alert-message") as HTMLElement;
+                                alert.classList.remove("d-none");
+                                alertMessage.innerText = requestedUserUsername + " ha acceptat la sol·licitud de joc!";
+                            })
+                            .catch(error => {
+                                reportError(error);
+                            });
                     }
                 });
             };
