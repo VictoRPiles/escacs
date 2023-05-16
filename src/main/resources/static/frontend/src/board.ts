@@ -195,6 +195,20 @@ function createSquares() {
     });
 }
 
+function isUserOwner(pieceColor: string) {
+    /* Només el jugador propietari de la peça pot veure els moviments vàlids d'aquesta */
+    let requestingUserUsername = sessionStorage.getItem("requestingUserUsername");
+    let loggedUsername = sessionStorage.getItem("loggedUserUsername");
+    let isLightPlayer = requestingUserUsername === loggedUsername;
+    if (isLightPlayer && pieceColor !== "light") {
+        return false;
+    }
+    if (!isLightPlayer && pieceColor !== "dark") {
+        return false;
+    }
+    return true;
+}
+
 function squareClicked(clickedSquare: HTMLElement) {
     let squaresElements = document.querySelectorAll(".square");
 
@@ -209,7 +223,19 @@ function squareClicked(clickedSquare: HTMLElement) {
     });
 
     if (!isSquareSelected) {
-        if (!pieceBySquare(clickedSquare)) {
+        let piece = pieceInSquare(clickedSquare);
+        if (!piece) {
+            return;
+        }
+
+        let pieceColor = "";
+        if (piece.charAt(1) === "l") {
+            pieceColor = "light";
+        } else if (piece.charAt(1) === "d") {
+            pieceColor = "dark";
+        }
+
+        if (!isUserOwner(pieceColor)) {
             return;
         }
 
@@ -275,7 +301,7 @@ function toMoveInformation(clickedSquare: HTMLElement) {
     let originSquareNotation = indexToNotation(parseInt(originSquareIndex));
     let destinationSquareNotation = indexToNotation(parseInt(destinationSquareIndex));
 
-    let selectedSquarePiece = pieceBySquare(selectedSquare);
+    let selectedSquarePiece = pieceInSquare(selectedSquare);
 
     return selectedSquarePiece + originSquareNotation + destinationSquareNotation;
 }
@@ -295,7 +321,7 @@ function highlightValidMoves(squareClicked: HTMLElement) {
                 let destinationSquareIndex = notationToIndex(move.substring(move.length - 2));
                 let destinationSquare = squaresElements[destinationSquareIndex];
 
-                if (pieceBySquare(destinationSquare as HTMLElement) != null) {
+                if (pieceInSquare(destinationSquare as HTMLElement) != null) {
                     highlightSquareAsAttack(destinationSquare as HTMLElement);
                 } else {
                     highlightSquareAsValid(destinationSquare as HTMLElement);
@@ -311,7 +337,7 @@ function squareToPieceInformation(squareClicked: HTMLElement) {
     let squareId = squareClicked.id;
     let squareIndex = squareId.substring(squareId.length - 2);
     let squareNotation = indexToNotation(parseInt(squareIndex));
-    let selectedSquarePiece = pieceBySquare(squareClicked);
+    let selectedSquarePiece = pieceInSquare(squareClicked);
 
     return selectedSquarePiece + squareNotation;
 }
@@ -323,7 +349,7 @@ function boardToContext(): string {
         let squareItemId = squareElement.id;
         let squareItemIndex = squareItemId.substring(squareItemId.length - 2);
         let squareItemNotation = indexToNotation(parseInt(squareItemIndex));
-        let pieceOnItem = pieceBySquare(squareElement as HTMLElement);
+        let pieceOnItem = pieceInSquare(squareElement as HTMLElement);
         if (pieceOnItem !== null) {
             let squareInformation = pieceOnItem + squareItemNotation;
             context += squareInformation;
@@ -349,7 +375,7 @@ function highlightSquareAsAttack(square: HTMLElement) {
     }
 }
 
-function pieceBySquare(square: HTMLElement) {
+function pieceInSquare(square: HTMLElement) {
     let pieceInSquare;
 
     if (square.classList.contains("rook-light")) {
