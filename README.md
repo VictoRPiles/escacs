@@ -4,7 +4,7 @@
 
 <br>
 <p align="center" width="100%">
-    <img src="src/main/resources/static/frontend/images/icon-green.png" alt="icon green" width="15%"/>
+    <img src="src/main/resources/static/frontend/images/knight-green.png" alt="icon green" width="15%"/>
 </p>
 
 # Escacs

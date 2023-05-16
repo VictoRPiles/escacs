@@ -1,6 +1,6 @@
 :root {
     --square-light: var(--bs-light);
-    --square-dark: var(--bs-primary);
+    --square-dark: var(--bs-success);
 
     --square-dark-hover: color-mix(in hsl, var(--square-dark) 70%, var(--square-light));
     --square-light-hover: color-mix(in hsl, var(--square-light) 70%, var(--square-dark));
