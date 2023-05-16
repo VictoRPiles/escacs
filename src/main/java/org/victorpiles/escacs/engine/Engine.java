@@ -13,7 +13,7 @@ public class Engine {
 
     public static MoveStatus isValidMove(Move move, String context) {
         Board board = ContextParser.parse(context);
-        return board.execute(move);
+        return board.execute(move.getValue(), true);
     }
 
     public static List<String> getValidMoveValues(String pieceNotation, String context) {

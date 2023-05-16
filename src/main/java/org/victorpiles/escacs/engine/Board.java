@@ -2,7 +2,6 @@ package org.victorpiles.escacs.engine;
 
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import org.victorpiles.escacs.api.move.Move;
 import org.victorpiles.escacs.engine.move.MoveStatus;
 import org.victorpiles.escacs.engine.piece.Piece;
 import org.victorpiles.escacs.engine.piece.alliance.PieceAlliance;
@@ -19,6 +18,10 @@ import java.util.stream.Collectors;
 public class Board {
 
     private final List<Square> squareList;
+
+    public Board() {
+        squareList = new ArrayList<>();
+    }
 
     public Board(List<Square> squareList) {
         this.squareList = squareList;
@@ -79,6 +82,28 @@ public class Board {
         return false;
     }
 
+    public boolean isKingInCheckMate(PieceAlliance alliance) {
+        if (!isKingInCheck(alliance)) {
+            return false;
+        }
+        List<Piece> pieces = getPiecesOfAlliance(alliance);
+        for (Piece piece : pieces) {
+            if (!piece.hasValidMoves(this)) {
+                continue;
+            }
+
+            List<String> pieceValidMoves = piece.getValidMoveValues(this);
+            for (String move : pieceValidMoves) {
+                MoveStatus status = execute(move, false);
+                if (status.ok()) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     public static Board build() {
         ArrayList<Square> squares = new ArrayList<>();
         for (int i = 0; i < 64; i++) {
@@ -88,27 +113,28 @@ public class Board {
         return new Board(squares);
     }
 
-    public MoveStatus execute(Move move) {
-        int origin = MoveParser.parsePieceOriginPosition(move.getValue());
+    public MoveStatus execute(String move, boolean evaluateCheckMate) {
+        int origin = MoveParser.parsePieceOriginPosition(move);
         Piece movedPiece = squareList.get(origin).getPiece();
 
         List<String> validMoveValues = movedPiece.getValidMoveValues(this);
-        if (!validMoveValues.contains(move.getValue())) {
+        if (!validMoveValues.contains(move)) {
             return MoveStatus.KO;
         }
 
-        /* Executa el moviment al tauler i processa el resultat */
-        this.movePiece(movedPiece, move.getValue());
-
+        /* Executa el moviment a un tauler paral·lel i processa el resultat */
+        Board clonedBoard = Board.copyOf(this);
+        clonedBoard.movePiece(movedPiece, move);
         PieceAlliance alliance = movedPiece.getAlliance();
-        if (isKingInCheck(alliance)) {
+        if (clonedBoard.isKingInCheck(alliance)) {
             return MoveStatus.KO;
         }
-        if (isKingInCheck(alliance.opponent())) {
+        if (evaluateCheckMate && clonedBoard.isKingInCheckMate(alliance.opponent())) {
+            return MoveStatus.CHECK_MATE;
+        }
+        if (clonedBoard.isKingInCheck(alliance.opponent())) {
             return MoveStatus.CHECK;
         }
-
-        // TODO: 10/5/23 Escac i escac mat
 
         return MoveStatus.OK;
     }
@@ -126,5 +152,13 @@ public class Board {
         }
 
         return sb.toString();
+    }
+
+    public static Board copyOf(Board board) {
+        Board clone = new Board();
+        board.squareList.forEach(square -> {
+            clone.squareList.add(new Square(square.getPiece()));
+        });
+        return clone;
     }
 }
