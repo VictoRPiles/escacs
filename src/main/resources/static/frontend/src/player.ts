@@ -40,7 +40,7 @@ function updatePlayerTable(playerList: any[]) {
 
         playerListElement.innerHTML += `
                 <tr class="align-middle">
-                    <th class="text-center" scope="row">${playerList.indexOf(player) + 1}</th>
+                    <th class="text-center" scope="row"><span>${playerList.indexOf(player) + 1}</span></th>
                     <td><span>${username}</span></td>
                     <td class="text-center"><span>${score}</span></td>
                     <td class="text-center">
