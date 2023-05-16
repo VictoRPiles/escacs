@@ -49,3 +49,48 @@ function updatePlayerTable(playerList: any[]) {
                 </tr>`;
     });
 }
+
+function send(requestedUserUsername: string) {
+    let requestingUserUsername = sessionStorage.getItem("loggedUserUsername");
+    if (!requestingUserUsername) {
+        return;
+    }
+    let parameters = new Map<string, string>([
+        ["requestingUserUsername", requestingUserUsername],
+        ["requestedUserUsername", requestedUserUsername]
+    ]);
+    post("http://localhost:8080/api/v1/gameRequest/send", parameters)
+        .then(response => {
+            let sent = JSON.parse(JSON.stringify(response));
+            console.log("Game request sent -> " + sent.id);
+
+            const sendButton = document.getElementById("send-game-request-" + requestedUserUsername) as HTMLButtonElement;
+            sendButton.classList.remove("btn-green");
+            sendButton.classList.add("btn-success");
+            sendButton.innerHTML = `<i class="bi bi-check-lg"></i>`;
+
+            let requestStreamEndpoint = "http://localhost:8080/api/v1/gameRequest/stream/to/user?username=" + requestedUserUsername;
+            let requestStream = new EventSource(requestStreamEndpoint);
+
+            requestStream.onmessage = (event) => {
+                let requestList = JSON.parse(event.data) as [any];
+                requestList.forEach(request => {
+                    if (request.id === sent.id && request.accepted) {
+                        sessionStorage.setItem("gameId", sent.id);
+                        console.log("Joining game -> " + sessionStorage.getItem("gameId"));
+
+                        setTimeout(() => {
+                            window.location.replace("./index.html");
+                        }, 1000);
+                    }
+                });
+            };
+        })
+        .catch(error => {
+            const sendButton = document.getElementById("send-game-request-" + requestedUserUsername) as HTMLButtonElement;
+            sendButton.classList.remove("btn-green");
+            sendButton.classList.add("btn-danger");
+            sendButton.innerHTML = `<i class="bi bi-x-lg"></i>`;
+            reportError(error);
+        });
+}

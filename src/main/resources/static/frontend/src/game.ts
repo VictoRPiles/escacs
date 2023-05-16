@@ -66,12 +66,33 @@ async function accept(id: string) {
             let accepted = JSON.parse(JSON.stringify(response));
             console.log("Accepted request -> " + accepted.id);
             gameListReloadButton.click();
+            createGame(id);
         })
         .catch(error => {
             reportError(error);
         });
+}
 
-    //TODO:crear partida
+function createGame(id: string) {
+    let parameters = new Map<string, string>([
+        ["gameRequestUUID", id]
+    ]);
+    post("http://localhost:8080/api/v1/game/create", parameters)
+        .then(response => {
+            let created = JSON.parse(JSON.stringify(response));
+            console.log("Game created -> " + created.id);
+            gameListReloadButton.click();
+
+            sessionStorage.setItem("gameId", created.id);
+            console.log("Joining game -> " + sessionStorage.getItem("gameId"));
+
+            setTimeout(() => {
+                window.location.replace("./index.html");
+            }, 1000);
+        })
+        .catch(error => {
+            reportError(error);
+        });
 }
 
 async function reject(id: string) {
