@@ -79,9 +79,10 @@ function send(requestedUserUsername: string) {
                         sessionStorage.setItem("gameId", sent.id);
                         console.log("Joining game -> " + sessionStorage.getItem("gameId"));
 
-                        setTimeout(() => {
-                            window.location.replace("./index.html");
-                        }, 1000);
+                        let alert = document.getElementById("alert") as HTMLElement;
+                        let alertMessage = document.getElementById("alert-message") as HTMLElement;
+                        alert.classList.remove("d-none");
+                        alertMessage.innerText = requestedUserUsername + " ha acceptat la sol·licitud de joc!";
                     }
                 });
             };
