@@ -12,8 +12,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/electron": "^1.6.10",
-    "@types/node": "^20.1.5",
     "electron": "^24.3.0",
     "typescript": "^5.0.4"
   }
