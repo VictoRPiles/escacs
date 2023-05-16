@@ -1,6 +1,6 @@
 {
   "name": "escacs",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Joc d'escacs multijugador",
   "main": "./dist/index.js",
   "scripts": {
