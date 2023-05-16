@@ -3,11 +3,88 @@ const COLUMNS_NUMBER = 8;
 
 let isSquareSelected = false;
 let selectedSquare: HTMLElement;
+let moveCount = 0;
+
+function listenGameMoves() {
+    let gameId = sessionStorage.getItem("gameId");
+
+    /* Se subscriu al flux de dades -> actualitza automàticament la llista */
+    let moveStreamEndpoint = "http://localhost:8080/api/v1/move/stream/byGame?gameId=" + gameId;
+    let moveStream = new EventSource(moveStreamEndpoint);
+    const moveMap = new Map();
+    let previousMove: any;
+
+    moveStream.onmessage = (event) => {
+        const move = JSON.parse(event.data);
+        /* No acceptar repetits: JSON -> Map -> List */
+        moveMap.set(move.id, move);
+        const moveList = Array.from(moveMap, function (entry) {
+            return entry[1];
+        });
+
+        let newMove = moveList[moveList.length - 1];
+
+        /* Realment s'ha executat un moviment nou, no és un missatge periòdic del stream */
+        if (!previousMove || previousMove.id !== newMove.id) {
+            previousMove = newMove;
+
+            console.log("Move by: " + newMove["user"]["username"] + " -> " + newMove["value"]);
+
+            // updateBoard(newMove.value);
+            updateMoveList(newMove.value);
+            moveCount++;
+        }
+    };
+}
+
+const moveList = document.getElementById("move-list-body") as HTMLElement;
+
+function updateMoveList(move: any) {
+    let from = move.substring(2, 4);
+    let to = move.substring(4);
+    let moveInfo = (from + " - " + to).toUpperCase();
+    if (moveCount % 2 === 0) {
+        moveList.innerHTML += `
+            <tr class="align-middle" id="moves-${moveCount}-${moveCount + 1}">
+                <th class="text-center" scope="row">${(moveCount / 2) + 1}</th>
+                <td id="move-${moveCount}"><i id="move-${moveCount}-icon" class="fas me-2"></i>${moveInfo}</td>
+                <td id="move-${moveCount + 1}"></td>
+            </tr>
+        `;
+        const firstColumnMoveIcon = document.getElementById("move-" + moveCount + "-icon") as HTMLElement;
+        firstColumnMoveIcon.classList.add(classByMoveValue(move));
+    } else {
+        const secondColumnMove = document.getElementById("move-" + moveCount) as HTMLElement;
+        secondColumnMove.innerHTML = `<i id="move-${moveCount}-icon" class="fas me-2"></i>${moveInfo}`;
+        const secondColumnMoveIcon = document.getElementById("move-" + moveCount + "-icon") as HTMLElement;
+        secondColumnMoveIcon.classList.add(classByMoveValue(move));
+    }
+}
+
+function classByMoveValue(move: any): string {
+    let chessPiece;
+    if (move.startsWith("b")) {
+        chessPiece = "fa-chess-bishop";
+    } else if (move.startsWith("k")) {
+        chessPiece = "fa-chess-king";
+    } else if (move.startsWith("n")) {
+        chessPiece = "fa-chess-knight";
+    } else if (move.startsWith("p")) {
+        chessPiece = "fa-chess-pawn";
+    } else if (move.startsWith("q")) {
+        chessPiece = "fa-chess-queen";
+    } else if (move.startsWith("r")) {
+        chessPiece = "fa-chess-rook";
+    } else chessPiece = "";
+
+    return chessPiece;
+}
 
 const boardElement = document.getElementById("board");
 if (boardElement) {
     createSquares();
     setPiecesToOpening();
+    listenGameMoves();
 }
 
 function createSquares() {

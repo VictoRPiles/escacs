@@ -50,8 +50,6 @@ function updatePlayerTable(playerList: any[]) {
     });
 }
 
-const moveList = document.getElementById("move-list-body") as HTMLElement;
-
 function send(requestedUserUsername: string) {
     let requestingUserUsername = sessionStorage.getItem("loggedUserUsername");
     if (!requestingUserUsername) {
