@@ -48,6 +48,7 @@ public class MoveService {
      * Busca tots els {@link Move moviments} executats per un {@link User usuari} presents a la base de dades.
      *
      * @param username {@link User#getUsername() Nom} del usuari.
+     *
      * @return Un {@link List llistat} amb els {@link Move moviments} executats per un {@link User usuari} presents a la
      * base de dades.
      */
@@ -67,6 +68,7 @@ public class MoveService {
      * dades.
      *
      * @param gameId L'{@link Game#getId() identificador} de la {@link Game partida}.
+     *
      * @return Un {@link List llistat} amb els {@link Move moviments} executats a una {@link Game partida} en concret
      * presents a la base de dades.
      */
@@ -87,6 +89,7 @@ public class MoveService {
      * @param moveValue {@link Move#getValue() Valor} del {@link Move moviment}.
      * @param gameId    La {@link Game partida} on s'ha executat el moviment.
      * @param username  {@link User Usuari} que ha executat el {@link Move moviment}.
+     *
      * @return La informació del {@link Move moviment} si s'ha registrat exitosament.
      */
     public MoveStatus execute(String moveValue, String context, Long gameId, String username) {
@@ -129,7 +132,8 @@ public class MoveService {
             if (!user.equals(requestingUser)) {
                 throw new InvalidMoveException("Move " + move.getValue() + " is not valid. User " + username + " has to wait for the opponent to move.");
             }
-        } else {
+        }
+        else {
             Move lastMove = moveList.get(moveList.size() - 1);
 
             if (lastMove.getUser().equals(user)) {
