@@ -91,6 +91,9 @@ function send(requestedUserUsername: string) {
                                 let alert = document.getElementById("alert") as HTMLElement;
                                 let alertMessage = document.getElementById("alert-message") as HTMLElement;
                                 alert.classList.remove("d-none");
+                                alert.classList.remove("alert-primary");
+                                alert.classList.remove("alert-danger");
+                                alert.classList.add("alert-success");
                                 alertMessage.innerText = requestedUserUsername + " ha acceptat la sol·licitud de joc!";
                             })
                             .catch(error => {

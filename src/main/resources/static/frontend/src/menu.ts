@@ -3,7 +3,7 @@ if (menu) {
     let username = sessionStorage.getItem("loggedUserUsername");
     menu.innerHTML += `
 <div id="menu">
-    <div id="alert" class="alert alert-success alert-dismissible fade show m-0 d-none" role="alert">
+    <div id="alert" class="alert alert-dismissible fade show m-0 d-none" role="alert">
         <span id="alert-message">A simple success alert—check it out!</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>

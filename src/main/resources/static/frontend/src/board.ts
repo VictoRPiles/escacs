@@ -1,3 +1,6 @@
+const CHECK = "CHECK";
+const CHECK_MATE = "CHECK_MATE";
+
 const ROWS_NUMBER = 8;
 const COLUMNS_NUMBER = 8;
 
@@ -39,10 +42,26 @@ function listenGameMoves() {
         if (!previousMove || previousMove.id !== newMove.id) {
             previousMove = newMove;
 
-            console.log("Move by: " + newMove["user"]["username"] + " -> " + newMove["value"]);
+            let movingPlayer = newMove["user"]["username"];
+            console.log("Move by: " + movingPlayer + " -> " + newMove["value"]);
+            console.log("Status -> " + newMove.status);
 
-            if (newMove.status === "CHECK") {
+            if (newMove.status === CHECK || newMove.status === CHECK_MATE) {
                 markCheck(newMove.value);
+
+                if (newMove.status === CHECK_MATE) {
+                    let alert = document.getElementById("alert") as HTMLElement;
+                    let alertMessage = document.getElementById("alert-message") as HTMLElement;
+                    alert.classList.remove("d-none");
+                    alert.classList.remove("alert-success");
+                    let loggedUser = sessionStorage.getItem("loggedUserUsername");
+                    if (movingPlayer === loggedUser) {
+                        alert.classList.add("alert-primary");
+                    } else {
+                        alert.classList.add("alert-danger");
+                    }
+                    alertMessage.innerText = movingPlayer + " ha fet escac i mat!";
+                }
             }
 
             updateBoard(newMove.value);
@@ -277,17 +296,7 @@ function executeMove(moveInformation: string) {
             ["username", username]
         ]);
         console.log("Executing move -> " + moveInformation);
-        post("http://localhost:8080/api/v1/move/execute", parameters)
-            .then(response => {
-                let status = JSON.parse(JSON.stringify(response)) as string;
-                console.log("Status -> " + status);
-                if (status === "CHECK") {
-                    markCheck(moveInformation);
-                }
-            })
-            .catch(error => {
-                reportError(error);
-            });
+        post("http://localhost:8080/api/v1/move/execute", parameters);
     }
 }
 
