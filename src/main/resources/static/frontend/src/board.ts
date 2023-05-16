@@ -84,7 +84,10 @@ function score(score: number) {
         ["score", `${score}`]
     ]);
     put("http://localhost:8080/api/v1/user/score", parameters)
-        .then(response => console.log("Updated score: " + response));
+        .then(response => {
+            let scored = JSON.parse(JSON.stringify(response));
+            console.log("Updated score: " + scored);
+        });
 }
 
 const moveList = document.getElementById("move-list-body") as HTMLElement;
