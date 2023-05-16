@@ -57,10 +57,17 @@ function listenGameMoves() {
                     let loggedUser = sessionStorage.getItem("loggedUserUsername");
                     if (movingPlayer === loggedUser) {
                         alert.classList.add("alert-primary");
+                        score(100);
                     } else {
                         alert.classList.add("alert-danger");
+                        score(-100);
                     }
                     alertMessage.innerText = movingPlayer + " ha fet escac i mat!";
+
+                    let parameters = new Map<string, string>([
+                        ["id", sessionStorage.getItem("loggedUserId") as string],
+                        ["score", "100"]
+                    ]);
                 }
             }
 
@@ -69,6 +76,15 @@ function listenGameMoves() {
             moveCount++;
         }
     };
+}
+
+function score(score: number) {
+    let parameters = new Map<string, string>([
+        ["id", sessionStorage.getItem("loggedUserId") as string],
+        ["score", `${score}`]
+    ]);
+    put("http://localhost:8080/api/v1/user/score", parameters)
+        .then(response => console.log("Updated score: " + response));
 }
 
 const moveList = document.getElementById("move-list-body") as HTMLElement;

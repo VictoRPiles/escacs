@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.victorpiles.escacs.api.exception.user.BadCredentialsException;
-import org.victorpiles.escacs.api.exception.user.EmailAlreadyInUseException;
-import org.victorpiles.escacs.api.exception.user.EmailNotFoundException;
-import org.victorpiles.escacs.api.exception.user.UsernameAlreadyInUseException;
+import org.victorpiles.escacs.api.exception.user.*;
 import org.victorpiles.escacs.api.security.PasswordEncoder;
 
 import java.util.List;
@@ -78,7 +75,9 @@ public class UserService {
      *
      * @param email    El {@link User#getEmail() email}.
      * @param password La {@link User#getPassword() contrasenya}.
+     *
      * @return La informació de l'{@link User usuari} si ha iniciat sessió exitosament.
+     *
      * @see PasswordEncoder#match(String, String)
      */
     public User login(String email, String password) {
@@ -95,5 +94,23 @@ public class UserService {
 
         log.info("Logged in: " + userByEmail.get());
         return userByEmail.get();
+    }
+
+    public User score(Long id, int score) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new UserNotInGameException("We don't have an account with the id " + id);
+        }
+
+        User user = userOptional.get();
+
+        if (score < 0 && user.getScore() < Math.abs(score)) {
+            return user;
+        }
+
+        user.setScore(user.getScore() + score);
+
+        log.info("User " + user.getUsername() + " scored: " + score);
+        return user;
     }
 }

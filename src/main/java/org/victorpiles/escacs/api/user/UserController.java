@@ -66,4 +66,10 @@ public class UserController {
         User logged = userService.login(email, password);
         return ResponseEntity.ok(logged);
     }
+
+    @PutMapping(path = "/score")
+    public ResponseEntity<User> score(@RequestParam("id") Long id, @RequestParam("score") int score) {
+        User scored = userService.score(id, score);
+        return ResponseEntity.ok(scored);
+    }
 }
