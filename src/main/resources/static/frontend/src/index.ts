@@ -12,6 +12,7 @@ function createWindows(): void {
             preload: __dirname + "/preload.js"
         },
         icon: (__dirname + "/images/knight-green.png").replace("/dist", ""),
+        fullscreen: true,
         show: false
     });
     window.loadFile("./login.html");
