@@ -1,21 +1,16 @@
 package org.victorpiles.escacs.engine.util.parser;
 
-import org.victorpiles.escacs.api.move.Move;
 import org.victorpiles.escacs.engine.piece.Piece;
 import org.victorpiles.escacs.engine.util.notation.NotationConverter;
 
 public abstract class MoveParser {
 
-    public static int parsePieceOriginPosition(Move move) {
-        String moveValue = move.getValue();
-
+    public static int parsePieceOriginPosition(String moveValue) {
         String piecePositionNotation = String.valueOf(moveValue.charAt(2)) + moveValue.charAt(3);
         return NotationConverter.notationToIndex(piecePositionNotation);
     }
 
-    public static int parsePieceDestinationPosition(Move move) {
-        String moveValue = move.getValue();
-
+    public static int parsePieceDestinationPosition(String moveValue) {
         String piecePositionNotation = String.valueOf(moveValue.charAt(4)) + moveValue.charAt(5);
         return NotationConverter.notationToIndex(piecePositionNotation);
     }

@@ -1,6 +1,5 @@
 package org.victorpiles.escacs.api.user;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,18 +38,14 @@ public class UserController {
      * Consumeix la informació per a crear un nou {@link User usuari} i genera una {@link ResponseEntity resposta} amb
      * estatus 201 (created) si s'ha registrat amb èxit.
      *
-     * @param user Informació per a crear un nou {@link User usuari}
-     *
      * @return {@link ResponseEntity Resposta} amb estatus 201 (created) si s'ha registrat amb èxit.
-     *
-     * @see UserService#register(User)
      */
-    @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> register(@RequestBody @Valid User user) {
-        User registered = userService.register(user);
+    @PostMapping(path = "/register")
+    public ResponseEntity<User> register(@RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("password") String password) {
+        User registered = userService.register(username, email, password);
         return ResponseEntity
                 .created(
-                        ServletUriComponentsBuilder.fromCurrentRequest().path("/register").buildAndExpand(user).toUri()
+                        ServletUriComponentsBuilder.fromCurrentRequest().path("/register").buildAndExpand(registered).toUri()
                 )
                 .body(registered);
     }
@@ -70,5 +65,11 @@ public class UserController {
     public ResponseEntity<User> login(@RequestParam("email") String email, @RequestParam("password") String password) {
         User logged = userService.login(email, password);
         return ResponseEntity.ok(logged);
+    }
+
+    @PutMapping(path = "/score")
+    public ResponseEntity<User> score(@RequestParam("id") Long id, @RequestParam("score") int score) {
+        User scored = userService.score(id, score);
+        return ResponseEntity.ok(scored);
     }
 }

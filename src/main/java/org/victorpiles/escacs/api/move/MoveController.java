@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.victorpiles.escacs.api.game.Game;
 import org.victorpiles.escacs.api.user.User;
+import org.victorpiles.escacs.engine.move.MoveStatus;
 
 import java.util.List;
 
@@ -65,14 +66,14 @@ public class MoveController {
      * @see MoveService#execute(String, String, Long, String)
      */
     @PostMapping(path = "/execute")
-    public ResponseEntity<Move> execute(@RequestParam("move") String move, @RequestParam("context") String context, @RequestParam("gameId") Long gameId, @RequestParam("username") @NotEmpty(message = "Username cannot be empty") String username) {
-        Move executed = moveService.execute(move, context, gameId, username);
+    public ResponseEntity<MoveStatus> execute(@RequestParam("move") String move, @RequestParam("context") String context, @RequestParam("gameId") Long gameId, @RequestParam("username") @NotEmpty(message = "Username cannot be empty") String username) {
+        MoveStatus status = moveService.execute(move, context, gameId, username);
 
         return ResponseEntity
                 .created(
-                        ServletUriComponentsBuilder.fromCurrentRequest().path("/execute").buildAndExpand(executed).toUri()
+                        ServletUriComponentsBuilder.fromCurrentRequest().path("/execute").buildAndExpand(status).toUri()
                 )
-                .body(executed);
+                .body(status);
     }
 
     @PostMapping(path = "/listValid")

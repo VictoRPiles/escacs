@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.victorpiles.escacs.api.exception.user.BadCredentialsException;
-import org.victorpiles.escacs.api.exception.user.EmailAlreadyInUseException;
-import org.victorpiles.escacs.api.exception.user.EmailNotFoundException;
-import org.victorpiles.escacs.api.exception.user.UsernameAlreadyInUseException;
+import org.victorpiles.escacs.api.exception.user.*;
 import org.victorpiles.escacs.api.security.PasswordEncoder;
 
 import java.util.List;
@@ -45,22 +42,21 @@ public class UserService {
      * La {@link User#getPassword() contrasenya} s'{@link PasswordEncoder#encode(String) encriptarà} abans de guardar-lo
      * en la base de dades.
      *
-     * @param user La informació de l'{@link User usuari}.
-     *
      * @return La informació de l'{@link User usuari} si s'ha registrat exitosament.
      */
-    public User register(User user) {
-        Optional<User> userByUsername = userRepository.findByUsername(user.getUsername());
-        Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
+    public User register(String username, String email, String password) {
+        Optional<User> userByUsername = userRepository.findByUsername(username);
+        Optional<User> userByEmail = userRepository.findByEmail(email);
 
         if (userByUsername.isPresent()) {
-            throw new UsernameAlreadyInUseException("There’s already an account with the username " + user.getUsername() + ". Use a different username.");
+            throw new UsernameAlreadyInUseException("There’s already an account with the username " + username + ". Use a different username.");
         }
 
         if (userByEmail.isPresent()) {
-            throw new EmailAlreadyInUseException("There’s already an account with the email " + user.getEmail() + ". Use a different email or sign in with this address.");
+            throw new EmailAlreadyInUseException("There’s already an account with the email " + email + ". Use a different email or sign in with this address.");
         }
 
+        User user = new User(username, email, password);
         /* Encripta la contrasenya abans de guardar en la base de dades */
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -98,5 +94,23 @@ public class UserService {
 
         log.info("Logged in: " + userByEmail.get());
         return userByEmail.get();
+    }
+
+    public User score(Long id, int score) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new UserNotInGameException("We don't have an account with the id " + id);
+        }
+
+        User user = userOptional.get();
+
+        if (score < 0 && user.getScore() < Math.abs(score)) {
+            return user;
+        }
+
+        user.setScore(user.getScore() + score);
+
+        log.info("User " + user.getUsername() + " scored: " + score);
+        return user;
     }
 }

@@ -1,6 +1,6 @@
 :root {
     --square-light: var(--bs-light);
-    --square-dark: var(--primary);
+    --square-dark: var(--bs-primary);
 
     --square-dark-hover: color-mix(in hsl, var(--square-dark) 70%, var(--square-light));
     --square-light-hover: color-mix(in hsl, var(--square-light) 70%, var(--square-dark));
@@ -20,7 +20,7 @@
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: auto;
 
-    max-width: 45%;
+    max-width: 90%;
     box-sizing: border-box;
 }
 
