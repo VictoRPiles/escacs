@@ -3,7 +3,7 @@
 name: Maven Package
 on:
   release:
-    types: [ created, updated ]
+    types: [ created, edited ]
 jobs:
   build:
     runs-on: ubuntu-latest
