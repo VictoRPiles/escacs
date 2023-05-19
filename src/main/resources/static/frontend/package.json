@@ -1,7 +1,11 @@
 {
   "name": "escacs",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Joc d'escacs multijugador",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VictoRPiles/escacs"
+  },
   "main": "./dist/index.js",
   "scripts": {
     "build": "tsc",
