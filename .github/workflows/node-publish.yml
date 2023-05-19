@@ -17,7 +17,9 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           # Defaults to the user or organization that owns the workflow file
           scope: '@VictoRPiles'
-      - run: npm ci
-      - run: npm publish
+        working-directory: src/main/resources/static/frontend
+        run: |
+          npm ci
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
