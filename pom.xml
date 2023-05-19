@@ -20,7 +20,7 @@
 
     <groupId>org.victorpiles</groupId>
     <artifactId>escacs</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <name>escacs</name>
     <description>Joc d'escacs multijugador</description>
 
