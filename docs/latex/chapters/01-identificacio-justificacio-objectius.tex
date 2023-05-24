@@ -1,0 +1,33 @@
+\chapter{Identificació, justificació i objectius del projecte}
+En aquest capítol s'identificaran els conceptes més importants del projecte i es justificarà l'existència i els objectius d'aquest.
+%-----------------------------------------------------------------------
+\section{Identificació}
+La intenció d'aquest projecte és dur a terme la creació d'una versió digital del joc d'escacs.
+\\[3mm]
+L’escacs és un joc d'estratègia que es juga en un tauler amb seixanta-quatre caselles disposades en una graella de vuit per vuit i es compon de setze peces per jugador.
+\\[3mm]
+Existeixen sis tipus de peces diferents, cadascuna amb moviments únics i propietats distintives, aquestes són: un rei, una dama, dues torres, dos alfils, dos cavallers i vuit peons. Es poden diferenciar les peces amigues i enemigues pel color d’aquestes.
+\\[3mm]
+El jugador que controla les peces blanques es mou primer, després els torns s’alternen.
+\\[3mm]
+Altre element important és el rellotge; cada jugador compta amb un màxim de deu minuts per realitzar els moviments, si el rellotge es queda sense temps, el jugador perdrà la partida.
+\\[3mm]
+L'objectiu del joc és fer escac i mat al rei de l'oponent, és a dir, el rei està sota un atac immediat o "escac" i no hi ha manera de que escape. També hi ha diverses maneres de què un joc acabe en empat.
+%-----------------------------------------------------------------------
+\section{Justificació}
+S’ha decidit dur aquest projecte a terme per diversos motius, alguns personals i altres acadèmics. 
+\\[3mm]
+En primer lloc, la gran afició de l’autor pels escacs.
+\\[3mm]
+Per altra banda és un projecte molt recomanable per a millorar els coneixements en diferents paradigmes de software com la programació orientada a objectes (s'identifiquen clarament tècniques pròpies d’aquest, com herència o polimorfisme), la programació multifil (ja que dóna peu a l’implementació de dimonis, com el rellotge) o la computació distribuïda (pel seu element multijugador).
+\\[3mm]
+Per últim, en aquest projecte s’utilitzen diversos tòpics vistos a classe com programació en Java (mòdul Programació), bases de dades (mòduls Bases de dades i Accés a dades), control de versions, entorns de desenvolupament integrat,  documentació (mòdul Entorns de desenvolupament), creació d’una interfície gràfica d'usuari (mòduls Desenvolupament d'interfícies) i programació multifil i en xarxa (mòdul Programació de serveis i processos).
+%-----------------------------------------------------------------------
+\section{Objectius}
+Es tenen com a objectius:
+\begin{itemize}
+    \item El desenvolupament un joc d'escacs funcional que segueixi les regles del joc, per tant s’ha de implementar un “Chess engine”.
+    \item L’implementació d’una interfície gràfica d'usuari atractiva i fàcil d'utilitzar. Aquesta comptarà amb un tauler i un historial de moviments, així com de pàgines d’inici de sessió, registre, llistat de jugadors, etc.
+    \item La creació d’un sistema multijugador en xarxa, l'aplicació permetrà emparellar a jugadors des de màquines remotes i es connectarà amb un servidor que farà de “backend”, aquest s’encarregarà de gestionar la partida i connectar-se amb la base de dades. El menú principal mostrarà els jugadors disponibles a l'espera de parella per a jugar i també, en cas de no voler jugar amb cap d'ells, una opció de posar-se a l'espera.
+    \item Permetre la persistència de dades rellevants a les partides. Cada jugador al connectar-se podrà consultar les seves partides i els moviments passats.
+\end{itemize}

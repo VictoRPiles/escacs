@@ -1,0 +1,84 @@
+%-----------------------------------------------------------------------
+% Tipus de document
+\documentclass[12pt]{report}
+% Pàgina i margens
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=2cm,marginparwidth=1.75cm]{geometry}
+\usepackage{multicol}
+% Encodificació i font
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage{libertine}
+\usepackage{fontspec}
+\setmonofont{JetBrains Mono}[Contextuals=Alternate]
+% Gràfics i codi
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{minted}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+% Enllaços
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks = true,
+    linkcolor  = Black,
+    citecolor  = Black,
+    urlcolor   = Blue
+} 
+% Títol dels apartats
+\usepackage{titlesec}
+\titleformat{\chapter}{\normalfont\LARGE\bfseries}{\color{Red}\thechapter}{1em}{}
+\titleformat{\section}{\normalfont\Large\bfseries}{\color{Green}\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\color{Blue}\thesubsection}{1em}{}
+\renewcommand{\contentsname}{Continguts}
+\renewcommand{\listfigurename}{Figures}
+\renewcommand{\figurename}{Figura}
+\renewcommand\bibname{Referències}
+%-----------------------------------------------------------------------
+\title{
+    \includegraphics[width=25mm]{images/knight-green.png}
+    \\[5mm]
+    \textbf{ESCACS}
+    \\[5mm]
+    \normalsize Cicle Superior de Desenvolupament d'Aplicacions Multiplataforma
+    \\[5mm]
+    \normalsize Memòria del projecte de DAM
+    \\[5mm]
+    \normalsize IES Abastos: Curs 2022/23. Grup 7J.
+    \\[5mm]
+    \normalsize Tutor individual: Xavier Ibañez Catalá
+    \\[5mm]
+    \normalsize Codi font a 
+    \href{https://github.com/VictoRPiles/escacs}{https://github.com/VictoRPiles/escacs}
+    \\[10mm]
+}
+\author{Víctor Piles Delgado}
+\date{31 de Maig de 2023}
+%-----------------------------------------------------------------------
+\begin{document}
+\emergencystretch 2cm
+%-----------------------------------------------------------------------
+% Títol
+\maketitle
+%-----------------------------------------------------------------------
+% Índex i continguts
+\tableofcontents
+\listoffigures
+%-----------------------------------------------------------------------
+% Capítols
+\include{chapters/01-identificacio-justificacio-objectius}
+\include{chapters/02-disseny}
+\include{chapters/03-desenvolupament}
+\include{chapters/04-resultat-conclusio}
+%-----------------------------------------------------------------------
+% Bibliografia
+\begin{multicols}{2}
+    \bibliographystyle{plain}
+    \nocite{*}
+    \bibliography{bibliography/referencies}
+\end{multicols}
+%-----------------------------------------------------------------------
+\end{document}
+%-----------------------------------------------------------------------
